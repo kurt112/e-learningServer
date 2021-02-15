@@ -1,0 +1,17 @@
+
+Override method in this class if you want to add another method
+in your pageable
+
+
+
+
+the basic method in service is Now we Override this method to add another
+functionality in out service for future use
+
+   Page<T> data(String search, int page);
+
+    boolean save(T t);
+
+    boolean deleteById(String id);
+
+    T findById(String id);

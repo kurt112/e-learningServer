@@ -1,0 +1,16 @@
+package com.thesis.ELearning.repository;
+
+import com.thesis.ELearning.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, String>{
+
+    @Query(value = "SELECT t from User t where t.firstName like  %?1% or t.lastName like %?1% " +
+            "or t.email like %?1% or t.birthdate like %?1% or t.registerDate like %?1% ORDER BY t.lastName DESC")
+    Page<User> users(String search, Pageable pageable);
+}
