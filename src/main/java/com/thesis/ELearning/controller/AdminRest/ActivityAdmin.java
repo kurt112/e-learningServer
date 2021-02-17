@@ -5,7 +5,6 @@ import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.service.serviceImplementation.*;
 import com.thesis.ELearning.utils.FormattedDate;
 import com.thesis.ELearning.utils.StorageService;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -15,11 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
+import java.io.*;
 
 @RestController
 @RequestMapping("/admin/activity")
@@ -68,11 +63,8 @@ public class ActivityAdmin {
                 System.out.println("asdasd");
             }
             roomClassesActivityService.save(roomClassesActivity);
-//            return new ResponseEntity<>(
-//                    new Response<>("File Upload Successful", roomClassesActivity), HttpStatus.OK
-//            );
             return new ResponseEntity<>(
-                    new Response<>("File Upload Not Successful", null), HttpStatus.BAD_REQUEST
+                    new Response<>("File Upload Successful", roomClassesActivity), HttpStatus.OK
             );
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,14 +96,19 @@ public class ActivityAdmin {
     }
 
     @GetMapping(value = "view",
-            produces = MediaType.IMAGE_GIF_VALUE)
-    public @ResponseBody InputStreamResource getImage() throws IOException {
+            produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody InputStreamResource getImage(@RequestParam("activity-id") String id) throws IOException {
 
-//        InputStream in = getClass()
-//                .getResourceAsStream("");
-        File file = new File("C:\\E-learning\\Room\\11 - Dell\\Math - 1\\Project\\sadfasdfa 16-02-2021\\Valak - Copy.jpg");
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-        return resource;
+        Activity activity = activityService.findById(id);
+
+
+
+        File file = new File(activity.getLink());
+        if(file.exists()){
+             return new InputStreamResource(new FileInputStream(file));
+        }
+
+        return null;
     }
 }
 
