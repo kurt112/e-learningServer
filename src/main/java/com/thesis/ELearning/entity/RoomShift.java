@@ -2,6 +2,7 @@ package com.thesis.ELearning.entity;
 
 
 import lombok.*;
+import net.bytebuddy.build.ToStringPlugin;
 
 import javax.persistence.*;
 

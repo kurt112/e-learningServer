@@ -1,9 +1,7 @@
 package com.thesis.ELearning.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "subject")
-public @Data class Subject {
+@Getter
+@Setter
+public class Subject {
     @Id
     @Column(name = "subject_code")
     private String subjectCode;

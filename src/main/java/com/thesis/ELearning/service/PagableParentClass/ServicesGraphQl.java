@@ -2,6 +2,8 @@ package com.thesis.ELearning.service.PagableParentClass;
 
 
 import com.thesis.ELearning.entity.API.ApiSettings;
+import com.thesis.ELearning.entity.API.Response;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

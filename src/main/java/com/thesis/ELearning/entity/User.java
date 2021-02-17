@@ -14,27 +14,27 @@ public  class User implements Comparable<User> {
 
     @Id
     @Column(name = "user_email")
-    @GraphQLQuery(name = "user_email", description = "User Email")
+    @GraphQLQuery(name = "email", description = "User Email")
     private String email;
 
     @Column(name = "user_first_name")
-    @GraphQLQuery(name = "userFirstName", description = "User First Name")
+    @GraphQLQuery(name = "firstName", description = "User First Name")
     private String firstName;
 
     @Column(name= "user_last_name")
-    @GraphQLQuery(name = "userLastName", description = "User Last Name")
+    @GraphQLQuery(name = "lastName", description = "User Last Name")
     private String lastName;
 
     @Column(name="user_password")
-    @GraphQLQuery(name = "userPassword", description = "UserPassword")
+    @GraphQLQuery(name = "password", description = "UserPassword")
     private String password;
 
     @Column(name = "user_register_date")
-    @GraphQLQuery(name = "userRegisterDate", description = "User RegisterDate")
+    @GraphQLQuery(name = "registerDate", description = "User RegisterDate")
     private String registerDate;
 
     @Column(name = "user_birthdate")
-    @GraphQLQuery(name = "userBirthDate", description = "User BirthDate")
+    @GraphQLQuery(name = "birthdate", description = "User BirthDate")
     private String birthdate;
 
 //    @JsonIgnore

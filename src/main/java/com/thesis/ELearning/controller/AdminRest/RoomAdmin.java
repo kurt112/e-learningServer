@@ -29,7 +29,7 @@ public class RoomAdmin {
     @PostMapping("/room-register")
     public ResponseEntity<Response<Room>> AddRoom(@RequestBody Room room){
         UUID uuidGenerator = Generators.randomBasedGenerator().generate();
-
+        System.out.println(room.toString());
         room.setId(uuidGenerator.toString());
         roomService.save(room);
         return new ResponseEntity<>(
