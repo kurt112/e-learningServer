@@ -67,7 +67,8 @@ public class RoomService implements PageableServiceRoom {
     }
 
     @Override
-    public Room findById(String id) {
+    @GraphQLQuery(name = "room")
+    public Room findById(@GraphQLArgument(name = "id")String id)  {
         Optional<Room> room = repo.findById(id);
         return room.orElse(null);
     }

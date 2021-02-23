@@ -63,9 +63,10 @@ public class TeacherService implements PageableServiceTeacher {
     }
 
     @Override
-    public Teacher findById(String id) {
-        Optional<Teacher> teacherID = repo.findById(id);
-        return teacherID.orElse(null);
+    @GraphQLQuery(name = "teacher")
+    public Teacher findById(@GraphQLArgument(name = "id") String id) {
+        Optional<Teacher> teacher = repo.findById(id);
+        return teacher.orElse(null);
     }
 
     @Override
