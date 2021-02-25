@@ -41,7 +41,6 @@ public class RoomShiftService implements PageableServiceRoomShift {
         totalElements =  pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
-        System.out.println("The totla pages " + totalPages);
         return pages.getContent();
     }
 
@@ -57,7 +56,8 @@ public class RoomShiftService implements PageableServiceRoomShift {
     }
 
     @Override
-    public RoomShift findById(String id) {
+    @GraphQLQuery(name = "roomShift")
+    public RoomShift findById(@GraphQLArgument(name = "id") String id) {
         Optional<RoomShift> roomShift = repo.findById(Integer.parseInt(id));
         return roomShift.orElse(null);
     }

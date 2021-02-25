@@ -3,7 +3,7 @@ package com.thesis.ELearning.service.serviceImplementation;
 import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.RoomClass;
 import com.thesis.ELearning.repository.RoomClassesRepository;
-import com.thesis.ELearning.service.PageableService.PageableServiceRoomClass;
+import com.thesis.ELearning.service.PageableService.PageableServiceRoomShiftClass;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @Transactional
 @Service
 @GraphQLApi
-public class RoomClassesService implements PageableServiceRoomClass {
+public class RoomClassesService implements PageableServiceRoomShiftClass {
 
     final private RoomClassesRepository repo;
     private int totalPages = 0;
@@ -33,7 +33,7 @@ public class RoomClassesService implements PageableServiceRoomClass {
 
 
     @Override
-    @GraphQLQuery(name = "roomClasses")
+    @GraphQLQuery(name = "roomShiftClasses")
     public List<RoomClass> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page) {
         Pageable pageable = PageRequest.of(page,10);
         Page<RoomClass> pages = repo.RoomClasses(search, pageable);
@@ -56,7 +56,7 @@ public class RoomClassesService implements PageableServiceRoomClass {
     @Override
     public boolean deleteById(String id) {
         try{
-            repo.deleteById(Integer.parseInt(id));
+            repo.deleteById(id);
         }catch (Exception e){
             return false;
         }
@@ -64,8 +64,9 @@ public class RoomClassesService implements PageableServiceRoomClass {
     }
 
     @Override
-    public RoomClass findById(String id) {
-        Optional<RoomClass> roomClasses = repo.findById(Integer.parseInt(id));
+    @GraphQLQuery(name = "roomShiftClass")
+    public RoomClass findById(@GraphQLArgument(name = "id") String id) {
+        Optional<RoomClass> roomClasses = repo.findById(id);
 
         return roomClasses.orElse(null);
     }

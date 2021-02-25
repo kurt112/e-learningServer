@@ -5,5 +5,5 @@ import com.thesis.ELearning.service.PagableParentClass.ServicesGraphQl;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface PageableServiceRoomClass extends ServicesGraphQl<RoomClass> {
+public interface PageableServiceRoomShiftClass extends ServicesGraphQl<RoomClass> {
 }

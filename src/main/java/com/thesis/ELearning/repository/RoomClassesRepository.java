@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface RoomClassesRepository extends JpaRepository<RoomClass, Integer> {
+public interface RoomClassesRepository extends JpaRepository<RoomClass, String> {
 
     @Query(value = "SELECT t from RoomClass t where t.roomShift.room.roomName like %?1% " +
             "or t.roomShift.grade like %?1% " +
