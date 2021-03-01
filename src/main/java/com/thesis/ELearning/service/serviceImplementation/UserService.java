@@ -71,6 +71,11 @@ public class UserService implements ServicesGraphQl<User> {
         return user.orElse(null);
     }
 
+
+    public User findByEmail(String email){
+        return repo.findUserEmail(email);
+    }
+
     @Override
     public ApiSettings apiSettings() {
          return new ApiSettings(totalElements, totalPages, currentPages);

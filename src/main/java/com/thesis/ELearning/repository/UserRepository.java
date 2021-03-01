@@ -13,4 +13,7 @@ public interface UserRepository extends JpaRepository<User, String>{
     @Query(value = "SELECT t from User t where t.firstName like  %?1% or t.lastName like %?1% " +
             "or t.email like %?1% or t.birthdate like %?1% or t.registerDate like %?1% ORDER BY t.lastName DESC")
     Page<User> users(String search, Pageable pageable);
+
+    @Query(value = "SELECT t from User  t where t.email = ?1")
+    User findUserEmail (String username);
 }
