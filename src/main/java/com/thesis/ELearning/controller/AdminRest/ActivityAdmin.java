@@ -24,47 +24,47 @@ public class ActivityAdmin {
     private final SubjectService subjectService;
     private final RoomShiftService roomShiftService;
     private final ActivityService activityService;
-    private final RoomClassesService roomClassesService;
-    private final RoomClassesActivityService roomClassesActivityService;
+    private final RoomShiftClassesService roomShiftClassesService;
+    private final RoomShiftClassesActivityService roomShiftClassesActivityService;
 
 
     @Autowired
-    public ActivityAdmin(StorageService storageService, SubjectService subjectService, RoomShiftService roomShiftService, ActivityService activityService, RoomClassesService roomClassesService, RoomClassesActivityService roomClassesActivityService) {
+    public ActivityAdmin(StorageService storageService, SubjectService subjectService, RoomShiftService roomShiftService, ActivityService activityService, RoomShiftClassesService roomShiftClassesService, RoomShiftClassesActivityService roomShiftClassesActivityService) {
         this.storageService = storageService;
         this.subjectService = subjectService;
         this.roomShiftService = roomShiftService;
         this.activityService = activityService;
-        this.roomClassesService = roomClassesService;
-        this.roomClassesActivityService = roomClassesActivityService;
+        this.roomShiftClassesService = roomShiftClassesService;
+        this.roomShiftClassesActivityService = roomShiftClassesActivityService;
     }
 
 
     @PostMapping("/upload")
-    public ResponseEntity<Response<RoomClassesActivity>> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("activity-name") String activityName,
-                                                              @RequestParam("shift-id") int id, @RequestParam("subject-code") String subjectCode,
-                                                              @RequestParam("activity-type") String activityType,
-                                                              @RequestParam("deadline-date") String deadlineDate, @RequestParam("deadline-time") String deadlineTime,
-                                                              @RequestParam("activity-description") String description) {
+    public ResponseEntity<Response<RoomShiftClassesActivity>> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("activity-name") String activityName,
+                                                                               @RequestParam("shift-id") int id, @RequestParam("subject-code") String subjectCode,
+                                                                               @RequestParam("activity-type") String activityType,
+                                                                               @RequestParam("deadline-date") String deadlineDate, @RequestParam("deadline-time") String deadlineTime,
+                                                                               @RequestParam("activity-description") String description) {
 
 
         Subject subject = subjectService.findById(subjectCode);
         RoomShift roomShift = roomShiftService.findById(String.valueOf(id));
 
-        RoomClass roomClasses = roomClassesService.FindRoomClassByShiftAndSubject(roomShift.getId(), subject.getSubjectCode());
+        RoomShiftClass roomShiftClasses = roomShiftClassesService.FindRoomClassByShiftAndSubject(roomShift.getId(), subject.getSubjectCode());
         System.out.println(roomShift.toString());
-        System.out.println(roomClasses.getId());
+        System.out.println(roomShiftClasses.getId());
         try {
             String path = storageService.UploadActivityClass(file, subject, roomShift, activityName, activityType);
             Activity activity = new Activity(0, activityName, path, FormattedDate.getDateNow(), deadlineDate + " "
                     + deadlineTime, activityType, description, "To Review");
-            RoomClassesActivity roomClassesActivity = new RoomClassesActivity(0, roomClasses, activity);
+            RoomShiftClassesActivity roomShiftClassesActivity = new RoomShiftClassesActivity(0, roomShiftClasses, activity);
 
             if (!activityService.save(activity)) {
                 System.out.println("asdasd");
             }
-            roomClassesActivityService.save(roomClassesActivity);
+            roomShiftClassesActivityService.save(roomShiftClassesActivity);
             return new ResponseEntity<>(
-                    new Response<>("File Upload Successful", roomClassesActivity), HttpStatus.OK
+                    new Response<>("File Upload Successful", roomShiftClassesActivity), HttpStatus.OK
             );
         } catch (IOException e) {
             e.printStackTrace();

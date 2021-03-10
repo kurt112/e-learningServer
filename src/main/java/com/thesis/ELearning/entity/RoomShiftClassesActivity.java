@@ -5,13 +5,13 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "room_classes_activity")
+@Table(name = "room_shift_classes_activity")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public
-class RoomClassesActivity {
+class RoomShiftClassesActivity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ class RoomClassesActivity {
 
     @OneToOne
     @JoinColumn(name = "room_classes_id_fk")
-    private RoomClass classes;
+    private RoomShiftClass classes;
 
     @OneToOne
     @JoinColumn(name = "activity_fk")

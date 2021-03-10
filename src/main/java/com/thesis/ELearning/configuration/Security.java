@@ -36,15 +36,21 @@ public class Security extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
                 .authorizeRequests()
+//                .antMatchers("/**")
+//                .permitAll();
+                .antMatchers("/pre-register")
+                .permitAll()
                 .antMatchers("/gui")
+                .permitAll()
+                .antMatchers("/Elearning/**")
                 .permitAll()
                 .antMatchers("/login")
                 .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+                .antMatchers("/re-login")
+                .permitAll()
+                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

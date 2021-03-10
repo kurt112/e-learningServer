@@ -1,7 +1,6 @@
 package com.thesis.ELearning.repository;
 
 import com.thesis.ELearning.entity.Activity;
-import com.thesis.ELearning.entity.RoomClass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

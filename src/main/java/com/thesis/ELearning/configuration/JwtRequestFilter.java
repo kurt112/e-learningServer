@@ -26,6 +26,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
     public JwtRequestFilter(MyUserDetailsService userDetailsService, Jwt jwt) {
+        System.out.println(jwt);
         this.userDetailsService = userDetailsService;
         this.jwt = jwt;
     }
@@ -40,6 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwt = null;
 
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer")){
+
             jwt = authorizationHeader.substring(7);
             username = this.jwt.getUsername(jwt);
         }

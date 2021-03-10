@@ -2,14 +2,14 @@ package com.thesis.ELearning.entity;
 
 
 import lombok.*;
-import net.bytebuddy.build.ToStringPlugin;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "room_class_shift")
+@Table(name = "room_shift")
 @Getter
 @Setter
 public
@@ -35,4 +35,7 @@ class RoomShift {
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;
+
+    @OneToMany(mappedBy ="roomShift", cascade = CascadeType.ALL)
+    private List<RoomShiftClass> roomShiftClasses;
 }

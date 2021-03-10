@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class MyUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
+    private User user;
 
     @Autowired
     public MyUserDetailsService(UserService userService) {
@@ -25,7 +26,11 @@ public class MyUserDetailsService implements UserDetailsService {
         User user = userService.findByEmail(email);
 
         if (user == null ) throw new UsernameNotFoundException(email);
-
+        this.user = user;
         return new UserPrincipal(user);
+    }
+
+    public User getUser() {
+        return user;
     }
 }

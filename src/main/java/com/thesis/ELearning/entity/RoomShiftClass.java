@@ -3,15 +3,13 @@ package com.thesis.ELearning.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
-
 @Entity
-@Table(name = "room_classes")
+@Table(name = "room_shift_classes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class RoomClass {
+public class RoomShiftClass {
 
     @Id
     @Column(name = "room_classes_id")
@@ -21,7 +19,7 @@ public class RoomClass {
     @JoinColumn(name = "room_classes_teacher_fk")
     private Teacher teacher;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "room_classes_shift")
     private RoomShift roomShift;
 

@@ -23,9 +23,9 @@ class StudentActivity {
     @JoinColumn(name = "student_activity_student_fk")
     private Student student;
 
-    @ManyToOne
-    @JoinColumn(name = "student_activity_activty_fk")
-    private Activity activity;
+//    @ManyToOne
+//    @JoinColumn(name = "student_activity_activty_fk")
+//    private Activity activity;
 
     @Column(name = "student_activity_status")
     private String status;

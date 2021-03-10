@@ -23,11 +23,11 @@ public interface AutoCompleteRepository extends JpaRepository<Room, Object> {
     Page<Object> RoomShift_AutoComplete(String search, Pageable pageable);
 
 
-    @Query(value = "SELECT t.roomShift.grade, t.roomShift.section, t.id from RoomClass t WHERE lower(concat(t.roomShift.grade, t.roomShift.section, t.id)) like  %?1%")
+    @Query(value = "SELECT t.roomShift.grade, t.roomShift.section, t.id from RoomShiftClass t WHERE lower(concat(t.roomShift.grade, t.roomShift.section, t.id)) like  %?1%")
     Page<Object> RoomClass(String search, Pageable pageable);
 
 
-    @Query(value = "SELECT t.subject.subjectName, t.subject.subjectMajor, t.subject.subjectCode FROM RoomClass t WHERE t.roomShift.id = ?1")
+    @Query(value = "SELECT t.subject.subjectName, t.subject.subjectMajor, t.subject.subjectCode FROM RoomShiftClass t WHERE t.roomShift.id = ?1")
     Page<Object> SubjectsBasedOnRoomShift(int roomShiftID, Pageable pageable);
 
 }

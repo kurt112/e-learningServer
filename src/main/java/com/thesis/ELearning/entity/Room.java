@@ -12,9 +12,9 @@ import javax.persistence.*;
 @Setter
 public class Room {
 
-        @Id
-        @Column(name = "room_id")
-        private String id;
+    @Id
+    @Column(name = "room_id")
+    private String id;
 
     @Column(name = "room_name")
     private String roomName;
@@ -24,7 +24,6 @@ public class Room {
 
     @Column(name = "room_time_end")
     private String timeEnd;
-
 
 
 }

@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/admin")
 public class RoomShiftAdmin {
@@ -36,7 +38,7 @@ public class RoomShiftAdmin {
     ) {
 
         Room room = roomService.findById(roomid);
-        RoomShift roomShift = new RoomShift(0, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room);
+        RoomShift roomShift = new RoomShift(0, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room, new ArrayList<>());
         System.out.println(roomShift.toString());
         roomShiftService.save(roomShift);
         return new ResponseEntity<>(

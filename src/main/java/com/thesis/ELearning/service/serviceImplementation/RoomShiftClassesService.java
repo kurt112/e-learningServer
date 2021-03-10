@@ -1,8 +1,8 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
-import com.thesis.ELearning.entity.RoomClass;
-import com.thesis.ELearning.repository.RoomClassesRepository;
+import com.thesis.ELearning.entity.RoomShiftClass;
+import com.thesis.ELearning.repository.RoomShiftClassesRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceRoomShiftClass;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
@@ -20,23 +20,23 @@ import java.util.Optional;
 @Transactional
 @Service
 @GraphQLApi
-public class RoomClassesService implements PageableServiceRoomShiftClass {
+public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
 
-    final private RoomClassesRepository repo;
+    final private RoomShiftClassesRepository repo;
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
     @Autowired
-    public RoomClassesService(RoomClassesRepository repo) {
+    public RoomShiftClassesService(RoomShiftClassesRepository repo) {
         this.repo = repo;
     }
 
 
     @Override
     @GraphQLQuery(name = "roomShiftClasses")
-    public List<RoomClass> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page) {
+    public List<RoomShiftClass> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page) {
         Pageable pageable = PageRequest.of(page,10);
-        Page<RoomClass> pages = repo.RoomClasses(search, pageable);
+        Page<RoomShiftClass> pages = repo.RoomClasses(search, pageable);
         totalElements =  pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
@@ -44,13 +44,13 @@ public class RoomClassesService implements PageableServiceRoomShiftClass {
     }
 
     @Override
-    public RoomClass save(RoomClass roomClasses) {
+    public RoomShiftClass save(RoomShiftClass roomShiftClasses) {
         try{
-            repo.save(roomClasses);
+            repo.save(roomShiftClasses);
         }catch (Exception e){
             return null;
         }
-        return roomClasses;
+        return roomShiftClasses;
     }
 
     @Override
@@ -65,8 +65,8 @@ public class RoomClassesService implements PageableServiceRoomShiftClass {
 
     @Override
     @GraphQLQuery(name = "roomShiftClass")
-    public RoomClass findById(@GraphQLArgument(name = "id") String id) {
-        Optional<RoomClass> roomClasses = repo.findById(id);
+    public RoomShiftClass findById(@GraphQLArgument(name = "id") String id) {
+        Optional<RoomShiftClass> roomClasses = repo.findById(id);
 
         return roomClasses.orElse(null);
     }
@@ -77,10 +77,10 @@ public class RoomClassesService implements PageableServiceRoomShiftClass {
         return new ApiSettings(totalElements,totalPages,currentPages);
     }
 
-    public RoomClass FindRoomClassByShiftAndSubject(int shiftId, String subjectCode){
-        RoomClass roomClasses = repo.FindRoomClassByShiftAndSubject(shiftId,subjectCode);
+    public RoomShiftClass FindRoomClassByShiftAndSubject(int shiftId, String subjectCode){
+        RoomShiftClass roomShiftClasses = repo.FindRoomClassByShiftAndSubject(shiftId,subjectCode);
 
-        return roomClasses;
+        return roomShiftClasses;
     }
 
 }

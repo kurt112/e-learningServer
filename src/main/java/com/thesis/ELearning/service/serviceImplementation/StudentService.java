@@ -47,6 +47,18 @@ public class StudentService implements PageableServiceStudent {
         return pages.getContent();
     }
 
+    @GraphQLQuery(name = "studentTransfer")
+    public List<Student> StudentTransfer(@GraphQLArgument(name = "search")String search) {
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Student> pages = repo.StudentRoomShiftTransfer(search.replaceAll("\\s".toLowerCase(),""), pageable);
+
+
+        return pages.getContent();
+    }
+
+
+
     @Override
     @GraphQLQuery(name = "studentSave")
     public Student save(@GraphQLArgument(name = "SaveStudent") Student student) {
@@ -74,6 +86,7 @@ public class StudentService implements PageableServiceStudent {
     @GraphQLQuery(name = "student")
     public Student findById(@GraphQLArgument(name = "id") String id) {
         Optional<Student> student = repo.findById(id);
+
         return student.orElse(null);
     }
 

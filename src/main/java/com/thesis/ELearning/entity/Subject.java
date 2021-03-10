@@ -28,6 +28,6 @@ public class Subject {
 
     @OneToMany(mappedBy = "subject")
     @JsonIgnore
-    private List<RoomClass> roomClasses;
+    private List<RoomShiftClass> roomShiftClasses;
 
 }

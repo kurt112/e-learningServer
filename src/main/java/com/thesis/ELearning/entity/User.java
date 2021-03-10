@@ -37,6 +37,18 @@ public  class User implements Comparable<User> {
     @GraphQLQuery(name = "birthdate", description = "User BirthDate")
     private String birthdate;
 
+    @Column(name = "user_role")
+    @GraphQLQuery(name = "role", description = "role")
+    private String userRole;
+
+
+    // for account purpose
+//    private boolean isAccountNonExpired;
+//    private boolean isAccountNonLocked;
+//    private boolean isCredentialsNonExpired;
+//    private boolean isEnabled;
+
+
 //    @JsonIgnore
 //    @OneToOne(mappedBy = "user")
 //    private Student student;

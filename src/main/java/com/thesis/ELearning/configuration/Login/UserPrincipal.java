@@ -1,10 +1,13 @@
 package com.thesis.ELearning.configuration.Login;
 
+import com.thesis.ELearning.entity.Authorities;
 import com.thesis.ELearning.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
@@ -16,7 +19,9 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+     List<Authorities> role = new ArrayList<>();
+     role.add(new Authorities(user.getUserRole()));
+        return role;
     }
 
     @Override
