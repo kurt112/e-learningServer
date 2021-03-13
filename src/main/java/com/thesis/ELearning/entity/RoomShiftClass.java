@@ -42,7 +42,8 @@ public class RoomShiftClass {
     @ManyToMany
     @JoinTable(name = "room_shift_classes_students",
     joinColumns = @JoinColumn(name = "room_class_id"),
-    inverseJoinColumns = @JoinColumn(name = "student_id"))
+    inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
     private Set<Student> students;
 
 

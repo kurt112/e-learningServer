@@ -2,6 +2,7 @@ package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.RoomShift;
+import com.thesis.ELearning.entity.RoomShiftClass;
 import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.repository.StudentRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceStudent;
@@ -49,13 +50,6 @@ public class StudentService implements PageableServiceStudent {
         return pages.getContent();
     }
 
-    @GraphQLQuery(name = "getRoomShiftByStudent")
-    public List<RoomShift> StudentTransfer(@GraphQLArgument(name = "studentID")String id) {
-
-        Student student = findById(id);
-
-        return student!=null? student.getRoomShifts(): new ArrayList<>();
-    }
 
 
 
@@ -96,6 +90,21 @@ public class StudentService implements PageableServiceStudent {
     public ApiSettings apiSettings() {
         return new ApiSettings(totalElements, totalPages, currentPages);
     }
+
+    @GraphQLQuery(name = "getRoomShiftByStudent")
+    public List<RoomShift> StudentTransfer(@GraphQLArgument(name = "studentID")String id) {
+
+        Student student = findById(id);
+
+        return student!=null? student.getRoomShifts(): new ArrayList<>();
+    }
+
+    @GraphQLQuery(name = "getStudentByUserID")
+    public Student getStudentByUserId(@GraphQLArgument(name = "userID") String id){
+
+        return repo.getStudentByUserId(id);
+    }
+
 
 
 }
