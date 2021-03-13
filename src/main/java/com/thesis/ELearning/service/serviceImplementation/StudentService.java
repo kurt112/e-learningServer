@@ -1,6 +1,7 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
+import com.thesis.ELearning.entity.RoomShift;
 import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.repository.StudentRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceStudent;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,14 +49,12 @@ public class StudentService implements PageableServiceStudent {
         return pages.getContent();
     }
 
-    @GraphQLQuery(name = "studentTransfer")
-    public List<Student> StudentTransfer(@GraphQLArgument(name = "search")String search) {
+    @GraphQLQuery(name = "getRoomShiftByStudent")
+    public List<RoomShift> StudentTransfer(@GraphQLArgument(name = "studentID")String id) {
 
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<Student> pages = repo.StudentRoomShiftTransfer(search.replaceAll("\\s".toLowerCase(),""), pageable);
+        Student student = findById(id);
 
-
-        return pages.getContent();
+        return student!=null? student.getRoomShifts(): new ArrayList<>();
     }
 
 
@@ -96,4 +96,6 @@ public class StudentService implements PageableServiceStudent {
     public ApiSettings apiSettings() {
         return new ApiSettings(totalElements, totalPages, currentPages);
     }
+
+
 }

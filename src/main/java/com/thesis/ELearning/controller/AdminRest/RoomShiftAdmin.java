@@ -1,29 +1,39 @@
 package com.thesis.ELearning.controller.AdminRest;
 
-import com.thesis.ELearning.entity.API.PagesContent;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.Room;
 import com.thesis.ELearning.entity.RoomShift;
+import com.thesis.ELearning.entity.RoomShiftClass;
+import com.thesis.ELearning.entity.Student;
+import com.thesis.ELearning.repository.RoomShiftClassesRepository;
 import com.thesis.ELearning.service.serviceImplementation.RoomService;
 import com.thesis.ELearning.service.serviceImplementation.RoomShiftService;
+import com.thesis.ELearning.service.serviceImplementation.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
 public class RoomShiftAdmin {
+
     final private RoomService roomService;
     final private RoomShiftService roomShiftService;
+    final private StudentService studentService;
+    final private RoomShiftClassesRepository roomShiftClassesRepository;
+    private List<Student> currentStudentList = new ArrayList<>();
 
     @Autowired
-    public RoomShiftAdmin(RoomService roomService, RoomShiftService roomShiftService) {
+    public RoomShiftAdmin(RoomService roomService, RoomShiftService roomShiftService, StudentService studentService, RoomShiftClassesRepository roomShiftClassesRepository) {
         this.roomService = roomService;
         this.roomShiftService = roomShiftService;
+        this.studentService = studentService;
+        this.roomShiftClassesRepository = roomShiftClassesRepository;
     }
 
 
@@ -38,11 +48,46 @@ public class RoomShiftAdmin {
     ) {
 
         Room room = roomService.findById(roomid);
-        RoomShift roomShift = new RoomShift(0, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room, new ArrayList<>());
+        RoomShift roomShift = new RoomShift(0, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room);
         System.out.println(roomShift.toString());
         roomShiftService.save(roomShift);
         return new ResponseEntity<>(
                 new Response<>("Register Student Success", roomShift),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/add-studentRoomShift")
+    public ResponseEntity<?> addStudentRoomShift(@RequestParam("student-id") String studentId){
+
+        Student student = studentService.findById(studentId);
+        System.out.println(studentId);
+        currentStudentList.add(student);
+        return new ResponseEntity<>(
+                new Response<>("Register Student Success", "Success"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/doneAddingStudentInRoomShift")
+    public ResponseEntity<?> doneAdd(@RequestParam("roomShiftID") String id){
+
+        RoomShift roomShift = roomShiftService.findById(id);
+        for(RoomShiftClass roomShiftClass: roomShift.getRoomShiftClasses()){
+
+            roomShiftClass.setStudents(new HashSet<>(currentStudentList));
+
+            roomShiftClassesRepository.save(roomShiftClass);
+        }
+
+
+        roomShift.setStudents(currentStudentList);
+        roomShiftService.save(roomShift);
+        currentStudentList = new ArrayList<>();
+
+
+        return new ResponseEntity<>(
+                new Response<>("Register Student Success", "Success"),
                 HttpStatus.OK
         );
     }

@@ -3,6 +3,8 @@ package com.thesis.ELearning.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
+
 @Entity
 @Table(name = "room_shift_classes")
 @NoArgsConstructor
@@ -36,6 +38,14 @@ public class RoomShiftClass {
 
     @Column(name = "room_classes_day")
     private String day;
+
+    @ManyToMany
+    @JoinTable(name = "room_shift_classes_students",
+    joinColumns = @JoinColumn(name = "room_class_id"),
+    inverseJoinColumns = @JoinColumn(name = "student_id"))
+    private Set<Student> students;
+
+
 
 
 }

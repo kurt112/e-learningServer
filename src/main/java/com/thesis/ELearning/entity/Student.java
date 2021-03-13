@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "student")
@@ -24,13 +25,39 @@ public  class Student {
     @GraphQLQuery(name = "user", description = "Student User")
     private User user;
 
+
     @ManyToMany(mappedBy = "students")
-    @GraphQLQuery(name = "classroom")
-    private List<RoomShiftClassStudents> roomShiftClassStudents;
+    @GraphQLQuery(name = "roomShifts")
+    private List<RoomShift> roomShifts;
+
+    @ManyToMany(mappedBy = "students")
+    @GraphQLQuery(name = "roomShiftClasses")
+    private List<RoomShiftClass> roomShiftClasses;
 
     public Student(String id, User user) {
         this.id = id;
         this.user = user;
-        roomShiftClassStudents = new ArrayList<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        System.out.println("The o");
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        Student student = (Student) o;
+        return getId().equals(student.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id='" + id + '\'' +
+                ", user=" + user +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

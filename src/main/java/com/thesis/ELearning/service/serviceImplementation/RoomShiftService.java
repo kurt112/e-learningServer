@@ -2,9 +2,12 @@ package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.RoomShift;
+import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.repository.RoomShiftRepository;
+import com.thesis.ELearning.repository.StudentRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceRoomShift;
 import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLContext;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Transactional
@@ -23,13 +27,14 @@ import java.util.Optional;
 public class RoomShiftService implements PageableServiceRoomShift {
 
     final private RoomShiftRepository repo;
-
+    final private StudentRepository studentRepository;
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
 
     @Autowired
-    public RoomShiftService(RoomShiftRepository repo) {
+    public RoomShiftService(RoomShiftRepository repo, StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
         this.repo = repo;
     }
 
@@ -80,4 +85,47 @@ public class RoomShiftService implements PageableServiceRoomShift {
     public ApiSettings apiSettings() {
         return new ApiSettings(totalElements, totalPages, currentPages);
     }
+
+
+    @GraphQLQuery(name = "getStudentsForRoomShift")
+    public List<Student> getStudentsForRoomShift(@GraphQLArgument(name = "search") String search){
+        Pageable pageable = PageRequest.of(0,20);
+        Page<Student> studentPage = studentRepository.getStudentForRoomShift(search,pageable);
+        return studentPage.getContent();
+    }
+
+    @GraphQLQuery(name = "uploadStudentsInRoomShift")
+    public RoomShift roomShift(@GraphQLArgument(name = "roomShiftID") String id, @GraphQLArgument(name = "students") String array ){
+        Optional<RoomShift> find = repo.findById(Integer.parseInt(id));
+
+        if(find.isPresent()){
+            RoomShift roomShift = find.get();
+//            roomShift.setStudents(students);
+
+            return  roomShift;
+        }
+
+
+
+        return null;
+    }
+
+    public class Wrapper{
+        private List<Student> students;
+
+        /**
+         * @return the students
+         */
+        public List<Student> getPersons() {
+            return students;
+        }
+
+        /**
+         * @param students the persons to set
+         */
+        public void setPersons(List<Student> students) {
+            this.students = students;
+        }
+    }
+
 }
