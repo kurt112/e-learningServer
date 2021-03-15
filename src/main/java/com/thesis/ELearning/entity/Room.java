@@ -3,6 +3,7 @@ package com.thesis.ELearning.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,6 +25,10 @@ public class Room {
 
     @Column(name = "room_time_end")
     private String timeEnd;
+
+    // relation db
+    @OneToMany(mappedBy = "room")
+    private List<RoomShift> roomShifts;
 
 
 }
