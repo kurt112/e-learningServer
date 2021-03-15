@@ -34,6 +34,12 @@ class RoomShift {
     private String roomShiftName;
 
     // relation entity
+
+    @OneToOne
+    @JoinColumn(name = "adviser")
+    private Teacher teacher;
+
+
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Room room;

@@ -46,6 +46,14 @@ public class RoomShiftClass {
     )
     private Set<Student> students;
 
+    @ManyToMany
+    @JoinTable(name = "room_shift_classes_activity",
+    joinColumns = @JoinColumn(name = "room_classes_id_fk"),
+    inverseJoinColumns = @JoinColumn(name = "room_classes_activity_id"))
+    private Set<Activity> activities;
+
+
+
 
 
 

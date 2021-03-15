@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "activity")
@@ -40,6 +41,18 @@ public @Data class Activity {
     @Column(name = "activity_status")
     private String status;
 
+    @ManyToMany(mappedBy = "activities")
+    private List<RoomShiftClass> roomShiftClasses;
 
 
+    public Activity(int id, String activityTitle, String link, String date_created, String date_end, String type, String description, String status) {
+        this.id = id;
+        this.activityTitle = activityTitle;
+        this.link = link;
+        this.date_created = date_created;
+        this.date_end = date_end;
+        this.type = type;
+        this.description = description;
+        this.status = status;
+    }
 }
