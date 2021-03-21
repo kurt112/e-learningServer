@@ -20,7 +20,7 @@ public  class Student {
     @GraphQLQuery(name = "student_id", description = "student id")
     private  String id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_user")
     @GraphQLQuery(name = "user", description = "Student User")
     private User user;

@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin")
 public class StudentAdmin {
 
     final private StudentService studentService;
@@ -39,7 +38,8 @@ public class StudentAdmin {
             );
         }
 
-        User user = new User(""+id,"?","?","?", FormattedDate.getDateNowWithTime(),"?");
+        User user = new User(""+id,"?","?","?", FormattedDate.getDateNowWithTime(),"?","","","","STUDENT",false,false,false,false);
+
         Student student = new Student(id, user);
 
         userService.save(user);
@@ -47,6 +47,40 @@ public class StudentAdmin {
 
         return new ResponseEntity<>(
                 new Response<>("Register Student Success", student),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/student-fillUp")
+    public ResponseEntity<Response<Student>> updateUser(@RequestParam("id") String id,
+                                                     @RequestParam("first-name") String firstName,
+                                                     @RequestParam("middle-name") String middleName,
+                                                     @RequestParam("last-name") String lastName,
+                                                     @RequestParam("suffix") String suffix,
+                                                     @RequestParam("birth-date") String birthDate,
+                                                     @RequestParam("gender") String gender,
+                                                     @RequestParam("email") String email,
+                                                     @RequestParam("password") String password){
+
+        User user = new User(email,firstName,middleName,lastName,suffix,gender,password,FormattedDate.getDateNow(),birthDate,"STUDENT",
+                true,true,true,true);
+
+        Student student = studentService.findById(id);
+
+        if(student!=null){
+            String emailUser = student.getUser().getEmail();
+            student.setUser(user);
+            studentService.save(student);
+            userService.deleteById(emailUser);
+
+            return new ResponseEntity<>(
+                    new Response<>("Register Student Success", student),
+                    HttpStatus.OK
+            );
+        }
+
+        return new ResponseEntity<>(
+                new Response<>("Register Student Success", null),
                 HttpStatus.OK
         );
     }

@@ -1,6 +1,5 @@
 package com.thesis.ELearning.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.*;
 import javax.persistence.*;
@@ -10,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "user")
 @Getter
 @Setter
+@AllArgsConstructor
 public  class User implements Comparable<User> {
 
     @Id
@@ -21,9 +21,21 @@ public  class User implements Comparable<User> {
     @GraphQLQuery(name = "firstName", description = "User First Name")
     private String firstName;
 
+    @Column(name = "user_middle_name")
+    private String middleName;
+
+
+
     @Column(name= "user_last_name")
     @GraphQLQuery(name = "lastName", description = "User Last Name")
     private String lastName;
+
+    @Column(name = "user_sufix")
+    private String suffix;
+
+    @Column(name = "user_gender")
+    private String gender;
+
 
     @Column(name="user_password")
     @GraphQLQuery(name = "password", description = "UserPassword")
@@ -41,30 +53,19 @@ public  class User implements Comparable<User> {
     @GraphQLQuery(name = "role", description = "role")
     private String userRole;
 
+    @Column(name = "is_account_not_expired")
+    private boolean isAccountNotExpired;
 
-    // for account purpose
-//    private boolean isAccountNonExpired;
-//    private boolean isAccountNonLocked;
-//    private boolean isCredentialsNonExpired;
-//    private boolean isEnabled;
+    @Column(name = "is_account_not_locked")
+    private boolean isAccountNotLocked;
+
+    @Column(name = "is_credential_not_expired")
+    private boolean isCredentialNotExpired;
+
+    @Column(name ="is_enable")
+    private boolean isEnabled;
 
 
-//    @JsonIgnore
-//    @OneToOne(mappedBy = "user")
-//    private Student student;
-//
-//    @JsonIgnore
-//    @OneToOne(mappedBy = "user")
-//    private Teacher teacherID;
-
-    public User(String email, String firstName, String lastName, String password, String registerDate, String birthdate) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.registerDate = registerDate;
-        this.birthdate = birthdate;
-    }
 
     @Override
     public int compareTo(User o) {
@@ -72,12 +73,4 @@ public  class User implements Comparable<User> {
         return o.getLastName().compareToIgnoreCase(lastName);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
-    }
 }
