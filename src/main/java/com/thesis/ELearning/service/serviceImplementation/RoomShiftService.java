@@ -46,6 +46,9 @@ public class RoomShiftService implements PageableServiceRoomShift {
         totalElements =  pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
+        System.out.println(totalElements);
+        System.out.println(totalPages);
+        System.out.println(currentPages);
         return pages.getContent();
     }
 
@@ -83,6 +86,7 @@ public class RoomShiftService implements PageableServiceRoomShift {
     @Override
     @GraphQLQuery(name = "roomShiftsSettings")
     public ApiSettings apiSettings() {
+
         return new ApiSettings(totalElements, totalPages, currentPages);
     }
 

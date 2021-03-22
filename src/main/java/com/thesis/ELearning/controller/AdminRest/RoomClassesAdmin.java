@@ -2,6 +2,7 @@ package com.thesis.ELearning.controller.AdminRest;
 
 import com.fasterxml.uuid.Generators;
 import com.thesis.ELearning.entity.API.Response;
+import com.thesis.ELearning.entity.PostEntity.Post_RoomShiftClasses;
 import com.thesis.ELearning.entity.RoomShiftClass;
 import com.thesis.ELearning.entity.RoomShift;
 import com.thesis.ELearning.entity.Subject;
@@ -35,7 +36,7 @@ public class RoomClassesAdmin {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Response<RoomShiftClass>> classRegister(
+    public ResponseEntity<Response<Post_RoomShiftClasses>> classRegister(
                                                                @RequestParam("roomShift-id") String roomShiftId,
                                                                @RequestParam("subject-id") String subjectId,
                                                                @RequestParam("time-start") String timeStart,
@@ -61,9 +62,10 @@ public class RoomClassesAdmin {
         roomShiftClasses.setSubject(subject);
 
         roomShiftClassesService.save(roomShiftClasses);
+        Post_RoomShiftClasses post_roomShiftClasses = new Post_RoomShiftClasses(roomShift.getRoom().getId(),subject.getSubjectCode(),roomShiftClasses.getId(),roomShift.getRoom().getRoomName(),roomShift.getGrade(),roomShift.getSection(),subject.getSubjectName(),teacher.getUser().getFirstName() + " " + teacher.getUser().getLastName(),day,timeStart,timeEnd);
 
         return new ResponseEntity<>(
-                new Response<>("Register Class Success", roomShiftClasses),
+                new Response<>("Register Class Success", post_roomShiftClasses),
                 HttpStatus.OK
         );
     }

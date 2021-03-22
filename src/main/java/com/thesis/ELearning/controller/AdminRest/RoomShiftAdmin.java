@@ -1,6 +1,7 @@
 package com.thesis.ELearning.controller.AdminRest;
 
 import com.thesis.ELearning.entity.API.Response;
+import com.thesis.ELearning.entity.PostEntity.Post_RoomShift;
 import com.thesis.ELearning.entity.Room;
 import com.thesis.ELearning.entity.RoomShift;
 import com.thesis.ELearning.entity.RoomShiftClass;
@@ -12,6 +13,7 @@ import com.thesis.ELearning.service.serviceImplementation.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class RoomShiftAdmin {
 
 
     @PostMapping("/register-roomShift")
-    public ResponseEntity<Response<RoomShift>> roomShift(
+    public ResponseEntity<Response<Post_RoomShift>> roomShift(
             @RequestParam("room-id") String roomid,
             @RequestParam("room-shiftID") String shiftName,
             @RequestParam("shiftID-grade") String shiftGrade,
@@ -51,8 +53,10 @@ public class RoomShiftAdmin {
         RoomShift roomShift = new RoomShift(0, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room);
         System.out.println(roomShift.toString());
         roomShiftService.save(roomShift);
+        Post_RoomShift post_roomShift = new Post_RoomShift(roomShift.getId(),room.getRoomName(),shiftName,shiftGrade,shiftSection,timeStart,timeEnd);
+
         return new ResponseEntity<>(
-                new Response<>("Register Student Success", roomShift),
+                new Response<>("Register RoomShift Success", post_roomShift),
                 HttpStatus.OK
         );
     }

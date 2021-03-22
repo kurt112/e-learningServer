@@ -2,6 +2,7 @@ package com.thesis.ELearning.controller.AdminRest;
 
 import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
+import com.thesis.ELearning.entity.PostEntity.Post_RoomShiftClassActivity;
 import com.thesis.ELearning.service.serviceImplementation.*;
 import com.thesis.ELearning.utils.FormattedDate;
 import com.thesis.ELearning.utils.StorageService;
@@ -40,13 +41,13 @@ public class ActivityAdmin {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<Response<RoomShiftClassesActivity>> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("activity-name") String activityName,
+    public ResponseEntity<Response<Post_RoomShiftClassActivity>> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("activity-name") String activityName,
                                                                                @RequestParam("shift-id") int id, @RequestParam("subject-code") String subjectCode,
                                                                                @RequestParam("activity-type") String activityType,
                                                                                @RequestParam("deadline-date") String deadlineDate, @RequestParam("deadline-time") String deadlineTime,
                                                                                @RequestParam("activity-description") String description) {
 
-
+        System.out.println("i am in upload");
         Subject subject = subjectService.findById(subjectCode);
         RoomShift roomShift = roomShiftService.findById(String.valueOf(id));
 
@@ -60,15 +61,20 @@ public class ActivityAdmin {
             RoomShiftClassesActivity roomShiftClassesActivity = new RoomShiftClassesActivity(0, roomShiftClasses, activity);
 
             if (!activityService.save(activity)) {
-                System.out.println("asdasd");
+
             }
+
             roomShiftClassesActivityService.save(roomShiftClassesActivity);
+
+            Post_RoomShiftClassActivity post_roomShiftClassActivity = new Post_RoomShiftClassActivity(roomShiftClassesActivity.getActivity().getId()    ,activityName, subject.getSubjectName(),roomShift.getGrade(),roomShift.getSection(),activity.getDate_created(),activity.getDate_end(),activity.getLink(),activity.getStatus());
             return new ResponseEntity<>(
-                    new Response<>("File Upload Successful", roomShiftClassesActivity), HttpStatus.OK
+                    new Response<>("File Upload Successful", post_roomShiftClassActivity), HttpStatus.OK
             );
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println("I am in last");
 
         return new ResponseEntity<>(
                 new Response<>("File Upload Not Successful", null), HttpStatus.BAD_REQUEST
