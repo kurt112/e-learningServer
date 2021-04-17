@@ -1,11 +1,21 @@
 package com.thesis.ELearning.utils;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 
 public class FormattedDate {
 
     private static final FormattedDate single_instance =  new FormattedDate();
+    private static final String dateFormat = "MMMM dd yyyy";
+    private static final String dateTimeFormat = "MMMM dd yyyy HH:mm";
+    private static final DateTimeFormatter toDateTime = DateTimeFormatter.ofPattern(dateTimeFormat);
+    private static final DateTimeFormatter toDate = DateTimeFormatter.ofPattern(dateFormat);
     private FormattedDate() {
     }
 
@@ -15,16 +25,26 @@ public class FormattedDate {
     }
 
     public   static String getDateNowWithTime() {
-        LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-        return myDateObj.format(myFormatObj);
+        return toDateTime.format(LocalDate.now());
     }
 
     public static String getDateNow(){
-        LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        return myDateObj.format(myFormatObj);
+        return toDate.format(LocalDate.now());
     }
+
+    public static String parseDateNow(String date){
+        if(date.trim().isEmpty()) return "";
+
+
+        return toDate.parse(date).toString();
+    }
+
+    public static String parseTimeNow(String time) {
+        if(time.trim().isEmpty()) return "";
+
+        return toDateTime.parse(time).toString();
+    }
+
+
+
 }

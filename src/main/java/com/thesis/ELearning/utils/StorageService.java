@@ -21,14 +21,11 @@ public class StorageService {
 
         File ActivityTypePath = new File(SubjectPath+"\\"+ActivityType);
         File ActivityNamePath = new File(ActivityTypePath+"\\"+ActivityName+ " " + date);
+
         if(!RoomShiftPath.exists()) RoomShiftPath.mkdir();
         if(!SubjectPath.exists()) SubjectPath.mkdir();
         if(!ActivityTypePath.exists()) ActivityTypePath.mkdir();
         if(!ActivityNamePath.exists()) ActivityNamePath.mkdir();
-
-
-
-
         file.transferTo(new File(ActivityNamePath.getPath()+"\\"+file.getOriginalFilename()));
 
         return ActivityNamePath.getPath()+"\\"+file.getOriginalFilename();

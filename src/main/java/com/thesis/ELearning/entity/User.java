@@ -4,9 +4,9 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.*;
 import javax.persistence.*;
 
-@NoArgsConstructor
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
 @Getter
 @Setter
 @AllArgsConstructor

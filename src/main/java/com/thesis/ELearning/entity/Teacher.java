@@ -1,9 +1,9 @@
 package com.thesis.ELearning.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "teacher")
@@ -28,8 +28,12 @@ public class Teacher {
 
 
 
-    public void Create_Teacher(){
+    @OneToMany(mappedBy = "teacher")
+    public List<RoomShiftClass> roomShiftClassList;
 
+    public Teacher(String id, User user, String link) {
+        this.id = id;
+        this.user = user;
+        this.link = link;
     }
-
 }

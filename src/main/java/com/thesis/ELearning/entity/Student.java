@@ -4,9 +4,9 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -33,6 +33,10 @@ public  class Student {
     @ManyToMany(mappedBy = "students")
     @GraphQLQuery(name = "roomShiftClasses")
     private List<RoomShiftClass> roomShiftClasses;
+
+
+    @OneToMany(mappedBy ="student", cascade = CascadeType.ALL)
+    private List<StudentActivity> studentActivities;
 
     public Student(String id, User user) {
         this.id = id;

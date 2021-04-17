@@ -7,9 +7,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "subject")
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "subject")
 @Getter
 @Setter
 public class Subject {

@@ -4,11 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "room")
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Room {

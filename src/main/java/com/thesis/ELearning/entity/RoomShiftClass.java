@@ -17,7 +17,7 @@ public class RoomShiftClass {
     @Column(name = "room_classes_id")
     private  String id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "room_classes_teacher_fk")
     private Teacher teacher;
 
@@ -38,6 +38,8 @@ public class RoomShiftClass {
 
     @Column(name = "room_classes_day")
     private String day;
+
+    // Activities
 
     @ManyToMany
     @JoinTable(name = "room_shift_classes_students",

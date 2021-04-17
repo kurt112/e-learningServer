@@ -1,8 +1,6 @@
 package com.thesis.ELearning.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,7 +9,9 @@ import java.util.List;
 @Table(name = "activity")
 @AllArgsConstructor
 @NoArgsConstructor
-public @Data class Activity {
+@Getter
+@Setter
+public class Activity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -56,15 +56,12 @@ public class UserAction {
     public ResponseEntity<HashMap<?,?>> Login(@RequestBody AuthenticationRequest authenticationRequest) {
 
         HashMap<String, Object> hashMap = new HashMap<>();
-        System.out.println("The password");
-        System.out.println(authenticationRequest.getPassword());
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
                     authenticationRequest.getPassword()));
         }catch (Exception badCredentialsException){
             hashMap.put("message", "Account Not Found");
-
             return ResponseEntity.badRequest().body(hashMap);
         }
 

@@ -1,18 +1,17 @@
 package com.thesis.ELearning.controller.AdminRest;
 
 import com.fasterxml.uuid.Generators;
+import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.PostEntity.Post_RoomShiftClasses;
-import com.thesis.ELearning.entity.RoomShiftClass;
-import com.thesis.ELearning.entity.RoomShift;
-import com.thesis.ELearning.entity.Subject;
-import com.thesis.ELearning.entity.Teacher;
 import com.thesis.ELearning.service.serviceImplementation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
 
@@ -60,6 +59,13 @@ public class RoomClassesAdmin {
         roomShiftClasses.setTeacher(teacher);
         roomShiftClasses.setRoomShift(roomShift);
         roomShiftClasses.setSubject(subject);
+
+        if(roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new HashSet<>());
+
+
+        for(Student student: roomShift.getStudents()){
+            roomShiftClasses.getStudents().add(student);
+        }
 
         roomShiftClassesService.save(roomShiftClasses);
         Post_RoomShiftClasses post_roomShiftClasses = new Post_RoomShiftClasses(roomShift.getRoom().getId(),subject.getSubjectCode(),roomShiftClasses.getId(),roomShift.getRoom().getRoomName(),roomShift.getGrade(),roomShift.getSection(),subject.getSubjectName(),teacher.getUser().getFirstName() + " " + teacher.getUser().getLastName(),day,timeStart,timeEnd);

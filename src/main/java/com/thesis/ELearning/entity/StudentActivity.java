@@ -1,33 +1,46 @@
 package com.thesis.ELearning.entity;
 
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "student_activity")
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public
-class StudentActivity {
+public class StudentActivity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_activity_id")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "student_activity_student_fk")
+
+    @Column(name = "grade")
+    private double grade;
+
+    @Column(name = "status")
+    private String status;
+
+
+    @ManyToOne()
+    @JoinColumn(name = "student_id")
     private Student student;
 
-//    @ManyToOne
-//    @JoinColumn(name = "student_activity_activty_fk")
-//    private Activity activity;
+    @ManyToOne()
+    @JoinColumn(name = "room_class_id")
+    private RoomShiftClass roomShiftClass;
 
-    @Column(name = "student_activity_status")
-    private String status;
+    @ManyToOne()
+    @JoinColumn(name = "activity_id")
+    private Activity activity;
+
+
+
 
 }
