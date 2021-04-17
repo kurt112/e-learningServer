@@ -25,5 +25,5 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     List<RoomShift> getRoomShiftOfStudent(String id);
 
     @Query(value = "SELECT t from Student  t where t.user.email = ?1")
-    Student getStudentByUserId(String id);
+    Student getStudentByUserEmail(String id);
 }

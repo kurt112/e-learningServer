@@ -2,7 +2,6 @@ package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.RoomShift;
-import com.thesis.ELearning.entity.RoomShiftClass;
 import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.repository.StudentRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceStudent;
@@ -102,7 +101,7 @@ public class StudentService implements PageableServiceStudent {
     @GraphQLQuery(name = "getStudentByUserID")
     public Student getStudentByUserId(@GraphQLArgument(name = "userID") String id){
 
-        return repo.getStudentByUserId(id);
+        return repo.getStudentByUserEmail(id);
     }
 
 
