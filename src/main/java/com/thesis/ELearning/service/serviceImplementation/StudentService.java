@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Service
@@ -76,11 +75,11 @@ public class StudentService implements PageableServiceStudent {
     }
 
     @Override
-    @GraphQLQuery(name = "student")
-    public Student findById(@GraphQLArgument(name = "id") String id) {
-        Optional<Student> student = repo.findById(id);
+    @GraphQLQuery(name = "getStudentByUserEmail")
+    public Student findById(@GraphQLArgument(name = "email") String email) {
 
-        return student.orElse(null);
+
+        return repo.getStudentByUserEmail(email);
     }
 
 
@@ -98,11 +97,6 @@ public class StudentService implements PageableServiceStudent {
         return student!=null? student.getRoomShifts(): new ArrayList<>();
     }
 
-    @GraphQLQuery(name = "getStudentByUserID")
-    public Student getStudentByUserId(@GraphQLArgument(name = "userID") String id){
-
-        return repo.getStudentByUserEmail(id);
-    }
 
 
 

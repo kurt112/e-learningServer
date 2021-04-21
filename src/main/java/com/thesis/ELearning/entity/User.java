@@ -2,7 +2,11 @@ package com.thesis.ELearning.entity;
 
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "user")
@@ -53,6 +57,7 @@ public  class User implements Comparable<User> {
     @GraphQLQuery(name = "role", description = "role")
     private String userRole;
 
+
     @Column(name = "is_account_not_expired")
     private boolean isAccountNotExpired;
 
@@ -65,6 +70,15 @@ public  class User implements Comparable<User> {
     @Column(name ="is_enable")
     private boolean isEnabled;
 
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Date updated_at;
 
 
     @Override

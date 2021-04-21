@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @RestController
 public class StudentAdmin {
 
@@ -38,7 +40,7 @@ public class StudentAdmin {
             );
         }
 
-        User user = new User(""+id,"?","?","?", FormattedDate.getDateNowWithTime(),"?","","","","STUDENT",false,false,false,false);
+        User user = new User(""+id,"?","?","?", FormattedDate.getDateNowWithTime(),"?","","","","STUDENT",false,false,false,false,new Date(), new Date());
 
         Student student = new Student(id, user);
 
@@ -63,7 +65,7 @@ public class StudentAdmin {
                                                      @RequestParam("password") String password){
 
         User user = new User(email,firstName,middleName,lastName,suffix,gender,password,FormattedDate.getDateNow(),birthDate,"STUDENT",
-                true,true,true,true);
+                true,true,true,true,new Date(), new Date());
 
         Student student = studentService.findById(id);
 

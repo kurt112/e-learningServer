@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/admin/activity")
@@ -58,7 +59,7 @@ public class ActivityAdmin {
             String path = storageService.UploadActivityClass(file, subject, roomShift, activityName, activityType);
             Activity activity = new Activity(0, activityName, path, FormattedDate.getDateNow(), deadlineDate + " "
                     + deadlineTime, activityType, description, "To Review");
-            RoomShiftClassesActivity roomShiftClassesActivity = new RoomShiftClassesActivity(0, roomShiftClasses, activity);
+            RoomShiftClassesActivity roomShiftClassesActivity = new RoomShiftClassesActivity(0, roomShiftClasses, activity,new Date(), new Date());
 
             if (!activityService.save(activity)) {
                 return new ResponseEntity<>(
@@ -68,7 +69,7 @@ public class ActivityAdmin {
 
             for (Student student : roomShiftClassesActivity.getClasses().getStudents()) {
                 if (student.getStudentActivities() == null) student.setStudentActivities(new ArrayList<>());
-                student.getStudentActivities().add(new StudentActivity(0, 0, "Pending", student, roomShiftClasses, activity));
+                student.getStudentActivities().add(new StudentActivity(0, 0, "Pending", student, roomShiftClasses, activity, new Date(), new Date()));
             }
 
             roomShiftClassesActivityService.save(roomShiftClassesActivity);

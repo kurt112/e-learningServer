@@ -1,8 +1,11 @@
 package com.thesis.ELearning.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -38,6 +41,20 @@ public class RoomShiftClass {
 
     @Column(name = "room_classes_day")
     private String day;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Date updated_at;
+
+
+    @Column(name = "status")
+    private int status;
 
     // Activities
 

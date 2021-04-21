@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Service
@@ -63,10 +62,10 @@ public class TeacherService implements PageableServiceTeacher {
     }
 
     @Override
-    @GraphQLQuery(name = "teacher")
-    public Teacher findById(@GraphQLArgument(name = "id") String id) {
-        Optional<Teacher> teacher = repo.findById(id);
-        return teacher.orElse(null);
+    @GraphQLQuery(name = "getTeacherByUserEmail")
+    public Teacher findById(@GraphQLArgument(name = "email") String email) {
+
+        return repo.getTeacherByUserEmail(email);
     }
 
     @Override

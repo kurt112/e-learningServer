@@ -2,8 +2,11 @@ package com.thesis.ELearning.entity;
 
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -24,6 +27,17 @@ public  class Student {
     @JoinColumn(name = "student_user")
     @GraphQLQuery(name = "user", description = "Student User")
     private User user;
+
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Date updated_at;
 
 
     @ManyToMany(mappedBy = "students")

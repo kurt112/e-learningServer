@@ -3,11 +3,8 @@ package com.thesis.ELearning.repository;
 import com.thesis.ELearning.entity.Teacher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
@@ -17,4 +14,8 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
     @Query(value = "SELECT t from Teacher t where t.id =?1")
     Teacher teacher(String id);
+
+
+    @Query(value = "SELECT t from Teacher t where t.user.email = ?1")
+    Teacher getTeacherByUserEmail(String email);
 }
