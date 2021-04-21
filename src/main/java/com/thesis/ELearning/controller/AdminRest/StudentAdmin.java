@@ -71,6 +71,7 @@ public class StudentAdmin {
 
         if(student!=null){
             String emailUser = student.getUser().getEmail();
+            user.setCreatedAt(student.getUser().getCreatedAt());
             student.setUser(user);
             studentService.save(student);
             userService.deleteById(emailUser);
