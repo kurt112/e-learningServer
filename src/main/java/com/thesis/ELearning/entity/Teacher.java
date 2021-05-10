@@ -30,16 +30,10 @@ public class Teacher {
     private String link;
 
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at")
-    private Date createdAt;
+    // Relation Ship Mapping
 
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
-    private Date updated_at;
-
+    @ManyToMany(mappedBy = "teachers")
+    private List<Resources> resources;
 
     @OneToMany(mappedBy = "teacher")
     public List<RoomShiftClass> roomShiftClasses;

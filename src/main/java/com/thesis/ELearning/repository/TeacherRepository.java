@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
     @Query(value = "SELECT t from Teacher t where t.user.firstName like  %?1% or t.user.lastName like %?1% " +
-            "or t.user.email like %?1% or t.user.birthdate like %?1% or t.user.registerDate like %?1%  or t.id like %?1% ORDER BY t.user.lastName")
+            "or t.user.email like %?1% or t.user.birthdate like %?1%  or t.id like %?1% ORDER BY t.user.lastName")
     Page<Teacher> Teachers(String search, Pageable pageable);
 
     @Query(value = "SELECT t from Teacher t where t.id =?1")

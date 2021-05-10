@@ -29,17 +29,6 @@ public  class Student {
     private User user;
 
 
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
-    private Date updated_at;
-
-
     @ManyToMany(mappedBy = "students")
     @GraphQLQuery(name = "roomShifts")
     private List<RoomShift> roomShifts;
@@ -51,6 +40,9 @@ public  class Student {
 
     @OneToMany(mappedBy ="student", cascade = CascadeType.ALL)
     private List<StudentActivity> studentActivities;
+
+    @ManyToMany(mappedBy = "students")
+    private List<Resources> resources;
 
     public Student(String id, User user) {
         this.id = id;

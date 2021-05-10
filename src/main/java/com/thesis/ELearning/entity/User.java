@@ -45,9 +45,6 @@ public  class User implements Comparable<User> {
     @GraphQLQuery(name = "password", description = "UserPassword")
     private String password;
 
-    @Column(name = "user_register_date")
-    @GraphQLQuery(name = "registerDate", description = "User RegisterDate")
-    private String registerDate;
 
     @Column(name = "user_birthdate")
     @GraphQLQuery(name = "birthdate", description = "User BirthDate")

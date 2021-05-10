@@ -50,7 +50,6 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers("/Elearning/**")
                 .permitAll()
                 .antMatchers("/login")
-
                 .permitAll()
                 .antMatchers("/re-login")
                 .permitAll()

@@ -1,14 +1,14 @@
 package com.thesis.ELearning.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "resources")
@@ -16,6 +16,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Resources {
 
     @Id
@@ -26,10 +27,13 @@ public class Resources {
     private String name;
 
     @Column(name = "location")
-    private String lcoation;
+    private String location;
 
     @Column(name = "type")
     private String type;
+
+    @Column(name = "description")
+    private String description;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -42,6 +46,32 @@ public class Resources {
     private Date updated_at;
 
     @Column(name = "status")
-    private int status;
+    private String status;
 
+    @ManyToMany()
+    @JoinTable(
+            name = "teacher_resources",
+            joinColumns = @JoinColumn(name = "resources"),
+            inverseJoinColumns = @JoinColumn(name = "teacher"))
+    private List<Teacher> teachers;
+
+    @ManyToMany()
+    @JoinTable(
+            name = "student_resources",
+            joinColumns = @JoinColumn(name = "resources"),
+            inverseJoinColumns = @JoinColumn(name = "student"))
+    private List<Student> students;
+
+
+
+    public void addTeacher(Teacher teacher) {
+        if(teachers == null) teachers = new ArrayList<>();
+
+        teachers.add(teacher);
+
+    }
+
+    public String getCreatedAt() {
+        return createdAt.toString();
+    }
 }

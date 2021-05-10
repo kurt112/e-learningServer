@@ -1,7 +1,9 @@
 package com.thesis.ELearning.utils;
 
+import com.thesis.ELearning.entity.Resources;
 import com.thesis.ELearning.entity.RoomShift;
 import com.thesis.ELearning.entity.Subject;
+import com.thesis.ELearning.entity.Teacher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,5 +32,23 @@ public class StorageService {
 
         return ActivityNamePath.getPath()+"\\"+file.getOriginalFilename();
 
+    }
+
+    public String UploadResource(MultipartFile file, Resources resources, Teacher teacher) throws IOException{
+
+        File TeacherPath = new File("C:\\E-learning\\Teacher");
+        File TeacherName = new File(TeacherPath+"\\"+teacher.getUser().getEmail());
+        File Resource = new File(TeacherName + "\\Resource");
+        File ResourceType = new File(Resource+"\\"+resources.getType());
+        File ResourceName = new File(ResourceType+ "\\"+resources.getName());
+
+        if(!TeacherName.exists()) TeacherName.mkdir();
+        if(!Resource.exists()) Resource.mkdir();
+        if(!ResourceType.exists()) ResourceType.mkdir();
+        if(!ResourceName.exists()) ResourceName.mkdir();
+
+        file.transferTo(new File(ResourceName.getPath()+"\\"+file.getOriginalFilename()));
+        System.out.println(Resource.getPath());
+        return ResourceName.getPath()+"\\"+file.getOriginalFilename();
     }
 }

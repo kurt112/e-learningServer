@@ -13,7 +13,7 @@ public class FormattedDate {
 
     private static final FormattedDate single_instance =  new FormattedDate();
     private static final String dateFormat = "MMMM dd yyyy";
-    private static final String dateTimeFormat = "MMMM dd yyyy HH:mm";
+    private static final String dateTimeFormat = "dd/MM/yyyy HH-mm a";
     private static final DateTimeFormatter toDateTime = DateTimeFormatter.ofPattern(dateTimeFormat);
     private static final DateTimeFormatter toDate = DateTimeFormatter.ofPattern(dateFormat);
     private FormattedDate() {
@@ -24,8 +24,8 @@ public class FormattedDate {
         return single_instance;
     }
 
-    public   static String getDateNowWithTime() {
-        return toDateTime.format(LocalDate.now());
+    public static String getDateNowWithTime() {
+        return  toDateTime.format(LocalDateTime.now());
     }
 
     public static String getDateNow(){

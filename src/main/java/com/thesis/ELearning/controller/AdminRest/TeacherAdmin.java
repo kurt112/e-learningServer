@@ -5,7 +5,6 @@ import com.thesis.ELearning.entity.Teacher;
 import com.thesis.ELearning.entity.User;
 import com.thesis.ELearning.service.serviceImplementation.TeacherService;
 import com.thesis.ELearning.service.serviceImplementation.UserService;
-import com.thesis.ELearning.utils.FormattedDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-
 
 @RestController
 public class TeacherAdmin {
@@ -36,7 +34,7 @@ public class TeacherAdmin {
                     .body(new Response<>("Teacher is already exist", null));
         }
 
-        User user = new User(""+id,"?","?","?", "?","?","?",FormattedDate.getDateNowWithTime(),"?","TEACHER",false,false,false,false,new Date(), new Date());
+        User user = new User(""+id,"?","?","?", "?","?","?","?","TEACHER",false,false,false,false,new Date(),new Date());
         Teacher teacherID = new Teacher(id,user,"?");
         teacherID.setId(id);
         teacherID.setUser(user);
@@ -60,7 +58,7 @@ public class TeacherAdmin {
                                                         @RequestParam("email") String email,
                                                         @RequestParam("password") String password){
 
-        User user = new User(email,firstName,middleName,lastName,suffix,gender,password,FormattedDate.getDateNow(),birthDate,"TEACHER",
+        User user = new User(email,firstName,middleName,lastName,suffix,gender,password,birthDate,"TEACHER",
                 true,true,true,true,new Date(), new Date());
 
         Teacher teacher = teacherService.findById(id);

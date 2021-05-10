@@ -43,10 +43,13 @@ public class ActivityAdmin {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<Response<Post_RoomShiftClassActivity>> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("activity-name") String activityName,
-                                                                                  @RequestParam("shift-id") int id, @RequestParam("subject-code") String subjectCode,
+    public ResponseEntity<Response<Post_RoomShiftClassActivity>> handleFileUpload(@RequestParam("file") MultipartFile file,
+                                                                                  @RequestParam("activity-name") String activityName,
+                                                                                  @RequestParam("shift-id") int id,
+                                                                                  @RequestParam("subject-code") String subjectCode,
                                                                                   @RequestParam("activity-type") String activityType,
-                                                                                  @RequestParam("deadline-date") String deadlineDate, @RequestParam("deadline-time") String deadlineTime,
+                                                                                  @RequestParam("deadline-date") String deadlineDate,
+                                                                                  @RequestParam("deadline-time") String deadlineTime,
                                                                                   @RequestParam("activity-description") String description) {
 
         System.out.println("i am in upload");
