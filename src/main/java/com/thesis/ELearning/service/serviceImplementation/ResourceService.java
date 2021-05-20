@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -55,12 +56,20 @@ public class ResourceService implements PageableServiceResources {
 
     @Override
     public boolean deleteById(String id) {
-        return false;
+        try{
+            repo.deleteById(id);
+        }catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public Resources findById(String id) {
-        return null;
+        Optional<Resources> resources = repo.findById(id);
+
+        return resources.orElse(null);
     }
 
     @Override

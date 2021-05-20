@@ -63,6 +63,14 @@ public class Resources {
     private List<Student> students;
 
 
+    public Resources(String code, String name, String location, String type, String description, Date createdAt) {
+        this.code = code;
+        this.name = name;
+        this.location = location;
+        this.type = type;
+        this.description = description;
+        this.createdAt = createdAt;
+    }
 
     public void addTeacher(Teacher teacher) {
         if(teachers == null) teachers = new ArrayList<>();

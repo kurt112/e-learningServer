@@ -95,23 +95,23 @@ public class ActivityAdmin {
     }
 
 
-    @GetMapping("/download")
-    public ResponseEntity<Object> downloadFile(@RequestParam("activity-id") String id) throws IOException {
-        String filename = activityService.findById(id).getLink();
-        File file = new File(filename);
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition",
-                String.format("attachment; filename=\"%s\"", file.getName()));
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Expires", "0");
-
-        return ResponseEntity.ok().headers(headers)
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType("application/txt")).body(resource);
-    }
+//    @GetMapping("/download")
+//    public ResponseEntity<Object> downloadFile(@RequestParam("activity-id") String id) throws IOException {
+//        String filename = activityService.findById(id).getLink();
+//        File file = new File(filename);
+//        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Content-Disposition",
+//                String.format("attachment; filename=\"%s\"", file.getName()));
+//        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+//        headers.add("Pragma", "no-cache");
+//        headers.add("Expires", "0");
+//
+//        return ResponseEntity.ok().headers(headers)
+//                .contentLength(file.length())
+//                .contentType(MediaType.parseMediaType("application/txt")).body(resource);
+//    }
 
     @GetMapping(value = "view",
             produces = MediaType.IMAGE_PNG_VALUE)
