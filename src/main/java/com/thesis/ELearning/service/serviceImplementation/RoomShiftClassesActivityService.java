@@ -20,7 +20,8 @@ import java.util.Optional;
 @Transactional
 @Service
 @GraphQLApi
-public class RoomShiftClassesActivityService implements PageableServiceRoomShiftClassesActivity {
+public class
+RoomShiftClassesActivityService implements PageableServiceRoomShiftClassesActivity {
 
     private final RoomShiftClassesActivityRepository repo;
     private int totalPages = 0;

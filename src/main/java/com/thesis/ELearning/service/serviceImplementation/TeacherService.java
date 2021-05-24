@@ -1,6 +1,7 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
+import com.thesis.ELearning.entity.RoomShiftClass;
 import com.thesis.ELearning.entity.Teacher;
 import com.thesis.ELearning.repository.TeacherRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceTeacher;
@@ -66,6 +67,12 @@ public class TeacherService implements PageableServiceTeacher {
     public Teacher findById(@GraphQLArgument(name = "email") String email) {
 
         return repo.getTeacherByUserEmail(email);
+    }
+
+    @GraphQLQuery(name = "getTeacherClasses")
+    public List<RoomShiftClass> getTeacherRoomClass(@GraphQLArgument(name = "teacherId") String teacherId, @GraphQLArgument(name = "status") int status) {
+
+        return repo.getTeacherClass(teacherId, status);
     }
 
     @Override

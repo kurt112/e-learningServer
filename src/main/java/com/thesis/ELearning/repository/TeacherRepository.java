@@ -1,10 +1,13 @@
 package com.thesis.ELearning.repository;
 
+import com.thesis.ELearning.entity.RoomShiftClass;
 import com.thesis.ELearning.entity.Teacher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
@@ -18,4 +21,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
     @Query(value = "SELECT t from Teacher t where t.user.email = ?1")
     Teacher getTeacherByUserEmail(String email);
+
+    @Query(value = "SELECT t from RoomShiftClass t where t.teacher.id = ?1 and t.status =?2")
+    List<RoomShiftClass> getTeacherClass(String id, int status);
 }
