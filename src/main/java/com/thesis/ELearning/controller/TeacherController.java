@@ -51,9 +51,9 @@ public class TeacherController {
         Resources resources = new Resources(code, name, "", type, description, new Date());
         resources.setStatus("Not Shared");
         try {
-            resources.addTeacher(teacher);
             String location = storageService.UploadResource(file, resources, teacher);
             resources.setLocation(location);
+            resources.setTeacher(teacher);
             resourceService.save(resources);
         } catch (IOException e) {
             return new ResponseEntity<>(

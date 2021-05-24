@@ -33,7 +33,7 @@ public class ResourceService implements PageableServiceResources {
     }
 
     @Override
-    @GraphQLQuery(name = "getTeacherResources")
+//    @GraphQLQuery(name = "getTeacherResources")
     public List<Resources> data(@GraphQLArgument(name = "search") String search,
                                 @GraphQLArgument(name = "page") int page) {
         Pageable pageable = PageRequest.of(page,10);

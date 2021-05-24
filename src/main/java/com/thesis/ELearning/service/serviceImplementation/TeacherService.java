@@ -1,6 +1,7 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
+import com.thesis.ELearning.entity.Resources;
 import com.thesis.ELearning.entity.RoomShiftClass;
 import com.thesis.ELearning.entity.Teacher;
 import com.thesis.ELearning.repository.TeacherRepository;
@@ -25,18 +26,31 @@ public class TeacherService implements PageableServiceTeacher {
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
+
     @Autowired
     public TeacherService(TeacherRepository repo) {
         this.repo = repo;
     }
 
+    @Override
+    @GraphQLQuery(name = "getTeacherResources")
+    public List<Resources> getTeacherResources(@GraphQLArgument(name = "search") String search,
+                                                @GraphQLArgument(name = "email") String email,
+                                                @GraphQLArgument(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Resources> pages = repo.getTeacherResources(search, email, pageable);
+        totalElements = pages.getTotalElements();
+        totalPages = pages.getTotalPages();
+        currentPages = page;
+        return pages.getContent();
+    }
 
     @Override
     @GraphQLQuery(name = "teachers")
     public List<Teacher> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page) {
-        Pageable pageable = PageRequest.of(page,10);
+        Pageable pageable = PageRequest.of(page, 10);
         Page<Teacher> pages = repo.Teachers(search, pageable);
-        totalElements =  pages.getTotalElements();
+        totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
         return pages.getContent();
@@ -46,7 +60,7 @@ public class TeacherService implements PageableServiceTeacher {
     public Teacher save(Teacher teacherID) {
         try {
             repo.save(teacherID);
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
         return teacherID;
@@ -56,8 +70,8 @@ public class TeacherService implements PageableServiceTeacher {
     public boolean deleteById(String id) {
         try {
             repo.deleteById(id);
-        }catch (Exception e){
-            return  false;
+        } catch (Exception e) {
+            return false;
         }
         return true;
     }

@@ -19,7 +19,7 @@ import java.util.List;
 @Transactional
 @Service
 @GraphQLApi
-public class RoomShiftClassesAssignmentImple implements PageableServiceRoomShiftClassAssignment {
+public class RoomShiftClassesAssignmentService implements PageableServiceRoomShiftClassAssignment {
 
     private final RoomShiftClassesAssignmentRepository repo;
     private int totalPages = 0;
@@ -27,7 +27,7 @@ public class RoomShiftClassesAssignmentImple implements PageableServiceRoomShift
     private int currentPages = 0;
 
     @Autowired
-    public RoomShiftClassesAssignmentImple(RoomShiftClassesAssignmentRepository repo) {
+    public RoomShiftClassesAssignmentService(RoomShiftClassesAssignmentRepository repo) {
         this.repo = repo;
     }
 

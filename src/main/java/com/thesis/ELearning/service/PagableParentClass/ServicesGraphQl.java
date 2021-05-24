@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface ServicesGraphQl<T> {
+public interface  ServicesGraphQl<T> {
     List<T> data(String search, int page);
 
     T save(T t);

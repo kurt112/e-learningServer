@@ -32,7 +32,7 @@ public class Teacher {
 
     // Relation Ship Mapping
 
-    @ManyToMany(mappedBy = "teachers")
+    @OneToMany(mappedBy = "teacher")
     private List<Resources> resources;
 
     @OneToMany(mappedBy = "teacher")

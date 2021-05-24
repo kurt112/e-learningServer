@@ -1,7 +1,6 @@
 package com.thesis.ELearning.entity;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -48,12 +47,10 @@ public class Resources {
     @Column(name = "status")
     private String status;
 
-    @ManyToMany()
-    @JoinTable(
-            name = "teacher_resources",
-            joinColumns = @JoinColumn(name = "resources"),
-            inverseJoinColumns = @JoinColumn(name = "teacher"))
-    private List<Teacher> teachers;
+
+    @ManyToOne()
+    @JoinColumn(name = "teacher")
+    private Teacher teacher;
 
     @ManyToMany()
     @JoinTable(
@@ -72,12 +69,12 @@ public class Resources {
         this.createdAt = createdAt;
     }
 
-    public void addTeacher(Teacher teacher) {
-        if(teachers == null) teachers = new ArrayList<>();
-
-        teachers.add(teacher);
-
-    }
+//    public void addTeacher(Teacher teacher) {
+//        if(teachers == null) teachers = new ArrayList<>();
+//
+//        teachers.add(teacher);
+//
+//    }
 
     public String getCreatedAt() {
         return createdAt.toString();
