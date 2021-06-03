@@ -10,13 +10,13 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "resources")
+@Table(name = "teacher_resources")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Resources {
+public class TeacherResources {
 
     @Id
     @Column(name = "code")
@@ -60,7 +60,7 @@ public class Resources {
     private List<Student> students;
 
 
-    public Resources(String code, String name, String location, String type, String description, Date createdAt) {
+    public TeacherResources(String code, String name, String location, String type, String description, Date createdAt) {
         this.code = code;
         this.name = name;
         this.location = location;

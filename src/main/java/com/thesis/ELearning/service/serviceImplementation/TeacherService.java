@@ -1,7 +1,7 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
-import com.thesis.ELearning.entity.Resources;
+import com.thesis.ELearning.entity.TeacherResources;
 import com.thesis.ELearning.entity.RoomShiftClass;
 import com.thesis.ELearning.entity.Teacher;
 import com.thesis.ELearning.repository.TeacherRepository;
@@ -34,11 +34,11 @@ public class TeacherService implements PageableServiceTeacher {
 
     @Override
     @GraphQLQuery(name = "getTeacherResources")
-    public List<Resources> getTeacherResources(@GraphQLArgument(name = "search") String search,
-                                                @GraphQLArgument(name = "email") String email,
-                                                @GraphQLArgument(name = "page") int page) {
+    public List<TeacherResources> getTeacherResources(@GraphQLArgument(name = "search") String search,
+                                                      @GraphQLArgument(name = "email") String email,
+                                                      @GraphQLArgument(name = "page") int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Resources> pages = repo.getTeacherResources(search, email, pageable);
+        Page<TeacherResources> pages = repo.getTeacherResources(search, email, pageable);
         totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;

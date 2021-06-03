@@ -2,14 +2,10 @@ package com.thesis.ELearning.entity;
 
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -42,7 +38,7 @@ public  class Student {
     private List<StudentActivity> studentActivities;
 
     @ManyToMany(mappedBy = "students")
-    private List<Resources> resources;
+    private List<TeacherResources> resources;
 
     public Student(String id, User user) {
         this.id = id;

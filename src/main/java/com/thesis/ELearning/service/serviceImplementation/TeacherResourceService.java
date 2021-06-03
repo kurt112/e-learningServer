@@ -1,11 +1,10 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
-import com.thesis.ELearning.entity.Resources;
-import com.thesis.ELearning.repository.ResourceRepository;
+import com.thesis.ELearning.entity.TeacherResources;
+import com.thesis.ELearning.repository.TeacherResourceRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceResources;
 import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,24 +19,29 @@ import java.util.Optional;
 @Transactional
 @Service
 @GraphQLApi
-public class ResourceService implements PageableServiceResources {
+public class TeacherResourceService implements PageableServiceResources {
 
-    private final ResourceRepository repo;
+    private final TeacherResourceRepository repo;
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
 
     @Autowired
-    public ResourceService(ResourceRepository repo) {
+    public TeacherResourceService(TeacherResourceRepository repo) {
         this.repo = repo;
     }
 
     @Override
+    public TeacherResources FindResourceByTeacherEmail(String code, String email) {
+        return  repo.FindResourcesByTeacherEmail(code,email);
+    }
+
+    @Override
 //    @GraphQLQuery(name = "getTeacherResources")
-    public List<Resources> data(@GraphQLArgument(name = "search") String search,
-                                @GraphQLArgument(name = "page") int page) {
+    public List<TeacherResources> data(@GraphQLArgument(name = "search") String search,
+                                       @GraphQLArgument(name = "page") int page) {
         Pageable pageable = PageRequest.of(page,10);
-        Page<Resources> pages = repo.Resources(search, 2, pageable);
+        Page<TeacherResources> pages = repo.Resources(search, 2, pageable);
         totalElements =  pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
@@ -45,29 +49,25 @@ public class ResourceService implements PageableServiceResources {
     }
 
     @Override
-    public Resources save(Resources resources) {
+    public TeacherResources save(TeacherResources teacherResources) {
         try {
-            repo.save(resources);
+            repo.save(teacherResources);
         }catch (Exception e){
             return null;
         }
-        return resources;
+        return teacherResources;
     }
 
     @Override
     public boolean deleteById(String id) {
-        try{
-            repo.deleteById(id);
-        }catch (Exception e) {
-            return false;
-        }
+        repo.deleteById(id);
 
         return true;
     }
 
     @Override
-    public Resources findById(String id) {
-        Optional<Resources> resources = repo.findById(id);
+    public TeacherResources findById(String id) {
+        Optional<TeacherResources> resources = repo.findById(id);
 
         return resources.orElse(null);
     }

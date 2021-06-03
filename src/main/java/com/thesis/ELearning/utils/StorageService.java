@@ -1,6 +1,6 @@
 package com.thesis.ELearning.utils;
 
-import com.thesis.ELearning.entity.Resources;
+import com.thesis.ELearning.entity.TeacherResources;
 import com.thesis.ELearning.entity.RoomShift;
 import com.thesis.ELearning.entity.Subject;
 import com.thesis.ELearning.entity.Teacher;
@@ -34,13 +34,13 @@ public class StorageService {
 
     }
 
-    public String UploadResource(MultipartFile file, Resources resources, Teacher teacher) throws IOException{
+    public String UploadResource(MultipartFile file, TeacherResources teacherResources, Teacher teacher) throws IOException{
 
         File TeacherPath = new File("C:\\E-learning\\Teacher");
         File TeacherName = new File(TeacherPath+"\\"+teacher.getUser().getEmail());
         File Resource = new File(TeacherName + "\\Resource");
-        File ResourceType = new File(Resource+"\\"+resources.getType());
-        File ResourceName = new File(ResourceType+ "\\"+resources.getName());
+        File ResourceType = new File(Resource+"\\"+ teacherResources.getType());
+        File ResourceName = new File(ResourceType+ "\\"+ teacherResources.getName());
 
         if(!TeacherName.exists()) TeacherName.mkdir();
         if(!Resource.exists()) Resource.mkdir();

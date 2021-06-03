@@ -30,5 +30,15 @@ public interface AutoCompleteRepository extends JpaRepository<Room, Object> {
     @Query(value = "SELECT t.subject.subjectName, t.subject.subjectMajor, t.subject.subjectCode FROM RoomShiftClass t WHERE t.roomShift.id = ?1")
     Page<Object> SubjectsBasedOnRoomShift(int roomShiftID, Pageable pageable);
 
+    // teacher list
+    @Query(value = "SELECT t.roomShift.grade, t.roomShift.section, t.id from RoomShiftClass t WHERE t.teacher.user.email =?2 and lower(concat(t.roomShift.grade, t.roomShift.section, t.id)) like  %?1%")
+    Page<Object> getTeacherClass(String search,String email, Pageable pageable);
+
+    @Query(value = "SELECT t.name, t.code FROM TeacherResources t where t.teacher.user.email =?2 and t.type='Assignment' and lower(concat(t.name,t.code)) like %?1%")
+    Page<Object> getTeacherResourcesAssignment(String search, String email, Pageable pageable);
+
+    @Query(value = "SELECT t.name, t.code from TeacherResources t where lower(concat(t.name, t.code)) like %?1% and (t.type ='Lecture' and t.teacher.user.email =?2)")
+    Page<Object> getTeacherResourceLecture(String search, String email, Pageable pageable);
+
 }
 

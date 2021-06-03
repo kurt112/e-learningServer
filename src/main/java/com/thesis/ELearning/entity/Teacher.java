@@ -1,11 +1,8 @@
 package com.thesis.ELearning.entity;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -33,7 +30,7 @@ public class Teacher {
     // Relation Ship Mapping
 
     @OneToMany(mappedBy = "teacher")
-    private List<Resources> resources;
+    private List<TeacherResources> resources;
 
     @OneToMany(mappedBy = "teacher")
     public List<RoomShiftClass> roomShiftClasses;

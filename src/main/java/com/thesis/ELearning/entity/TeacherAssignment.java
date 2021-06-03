@@ -1,6 +1,8 @@
 package com.thesis.ELearning.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,10 +11,12 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "room_shift_assignment")
+@Table(name = "teacher_assignment")
 @Getter
 @Setter
-public class RoomShiftClassAssignment {
+@AllArgsConstructor
+@NoArgsConstructor
+public class TeacherAssignment {
 
     @Id
     @Column(name = "code")
@@ -40,12 +44,12 @@ public class RoomShiftClassAssignment {
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
-    private Date deadline;
+    @Column(name = "deadline")
+    private Date deadLine;
 
     @ManyToOne()
     @JoinColumn(name = "resource")
-    private Resources resource;
+    private TeacherResources resource;
 
     @ManyToOne()
     @JoinColumn(name = "room_shift_class")

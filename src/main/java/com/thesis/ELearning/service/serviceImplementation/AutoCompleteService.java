@@ -59,4 +59,22 @@ public class AutoCompleteService implements PageableServiceAutoComplete<Object> 
         return repo.SubjectsBasedOnRoomShift(RoomShiftID, pageable);
     }
 
+    @Override
+    public Page<Object> getTeacherClass(String search, String email) {
+        Pageable pageable = PageRequest.of(0,15);
+        return repo.getTeacherClass(search.replaceAll("\\s".toLowerCase(), ""),email, pageable);
+    }
+
+    @Override
+    public Page<Object> getTeacherAssignment(String search, String email) {
+        Pageable pageable = PageRequest.of(0,15);
+        return repo.getTeacherResourcesAssignment(search.replaceAll("\\s".toLowerCase(), ""),email, pageable);
+    }
+
+    @Override
+    public Page<Object> getTeacherLecture(String search, String email) {
+        Pageable pageable = PageRequest.of(0,15);
+
+        return repo.getTeacherResourceLecture(search.replaceAll("\\s".toLowerCase(), ""),email,pageable);
+    }
 }

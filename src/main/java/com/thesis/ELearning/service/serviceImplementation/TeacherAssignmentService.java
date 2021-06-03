@@ -1,9 +1,9 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
-import com.thesis.ELearning.entity.RoomShiftClassAssignment;
-import com.thesis.ELearning.repository.RoomShiftClassesAssignmentRepository;
-import com.thesis.ELearning.service.PageableService.PageableServiceRoomShiftClassAssignment;
+import com.thesis.ELearning.entity.TeacherAssignment;
+import com.thesis.ELearning.repository.TeacherAssignmentRepository;
+import com.thesis.ELearning.service.PageableService.PageableServiceTeacherAssignment;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -19,23 +19,23 @@ import java.util.List;
 @Transactional
 @Service
 @GraphQLApi
-public class RoomShiftClassesAssignmentService implements PageableServiceRoomShiftClassAssignment {
+public class TeacherAssignmentService implements PageableServiceTeacherAssignment {
 
-    private final RoomShiftClassesAssignmentRepository repo;
+    private final TeacherAssignmentRepository repo;
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
 
     @Autowired
-    public RoomShiftClassesAssignmentService(RoomShiftClassesAssignmentRepository repo) {
+    public TeacherAssignmentService(TeacherAssignmentRepository repo) {
         this.repo = repo;
     }
 
-    @GraphQLQuery(name = "getRoomShiftClassAssignmentByTeacher")
-    public List<RoomShiftClassAssignment> getRoomShiftClassAssignmentByTeacher(@GraphQLArgument(name = "search") String search,@GraphQLArgument(name = "email") String email, @GraphQLArgument(name = "page") int page){
+    @GraphQLQuery(name = "getTeacherAssignment")
+    public List<TeacherAssignment> getRoomShiftClassAssignmentByTeacher(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "email") String email, @GraphQLArgument(name = "page") int page){
         System.out.println(email);
         Pageable pageable = PageRequest.of(page, 10);
-        Page<RoomShiftClassAssignment> pages = repo.getRoomShiftClassAssignmentByTeacher(search,email, pageable);
+        Page<TeacherAssignment> pages = repo.getRoomShiftClassAssignmentByTeacher(search,email, pageable);
         totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
@@ -44,9 +44,9 @@ public class RoomShiftClassesAssignmentService implements PageableServiceRoomShi
 
 
     @Override
-    public List<RoomShiftClassAssignment> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page){
+    public List<TeacherAssignment> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page){
         Pageable pageable = PageRequest.of(page, 10);
-        Page<RoomShiftClassAssignment> pages = repo.data(search, pageable);
+        Page<TeacherAssignment> pages = repo.data(search, pageable);
         totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
@@ -54,23 +54,30 @@ public class RoomShiftClassesAssignmentService implements PageableServiceRoomShi
     }
 
     @Override
-    public RoomShiftClassAssignment save(RoomShiftClassAssignment roomShiftClassAssignment) {
-        return null;
+    public TeacherAssignment save(TeacherAssignment teacherAssignment) {
+
+        return repo.save(teacherAssignment);
     }
 
     @Override
     public boolean deleteById(String id) {
-        return false;
+        repo.deleteById(id);
+        return true;
     }
 
     @Override
-    public RoomShiftClassAssignment findById(String id) {
+    public TeacherAssignment findById(String id) {
         return null;
     }
 
     @Override
-    @GraphQLQuery(name = "roomShiftClassAssignmentSettings")
+    @GraphQLQuery(name = "teacherAssignmentSettings")
     public ApiSettings apiSettings() {
         return new ApiSettings(totalElements, totalPages, currentPages);
+    }
+
+    @Override
+    public TeacherAssignment getRoomShiftClassAssignment(String code, String email) {
+        return repo.getRoomShiftClassAssignment(code,email);
     }
 }
