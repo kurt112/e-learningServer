@@ -23,4 +23,8 @@ public interface PageableServiceAutoComplete<T> {
 
     Page<T> getTeacherLecture(String search, String email);
 
+    Page<T> getTeacherQuizzes(String search, String email);
+
+    Page<T> getTeacherExams(String search, String email);
+
 }

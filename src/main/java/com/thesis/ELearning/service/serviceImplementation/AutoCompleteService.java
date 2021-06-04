@@ -77,4 +77,20 @@ public class AutoCompleteService implements PageableServiceAutoComplete<Object> 
 
         return repo.getTeacherResourceLecture(search.replaceAll("\\s".toLowerCase(), ""),email,pageable);
     }
+
+    @Override
+    public Page<Object> getTeacherQuizzes(String search, String email) {
+        Pageable pageable = PageRequest.of(0,15);
+
+        return repo.getTeacherQuiz(search.replaceAll("\\s".toLowerCase(), ""),email,pageable);
+
+    }
+
+    @Override
+    public Page<Object> getTeacherExams(String search, String email) {
+        Pageable pageable = PageRequest.of(0,15);
+
+        return repo.getTeacherExams(search.replaceAll("\\s".toLowerCase(), ""),email,pageable);
+
+    }
 }

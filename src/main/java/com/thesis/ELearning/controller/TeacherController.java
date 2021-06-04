@@ -3,10 +3,7 @@ package com.thesis.ELearning.controller;
 import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.repository.TeacherRepository;
-import com.thesis.ELearning.service.serviceImplementation.TeacherLectureService;
-import com.thesis.ELearning.service.serviceImplementation.TeacherResourceService;
-import com.thesis.ELearning.service.serviceImplementation.TeacherAssignmentService;
-import com.thesis.ELearning.service.serviceImplementation.RoomShiftClassesService;
+import com.thesis.ELearning.service.serviceImplementation.*;
 import com.thesis.ELearning.utils.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -36,16 +33,20 @@ public class TeacherController {
     private final TeacherAssignmentService teacherAssignmentService;
     private final RoomShiftClassesService roomShiftClassesService;
     private final TeacherLectureService lectureService;
+    private final TeacherExamsService teacherExamsService;
+    private final TeacherQuizzesService teacherQuizzesService;
 
 
     @Autowired
-    public TeacherController(TeacherRepository teacherRepository, TeacherResourceService teacherResourceService, StorageService storageService, TeacherAssignmentService teacherAssignmentService, RoomShiftClassesService roomShiftClassesService, TeacherLectureService lectureService) {
+    public TeacherController(TeacherRepository teacherRepository, TeacherResourceService teacherResourceService, StorageService storageService, TeacherAssignmentService teacherAssignmentService, RoomShiftClassesService roomShiftClassesService, TeacherLectureService lectureService, TeacherExamsService teacherExamsService, TeacherQuizzesService teacherQuizzesService) {
         this.teacherRepository = teacherRepository;
         this.teacherResourceService = teacherResourceService;
         this.storageService = storageService;
         this.teacherAssignmentService = teacherAssignmentService;
         this.roomShiftClassesService = roomShiftClassesService;
         this.lectureService = lectureService;
+        this.teacherExamsService = teacherExamsService;
+        this.teacherQuizzesService = teacherQuizzesService;
     }
 
     @PostMapping("/upload/resource")
@@ -146,16 +147,16 @@ public class TeacherController {
     }
 
     @PostMapping("/assignment/create")
-    public ResponseEntity<Response<?>> createAssignment(@RequestBody HashMap<?,?> hashMap) {
+    public ResponseEntity<Response<?>> createAssignment(@RequestBody HashMap<Object, Object> hashMap) {
         String classCode = (String) hashMap.get("classCode");
-        Object highGrade = hashMap.get("highGrade");
-        Object lowGrade = hashMap.get("lowGrade");
-        String deadLine = (String) hashMap.get("deadLine");
+        double highGrade = Double.parseDouble(hashMap.get("highGrade").toString());
+        double lowGrade = Double.parseDouble(hashMap.get("lowGrade").toString());
+        String deadLine = hashMap.get("deadLine").toString();
         String resourceCode = (String) hashMap.get("resourceCode");
         String code = (String) hashMap.get("code");
         String description = (String) hashMap.get("description");
-        Object sem = hashMap.get("sem");
-        Object quarter =  hashMap.get("quarter");
+        int sem = Integer.parseInt(hashMap.get("sem").toString());
+        int quarter =  Integer.parseInt(hashMap.get("quarter").toString());
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
         Date date = null;
         try {
@@ -167,7 +168,7 @@ public class TeacherController {
         RoomShiftClass classes = roomShiftClassesService.findById(classCode);
         TeacherResources teacherResources = teacherResourceService.findById(resourceCode);
         TeacherAssignment assignment =
-                new TeacherAssignment(code,Double.parseDouble(highGrade.toString()),Double.parseDouble(lowGrade.toString()),Integer.parseInt(quarter.toString()),Integer.parseInt(sem.toString()),description,
+                new TeacherAssignment(code,highGrade,lowGrade,quarter,sem,description,
                         new Date(),date, teacherResources,
                         classes);
 
@@ -218,15 +219,36 @@ public class TeacherController {
 
     @PostMapping("/exam/create")
     public ResponseEntity<Response<?>> createExam(@RequestBody HashMap<Object, Object> hashMap){
-        int quarter =  Integer.parseInt(hashMap.get("quarter").toString());
+        String classCode = (String) hashMap.get("classCode");
+        double highGrade = Double.parseDouble(hashMap.get("highGrade").toString());
+        double lowGrade = Double.parseDouble(hashMap.get("lowGrade").toString());
+        String deadLine = hashMap.get("deadLine").toString();
+        String resourceCode = (String) hashMap.get("resourceCode");
+        String code = (String) hashMap.get("code");
+        String description = (String) hashMap.get("description");
         int sem = Integer.parseInt(hashMap.get("sem").toString());
-        RoomShiftClass classes = roomShiftClassesService.findById(hashMap.get("classCode").toString());
-        String code = hashMap.get("code").toString();
-        TeacherResources resources  = teacherResourceService.findById(hashMap.get("resourceCode").toString());
-        String description = hashMap.get("description").toString();
-        lectureService.save(new TeacherLectures(code,description,quarter,sem,resources,classes, new Date(), null));
+        int quarter =  Integer.parseInt(hashMap.get("quarter").toString());
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+        Date date = null;
+        try {
+            date = formatter.parse(deadLine);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        RoomShiftClass classes = roomShiftClassesService.findById(classCode);
+        TeacherResources teacherResources = teacherResourceService.findById(resourceCode);
+        TeacherExams exams =
+                new TeacherExams(code,highGrade,lowGrade,quarter,sem,description,
+                        new Date(),date, teacherResources,
+                        classes);
+
+        teacherExamsService.save(exams);
+
+
+
         return new ResponseEntity<>(
-                new Response<>("Lecture  Create Success", "Successful"),
+                new Response<>("Exam Create Success", "Successful"),
                 HttpStatus.OK
         );
     }
@@ -234,19 +256,66 @@ public class TeacherController {
     @DeleteMapping("/exam/delete")
     public ResponseEntity<Response<?>> deleteExam(@RequestParam("code") String code, @RequestParam("email") String email) {
 
-        TeacherLectures lectures = lectureService.findTeacherLectureByCode(code,email);
+        TeacherExams exams = teacherExamsService.findTeacherExamByCode(code,email);
 
-        if(lectures == null){
+        if(exams == null){
             return new ResponseEntity<>(
-                    new Response<>("Lecture Code Is Not Existing", null),
+                    new Response<>("Exam Code Is Not Existing", null),
                     HttpStatus.BAD_REQUEST
             );
         }
 
-        lectureService.deleteById(code);
+        teacherExamsService.deleteById(code);
 
         return new ResponseEntity<>(
-                new Response<>("Delete Assignment Success", code),
+                new Response<>("Delete Exam Success", "Success"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/quiz/create")
+    public ResponseEntity<Response<?>> createQuiz(@RequestBody HashMap<Object, Object> hashMap){
+        String classCode = (String) hashMap.get("classCode");
+        double highGrade = Double.parseDouble(hashMap.get("highGrade").toString());
+        double lowGrade = Double.parseDouble(hashMap.get("lowGrade").toString());
+        String deadLine = hashMap.get("deadLine").toString();
+        String resourceCode = (String) hashMap.get("resourceCode");
+        String code = (String) hashMap.get("code");
+        String description = (String) hashMap.get("description");
+        int sem = Integer.parseInt(hashMap.get("sem").toString());
+        int quarter =  Integer.parseInt(hashMap.get("quarter").toString());
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+        Date date = null;
+        try {
+            date = formatter.parse(deadLine);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        RoomShiftClass classes = roomShiftClassesService.findById(classCode);
+        TeacherResources teacherResources = teacherResourceService.findById(resourceCode);
+        TeacherQuizzes quizzes =
+                new TeacherQuizzes(code,highGrade,lowGrade,quarter,sem,description,
+                        new Date(),date, teacherResources,
+                        classes);
+        teacherQuizzesService.save(quizzes);
+        return new ResponseEntity<>(
+                new Response<>("Quiz Create Success", "Successful"),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/quiz/delete")
+    public ResponseEntity<Response<?>> deleteQuiz(@RequestParam("code") String code, @RequestParam("email") String email) {
+        TeacherQuizzes quizzes = teacherQuizzesService.findTeacherQuizzesByCode(code,email);
+        if(quizzes == null){
+            return new ResponseEntity<>(
+                    new Response<>("Quiz Code Is Not Existing", null),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+        teacherQuizzesService.deleteById(code);
+        return new ResponseEntity<>(
+                new Response<>("Delete Quiz Success", "Success"),
                 HttpStatus.OK
         );
     }

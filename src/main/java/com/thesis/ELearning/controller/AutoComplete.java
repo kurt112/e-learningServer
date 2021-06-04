@@ -92,4 +92,16 @@ public class AutoComplete {
         return new PagesContent<>(current.getContent(),current.getTotalElements(),current.getTotalPages(),current.getNumber());
     }
 
+    @GetMapping("/getTeacherQuizzes")
+    public PagesContent<?> getTeacherQuizzes(@RequestParam("search") String search, @RequestParam("email") String email){
+        Page<Object> current = autoCompleteService.getTeacherQuizzes(search,email);
+        return new PagesContent<>(current.getContent(),current.getTotalElements(),current.getTotalPages(),current.getNumber());
+    }
+
+    @GetMapping("/getTeacherExam")
+    public PagesContent<?> getTeacherExam(@RequestParam("search") String search, @RequestParam("email") String email){
+        Page<Object> current = autoCompleteService.getTeacherExams(search,email);
+        return new PagesContent<>(current.getContent(),current.getTotalElements(),current.getTotalPages(),current.getNumber());
+    }
+
 }
