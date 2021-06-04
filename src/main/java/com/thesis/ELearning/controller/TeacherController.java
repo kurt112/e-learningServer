@@ -171,7 +171,6 @@ public class TeacherController {
                         new Date(),date, teacherResources,
                         classes);
 
-        System.out.println("sabing");
         teacherAssignmentService.save(assignment);
 
 
@@ -199,6 +198,41 @@ public class TeacherController {
 
     @DeleteMapping("/lecture/delete")
     public ResponseEntity<Response<?>> deleteLecture(@RequestParam("code") String code, @RequestParam("email") String email) {
+
+        TeacherLectures lectures = lectureService.findTeacherLectureByCode(code,email);
+
+        if(lectures == null){
+            return new ResponseEntity<>(
+                    new Response<>("Lecture Code Is Not Existing", null),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        lectureService.deleteById(code);
+
+        return new ResponseEntity<>(
+                new Response<>("Delete Assignment Success", code),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/exam/create")
+    public ResponseEntity<Response<?>> createExam(@RequestBody HashMap<Object, Object> hashMap){
+        int quarter =  Integer.parseInt(hashMap.get("quarter").toString());
+        int sem = Integer.parseInt(hashMap.get("sem").toString());
+        RoomShiftClass classes = roomShiftClassesService.findById(hashMap.get("classCode").toString());
+        String code = hashMap.get("code").toString();
+        TeacherResources resources  = teacherResourceService.findById(hashMap.get("resourceCode").toString());
+        String description = hashMap.get("description").toString();
+        lectureService.save(new TeacherLectures(code,description,quarter,sem,resources,classes, new Date(), null));
+        return new ResponseEntity<>(
+                new Response<>("Lecture  Create Success", "Successful"),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/exam/delete")
+    public ResponseEntity<Response<?>> deleteExam(@RequestParam("code") String code, @RequestParam("email") String email) {
 
         TeacherLectures lectures = lectureService.findTeacherLectureByCode(code,email);
 

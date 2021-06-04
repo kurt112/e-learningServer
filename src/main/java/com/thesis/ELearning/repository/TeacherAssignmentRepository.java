@@ -15,7 +15,6 @@ public interface TeacherAssignmentRepository extends JpaRepository<TeacherAssign
 
     @Query(value = "SELECT t FROM TeacherAssignment t where t.roomShiftClass.teacher.user.email = ?2 and " +
             "t.resource.name like %?1% or " +
-            "t.resource.description like %?1% or " +
             "t.code like %?1% or " +
             "t.description like %?1% order by t.createdAt desc ")
     Page<TeacherAssignment> getRoomShiftClassAssignmentByTeacher(String search, String email, Pageable pageable);
