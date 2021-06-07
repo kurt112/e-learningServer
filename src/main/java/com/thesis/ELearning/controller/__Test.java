@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Date;
 
 @Controller()
-@RequestMapping("/")
 public class __Test {
     private final UserService userService;
     private final StudentService studentService;
@@ -77,6 +76,6 @@ public class __Test {
         studentService.save(kurtStudent);
         studentService.save(eveStudent);
 
-        return "Nice";
+        return "welcome";
     }
 }
