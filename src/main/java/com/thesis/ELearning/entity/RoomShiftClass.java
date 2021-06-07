@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -65,11 +66,21 @@ public class RoomShiftClass {
     )
     private Set<Student> students;
 
-    @ManyToMany
-    @JoinTable(name = "room_shift_classes_activity",
-    joinColumns = @JoinColumn(name = "room_classes_id_fk"),
-    inverseJoinColumns = @JoinColumn(name = "room_classes_activity_id"))
-    private Set<Activity> activities;
+
+    // for teachers file
+
+    @OneToMany(mappedBy = "roomShiftClass")
+    private List<TeacherQuizzes> teacherQuizzes;
+
+    @OneToMany(mappedBy = "class_")
+    private List<TeacherLectures> teacherLectures;
+
+    @OneToMany(mappedBy = "roomShiftClass")
+    private List<TeacherAssignment> teacherAssignments;
+
+    @OneToMany(mappedBy = "roomShiftClass")
+    private List<TeacherExams> teacherExams;
+
 
 
 

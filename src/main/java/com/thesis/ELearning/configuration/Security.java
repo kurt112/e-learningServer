@@ -41,6 +41,8 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 //                .antMatchers("/**")
 //                .permitAll();
+                .antMatchers("/")
+                .permitAll()
                 .antMatchers("/pre-register")
                 .permitAll()
                 .antMatchers("/student-fillUp")

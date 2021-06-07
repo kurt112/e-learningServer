@@ -34,9 +34,6 @@ public  class Student {
     private List<RoomShiftClass> roomShiftClasses;
 
 
-    @OneToMany(mappedBy ="student", cascade = CascadeType.ALL)
-    private List<StudentActivity> studentActivities;
-
     @ManyToMany(mappedBy = "students")
     private List<TeacherResources> resources;
 

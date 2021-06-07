@@ -1,5 +1,6 @@
 package com.thesis.ELearning;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,14 +9,18 @@ import java.io.File;
 @SpringBootApplication
 public class ELearningApplication {
 
+    @Autowired
     public static void main(String[] args) {
 
-
-        File AllDataContainer = new File("C:\\E-learning");
+        String userDirectory = System.getProperty("user.dir");
+        File AllDataContainer = new File(userDirectory);
 
         if(!AllDataContainer.exists()) AllDataContainer.mkdir();
 
-        String parentPath = AllDataContainer.getPath();
+        File upload = new File(AllDataContainer.getPath()+"\\upload");
+        if(!upload.exists()) upload.mkdir();
+
+        String parentPath = upload.getPath();
         File Student_File = new File(parentPath+"\\Student");
         File Teacher_File = new File(parentPath+ "\\Teacher");
         File Room_File = new File(parentPath+"\\Room");

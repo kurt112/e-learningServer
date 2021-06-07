@@ -68,10 +68,6 @@ public class UserAction {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = this.jwt.generateToken(userDetails);
-//        final String expiration  = this.jwt.getExpiration(jwt).toString();
-
-
-//        hashMap.put("expiration", expiration);
         hashMap.put("token", jwt);
         hashMap.put("message", "Login Successful");
         hashMap.put("user",userDetailsService.getUser());
@@ -82,6 +78,7 @@ public class UserAction {
 
     @PostMapping("/pre-register")
     public ResponseEntity<?> FindUserId (@RequestParam("id") String id) {
+        System.out.println(id);
 
         Student student = studentService.findById(id);
 

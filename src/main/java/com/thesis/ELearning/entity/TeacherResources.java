@@ -31,7 +31,7 @@ public class TeacherResources {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @CreationTimestamp

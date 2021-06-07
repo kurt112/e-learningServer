@@ -33,7 +33,7 @@ public class TeacherLectures {
 
     @ManyToOne()
     @JoinColumn(name="resource")
-    private TeacherResources resources;
+    private TeacherResources resource;
 
     @ManyToOne()
     @JoinColumn(name = "class")

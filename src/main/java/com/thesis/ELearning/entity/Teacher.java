@@ -36,9 +36,6 @@ public class Teacher {
     public List<RoomShiftClass> roomShiftClasses;
 
 
-    @OneToMany(mappedBy = "teacher")
-    public List<TeacherActivity> activities;
-
     public Teacher(String id, User user, String link) {
         this.id = id;
         this.user = user;

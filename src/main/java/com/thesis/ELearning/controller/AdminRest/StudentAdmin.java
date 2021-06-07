@@ -65,10 +65,9 @@ public class StudentAdmin {
 
         User user = new User(email,firstName,middleName,lastName,suffix,gender,password,birthDate,"STUDENT",
                 true,true,true,true,new Date(), new Date());
-
         Student student = studentService.findById(id);
-
         if(student!=null){
+            System.out.println("savving?");
             String emailUser = student.getUser().getEmail();
             user.setCreatedAt(student.getUser().getCreatedAt());
             student.setUser(user);

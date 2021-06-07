@@ -12,12 +12,12 @@ import java.io.IOException;
 
 @Service
 public class StorageService {
+    private final String userDirectory = System.getProperty("user.dir");
     public String UploadActivityClass(MultipartFile file, Subject subject, RoomShift roomShift, String ActivityName, String ActivityType) throws IOException {
-
         String shiftName=  roomShift.getGrade() + " - " + roomShift.getSection();
         String subjectName = subject.getSubjectName() + " - " + subject.getSubjectCode();
         String date = FormattedDate.getDateNow().replaceAll("/","-");
-        File RoomPath = new File("C:\\E-learning\\Room");
+        File RoomPath = new File(userDirectory+"\\Room");
         File RoomShiftPath = new File(RoomPath+"\\"+shiftName);
         File SubjectPath = new File(RoomShiftPath+"\\"+subjectName);
 
@@ -36,7 +36,7 @@ public class StorageService {
 
     public String UploadResource(MultipartFile file, TeacherResources teacherResources, Teacher teacher) throws IOException{
 
-        File TeacherPath = new File("C:\\E-learning\\Teacher");
+        File TeacherPath = new File(userDirectory+"\\Teacher");
         File TeacherName = new File(TeacherPath+"\\"+teacher.getUser().getEmail());
         File Resource = new File(TeacherName + "\\Resource");
         File ResourceType = new File(Resource+"\\"+ teacherResources.getType());

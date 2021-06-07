@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -20,7 +19,6 @@ import java.util.UUID;
 public class RoomClassesAdmin {
 
     private final RoomShiftClassesService roomShiftClassesService;
-//    private final RoomService roomService;
     private final RoomShiftService roomShiftService;
     private final SubjectService subjectService;
     private final TeacherService teacherService;
@@ -28,7 +26,6 @@ public class RoomClassesAdmin {
     @Autowired
     public RoomClassesAdmin(RoomShiftClassesService roomShiftClassesService, RoomShiftService roomShiftService, SubjectService subjectService, TeacherService teacherService) {
         this.roomShiftClassesService = roomShiftClassesService;
-//        this.roomService = roomService;
         this.roomShiftService = roomShiftService;
         this.subjectService = subjectService;
         this.teacherService = teacherService;

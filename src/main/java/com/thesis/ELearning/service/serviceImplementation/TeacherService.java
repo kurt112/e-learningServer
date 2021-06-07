@@ -80,6 +80,7 @@ public class TeacherService implements PageableServiceTeacher {
     @GraphQLQuery(name = "getTeacherByUserEmail")
     public Teacher findById(@GraphQLArgument(name = "email") String email) {
 
+        System.out.println(repo.getTeacherByUserEmail(email));
         return repo.getTeacherByUserEmail(email);
     }
 
