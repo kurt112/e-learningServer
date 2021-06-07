@@ -9,11 +9,10 @@ import com.thesis.ELearning.service.serviceImplementation.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
 
-@Controller()
+@Controller
 public class __Test {
     private final UserService userService;
     private final StudentService studentService;
@@ -28,6 +27,7 @@ public class __Test {
 
     @GetMapping("/")
     public String createDataText() {
+        System.out.println("I am here");
         User elly_T = new User("wT2c7n", "?", "?", "?", "?", "?", "?", "?", "TEACHER", false, false, false, false, new Date(), new Date());
         User elly_S = new User("C075Xn", "?", "?", "?", "?", "?", "?", "?", "STUDENT", false, false, false, false, new Date(), new Date());
         User eve_T = new User("svngDF", "?", "?", "?", "?", "?", "?", "?", "TEACHER", false, false, false, false, new Date(), new Date());
