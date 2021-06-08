@@ -27,7 +27,7 @@ public class __Test {
 
     @GetMapping("/")
     public String createDataText() {
-        System.out.println("I am here");
+        System.out.println("I am heres");
         User elly_T = new User("wT2c7n", "?", "?", "?", "?", "?", "?", "?", "TEACHER", false, false, false, false, new Date(), new Date());
         User elly_S = new User("C075Xn", "?", "?", "?", "?", "?", "?", "?", "STUDENT", false, false, false, false, new Date(), new Date());
         User eve_T = new User("svngDF", "?", "?", "?", "?", "?", "?", "?", "TEACHER", false, false, false, false, new Date(), new Date());
