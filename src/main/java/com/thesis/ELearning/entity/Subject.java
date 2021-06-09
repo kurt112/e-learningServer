@@ -43,5 +43,8 @@ public class Subject {
     @Column(name = "updated_at")
     private Date updated_at;
 
+    @ManyToMany(mappedBy = "subjects")
+    private List<Curriculum> subjectList;
+
 
 }

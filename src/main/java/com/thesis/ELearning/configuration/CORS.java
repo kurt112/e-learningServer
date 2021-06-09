@@ -17,7 +17,7 @@ public class CORS {
                 registry.addMapping("/**")
 						.allowedMethods("GET","POST", "PUT", "DELETE")
 						.exposedHeaders("header1", "header2")
-						.allowedOrigins("/**");
+						.allowedOrigins("*");
             }
         };
     }
