@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public  interface RoomRepository extends JpaRepository<Room, String> {
     @Query(value = "SELECT t from Room t where t.roomName like  %?1% or " +
-            "t.timeStart like %?1% or t.timeEnd like %?1% ")
+            "t.timeStart like %?1% or t.timeEnd like %?1% ORDER BY t.createdAt DESC")
     Page<Room> Rooms(String search, Pageable pageable);
 }

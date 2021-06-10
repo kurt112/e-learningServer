@@ -1,0 +1,37 @@
+POST http://localhost:8080/admin/room-register
+Content-Type: application/json
+{
+  "id": "asdasdasd",
+  "roomName": "",
+  "timeStart": "",
+  "timeEnd": "",
+  "status": 1
+}
+
+###
+
+POST http://localhost:8080/admin/classes/register
+Content-Type: application/json
+{
+  "roomShift-id": "asdasdasd",
+  "subject-id": "",
+  "time-start": "",
+  "time-end": "",
+  "day": "",
+  "teacher-id": "",
+}
+
+###
+POST http://localhost:8080/admin/register-roomShift
+Content-Type: application/json
+{
+"room-id": "",
+"room-shiftID": "",
+"shiftID-grade": "",
+"shiftID-section": "",
+"shiftID-timeStart": "",
+"shiftID-timeEnd": ""
+}
+
+###
+POST http://localhost:8080/admin/add-studentRoomShift

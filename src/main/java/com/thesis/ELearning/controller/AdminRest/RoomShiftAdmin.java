@@ -1,7 +1,6 @@
 package com.thesis.ELearning.controller.AdminRest;
 
 import com.thesis.ELearning.entity.API.Response;
-import com.thesis.ELearning.entity.PostEntity.Post_RoomShift;
 import com.thesis.ELearning.entity.Room;
 import com.thesis.ELearning.entity.RoomShift;
 import com.thesis.ELearning.entity.RoomShiftClass;
@@ -38,7 +37,8 @@ public class RoomShiftAdmin {
 
 
     @PostMapping("/register-roomShift")
-    public ResponseEntity<Response<Post_RoomShift>> roomShift(
+    public ResponseEntity<Response<?>> roomShift(
+            @RequestParam("id") String id,
             @RequestParam("room-id") String roomid,
             @RequestParam("room-shiftID") String shiftName,
             @RequestParam("shiftID-grade") String shiftGrade,
@@ -48,13 +48,12 @@ public class RoomShiftAdmin {
     ) {
 
         Room room = roomService.findById(roomid);
-        RoomShift roomShift = new RoomShift(0, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room);
+        RoomShift roomShift = new RoomShift(id, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room);
         System.out.println(roomShift.toString());
         roomShiftService.save(roomShift);
-        Post_RoomShift post_roomShift = new Post_RoomShift(roomShift.getId(),room.getRoomName(),shiftName,shiftGrade,shiftSection,timeStart,timeEnd);
 
         return new ResponseEntity<>(
-                new Response<>("Register RoomShift Success", post_roomShift),
+                new Response<>("Register RoomShift Success", "Success"),
                 HttpStatus.OK
         );
     }
@@ -87,6 +86,28 @@ public class RoomShiftAdmin {
 
         return new ResponseEntity<>(
                 new Response<>("Register Student Success", "Success"),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/delete/roomShift")
+    public ResponseEntity<Response<?>> deleteRoomShift(@RequestParam("id") String id) {
+
+        RoomShift roomShift = roomShiftService.findById(id);
+
+        System.out.println(id);
+
+        if(roomShift == null){
+            return new ResponseEntity<>(
+                    new Response<>("RoomShift Id Is Not Existing", null),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        roomShiftService.deleteById(id);
+
+        return new ResponseEntity<>(
+                new Response<>("Delete RoomShift Success", "RoomShift Delete Success"),
                 HttpStatus.OK
         );
     }

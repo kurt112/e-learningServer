@@ -16,7 +16,7 @@ public interface RoomShiftClassesRepository extends JpaRepository<RoomShiftClass
             "or t.day like %?1% " +
             "or t.startTime like %?1%" +
             "or t.endTime like %?1% " +
-            "order by t.roomShift.room.roomName")
+            "ORDER BY t.createdAt DESC")
     Page<RoomShiftClass> RoomClasses(String search, Pageable pageable);
 
 

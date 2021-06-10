@@ -1,7 +1,6 @@
 package com.thesis.ELearning.entity;
 
 
-import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -20,10 +19,8 @@ public
 class RoomShift {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "room_shift")
-    @GraphQLQuery(name = "id")
-    private int id;
+    @Column(name = "id")
+    private String id;
 
     @Column(name = "grade")
     private String grade;
@@ -74,7 +71,7 @@ class RoomShift {
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students;
 
-    public RoomShift(int id, String grade, String section, String timeStart, String timeEnd, String roomShiftName, Room room) {
+    public RoomShift(String id, String grade, String section, String timeStart, String timeEnd, String roomShiftName, Room room) {
         this.id = id;
         this.grade = grade;
         this.section = section;

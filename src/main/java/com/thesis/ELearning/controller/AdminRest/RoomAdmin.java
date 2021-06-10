@@ -1,18 +1,12 @@
 package com.thesis.ELearning.controller.AdminRest;
 
-import com.fasterxml.uuid.Generators;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.Room;
 import com.thesis.ELearning.service.serviceImplementation.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -28,11 +22,29 @@ public class RoomAdmin {
 
     @PostMapping("/room-register")
     public ResponseEntity<Response<Room>> AddRoom(@RequestBody Room room){
-        UUID uuidGenerator = Generators.randomBasedGenerator().generate();
-        room.setId(uuidGenerator.toString());
         roomService.save(room);
         return new ResponseEntity<>(
                 new Response<>("Register Room Success", room),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/delete/room")
+    public ResponseEntity<Response<?>> deleteRoom(@RequestParam("id") String id) {
+
+        Room room = roomService.findById(id);
+
+        if(room == null){
+            return new ResponseEntity<>(
+                    new Response<>("Room Id Is Not Existing", "Room Delete Not Success"),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        roomService.deleteById(id);
+
+        return new ResponseEntity<>(
+                new Response<>("Delete Room Success", "Room Delete Success"),
                 HttpStatus.OK
         );
     }

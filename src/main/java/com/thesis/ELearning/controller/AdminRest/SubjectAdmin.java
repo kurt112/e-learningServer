@@ -40,4 +40,24 @@ public class SubjectAdmin {
         );
     }
 
+    @DeleteMapping("/delete/subject")
+    public ResponseEntity<Response<?>> deleteSubject(@RequestParam("id") String id) {
+        Subject subject = subjectServices.findById(id);
+
+
+        if(subject == null){
+            return new ResponseEntity<>(
+                    new Response<>("Subject Id Is Not Existing", null),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        subjectServices.deleteById(id);
+
+        return new ResponseEntity<>(
+                new Response<>("Delete Subject Success", "Subject Delete Success"),
+                HttpStatus.OK
+        );
+    }
+
 }

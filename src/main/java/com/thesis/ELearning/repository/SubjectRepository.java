@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface SubjectRepository extends JpaRepository<Subject, String> {
 
     @Query(value = "SELECT t from Subject t where t.subjectCode like  %?1% " +
-            "or t.subjectMajor like %?1%  or t.subjectMajor like %?1%  or t.status like %?1% ORDER BY t.subjectName")
+            "or t.subjectMajor like %?1%  or t.subjectMajor like %?1%  or t.status like %?1% ORDER BY t.createdAt DESC")
     Page<Subject> subjects(String search, Pageable pageable);
 }

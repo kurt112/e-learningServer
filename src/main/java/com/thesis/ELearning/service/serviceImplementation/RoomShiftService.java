@@ -7,7 +7,6 @@ import com.thesis.ELearning.repository.RoomShiftRepository;
 import com.thesis.ELearning.repository.StudentRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceRoomShift;
 import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLContext;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +55,7 @@ public class RoomShiftService implements PageableServiceRoomShift {
     public boolean deleteById(String id) {
 
         try {
-            repo.deleteById(Integer.parseInt(id));
+            repo.deleteById(id);
         }catch (Exception e){
             return false;
         }
@@ -66,7 +65,7 @@ public class RoomShiftService implements PageableServiceRoomShift {
     @Override
     @GraphQLQuery(name = "roomShift")
     public RoomShift findById(@GraphQLArgument(name = "id") String id) {
-        Optional<RoomShift> roomShift = repo.findById(Integer.parseInt(id));
+        Optional<RoomShift> roomShift = repo.findById(id);
         return roomShift.orElse(null);
     }
 
@@ -100,7 +99,7 @@ public class RoomShiftService implements PageableServiceRoomShift {
 
     @GraphQLQuery(name = "uploadStudentsInRoomShift")
     public RoomShift roomShift(@GraphQLArgument(name = "roomShiftID") String id, @GraphQLArgument(name = "students") String array ){
-        Optional<RoomShift> find = repo.findById(Integer.parseInt(id));
+        Optional<RoomShift> find = repo.findById(id);
 
         if(find.isPresent()){
             RoomShift roomShift = find.get();

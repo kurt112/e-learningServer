@@ -1,6 +1,5 @@
 package com.thesis.ELearning.controller.AdminRest;
 
-import com.fasterxml.uuid.Generators;
 import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.PostEntity.Post_RoomShiftClasses;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
-import java.util.UUID;
 
 
 @RestController
@@ -33,21 +31,21 @@ public class RoomClassesAdmin {
 
     @PostMapping("/register")
     public ResponseEntity<Response<Post_RoomShiftClasses>> classRegister(
-                                                               @RequestParam("roomShift-id") String roomShiftId,
-                                                               @RequestParam("subject-id") String subjectId,
-                                                               @RequestParam("time-start") String timeStart,
-                                                               @RequestParam("time-end")String timeEnd,
-                                                               @RequestParam("day") String day,
-                                                               @RequestParam("teacher-id") String teacherId){
+            @RequestParam("id") String id,
+            @RequestParam("roomShift-id") String roomShiftId,
+            @RequestParam("subject-id") String subjectId,
+            @RequestParam("time-start") String timeStart,
+            @RequestParam("time-end") String timeEnd,
+            @RequestParam("day") String day,
+            @RequestParam("teacher-id") String teacherId) {
 
         Teacher teacher = teacherService.findById(teacherId);
 
         RoomShift roomShift = roomShiftService.findById(roomShiftId);
-        Subject subject =  subjectService.findById(subjectId);
+        Subject subject = subjectService.findById(subjectId);
         RoomShiftClass roomShiftClasses = new RoomShiftClass();
-        UUID uuidGenerator = Generators.randomBasedGenerator().generate();
 
-        roomShiftClasses.setId(uuidGenerator.toString());
+        roomShiftClasses.setId(id);
 
         // setter
         roomShiftClasses.setDay(day);
@@ -57,18 +55,39 @@ public class RoomClassesAdmin {
         roomShiftClasses.setRoomShift(roomShift);
         roomShiftClasses.setSubject(subject);
 
-        if(roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new HashSet<>());
+        if (roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new HashSet<>());
 
 
-        for(Student student: roomShift.getStudents()){
+        for (Student student : roomShift.getStudents()) {
             roomShiftClasses.getStudents().add(student);
         }
 
         roomShiftClassesService.save(roomShiftClasses);
-        Post_RoomShiftClasses post_roomShiftClasses = new Post_RoomShiftClasses(roomShift.getRoom().getId(),subject.getSubjectCode(),roomShiftClasses.getId(),roomShift.getRoom().getRoomName(),roomShift.getGrade(),roomShift.getSection(),subject.getSubjectName(),teacher.getUser().getFirstName() + " " + teacher.getUser().getLastName(),day,timeStart,timeEnd);
+        Post_RoomShiftClasses post_roomShiftClasses = new Post_RoomShiftClasses(roomShift.getRoom().getId(), subject.getSubjectCode(), roomShiftClasses.getId(), roomShift.getRoom().getRoomName(), roomShift.getGrade(), roomShift.getSection(), subject.getSubjectName(), teacher.getUser().getFirstName() + " " + teacher.getUser().getLastName(), day, timeStart, timeEnd);
 
         return new ResponseEntity<>(
                 new Response<>("Register Class Success", post_roomShiftClasses),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/delete/class")
+    public ResponseEntity<Response<?>> deleteClasses(@RequestParam("id") String id) {
+        System.out.println("the id " + id);
+        RoomShiftClass classes = roomShiftClassesService.findById(id);
+
+
+        if (classes == null) {
+            return new ResponseEntity<>(
+                    new Response<>("Class Id Is Not Existing", null),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        roomShiftClassesService.deleteById(id);
+
+        return new ResponseEntity<>(
+                new Response<>("Delete Class Success", "Class Delete Success"),
                 HttpStatus.OK
         );
     }

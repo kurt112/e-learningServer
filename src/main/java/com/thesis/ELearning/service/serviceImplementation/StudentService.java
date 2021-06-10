@@ -63,8 +63,7 @@ public class StudentService implements PageableServiceStudent {
     }
 
     @Override
-    @GraphQLQuery(name = "RemoveStudent")
-    public boolean deleteById(@GraphQLArgument(name = "id") String id) {
+    public boolean deleteById(String id) {
         try {
             repo.deleteById(id);
         }catch (Exception e){

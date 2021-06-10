@@ -86,6 +86,25 @@ public class StudentAdmin {
         );
     }
 
+    @DeleteMapping("/delete/student")
+    public ResponseEntity<Response<?>> deleteStudent(@RequestParam("id") String id) {
+
+        Student student = studentService.findById(id);
+        if(student == null){
+            return new ResponseEntity<>(
+                    new Response<>("Student Id Is Not Existing", null),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+        String email = student.getUser().getEmail();
+        studentService.deleteById(id);
+//        userService.deleteById(email);
+        return new ResponseEntity<>(
+                new Response<>("Delete Student Success", "Student Delete Success"),
+                HttpStatus.OK
+        );
+    }
+
 
 
 }

@@ -8,6 +8,7 @@ import com.thesis.ELearning.service.serviceImplementation.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -78,6 +79,27 @@ public class TeacherAdmin {
 
         return new ResponseEntity<>(
                 new Response<>("Register Teacher Success", null),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/delete/teacher")
+    public ResponseEntity<Response<?>> deleteSubject(@RequestParam("id") String id) {
+        Teacher teacher = teacherService.findById(id);
+
+
+        if(teacher == null){
+            return new ResponseEntity<>(
+                    new Response<>("Teacher Id Is Not Existing", null),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        teacherService.deleteById(id);
+
+
+        return new ResponseEntity<>(
+                new Response<>("Delete Teacher Success", "Subject Teacher Success"),
                 HttpStatus.OK
         );
     }

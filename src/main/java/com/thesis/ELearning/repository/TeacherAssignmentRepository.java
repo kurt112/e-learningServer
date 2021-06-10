@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface TeacherAssignmentRepository extends JpaRepository<TeacherAssignment, String> {
 
     @Query(value = "SELECT t FROM TeacherAssignment t where t.resource.name like %?1% or " +
-            "t.resource.description like %?1% ")
+            "t.resource.description like %?1% ORDER BY t.createdAt DESC")
     Page<TeacherAssignment> data(String search, Pageable pageable);
 
 
