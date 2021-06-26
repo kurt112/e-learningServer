@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -34,13 +35,14 @@ public class CurriculumService implements PageableServiceCurriculum {
     @Override
     @GraphQLQuery(name = "curriculums")
     public List<Curriculum> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page) {
-        Pageable pageable = PageRequest.of(page,10);
+        Pageable pageable = PageRequest.of(page, 10);
         Page<Curriculum> pages = repo.curriculums(search, pageable);
-        totalElements =  pages.getTotalElements();
+        totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
         return pages.getContent();
     }
+
     @Override
     public Curriculum save(Curriculum curriculum) {
         repo.save(curriculum);
@@ -49,12 +51,15 @@ public class CurriculumService implements PageableServiceCurriculum {
 
     @Override
     public boolean deleteById(String id) {
-        return false;
+        repo.deleteById(id);
+        return true;
     }
 
     @Override
-    public Curriculum findById(String id) {
-        return null;
+    @GraphQLQuery(name = "getCurriculum")
+    public Curriculum findById(@GraphQLArgument(name = "id") String id) {
+        Optional<Curriculum> curriculum = repo.findById(id);
+        return curriculum.orElse(null);
     }
 
     @Override

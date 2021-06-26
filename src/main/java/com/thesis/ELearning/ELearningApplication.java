@@ -15,16 +15,13 @@ public class ELearningApplication {
         String userDirectory = System.getProperty("user.dir");
         File AllDataContainer = new File(userDirectory);
 
-        if(!AllDataContainer.exists()) AllDataContainer.mkdir();
-
-        File upload = new File(AllDataContainer.getPath()+"\\upload");
+        File upload = new File(AllDataContainer.getPath()+"/upload");
         if(!upload.exists()) upload.mkdir();
-
         String parentPath = upload.getPath();
-        File Student_File = new File(parentPath+"\\Student");
-        File Teacher_File = new File(parentPath+ "\\Teacher");
-        File Room_File = new File(parentPath+"\\Room");
-
+        File Student_File = new File(parentPath+"/Student");
+        File Teacher_File = new File(parentPath+ "/Teacher");
+        File Room_File = new File(parentPath+"/Room");
+//
         if(!Student_File.exists()) Student_File.mkdir();
         if(!Teacher_File.exists()) Teacher_File.mkdir();
         if(!Room_File.exists()) Room_File.mkdir();

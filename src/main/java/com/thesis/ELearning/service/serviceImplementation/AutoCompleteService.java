@@ -54,6 +54,12 @@ public class AutoCompleteService implements PageableServiceAutoComplete<Object> 
     }
 
     @Override
+    public Page<Object> getCurriculum(String search) {
+        Pageable pageable = PageRequest.of(0, 15);
+        return repo.Curriculum_AutoComplete(search.replaceAll("\\s".toLowerCase(), ""), pageable);
+    }
+
+    @Override
     public Page<Object> SubjectsBasedOnRoomShift(int RoomShiftID) {
         Pageable pageable = PageRequest.of(0, 15);
         return repo.SubjectsBasedOnRoomShift(RoomShiftID, pageable);
@@ -89,8 +95,6 @@ public class AutoCompleteService implements PageableServiceAutoComplete<Object> 
     @Override
     public Page<Object> getTeacherExams(String search, String email) {
         Pageable pageable = PageRequest.of(0,15);
-
         return repo.getTeacherExams(search.replaceAll("\\s".toLowerCase(), ""),email,pageable);
-
     }
 }

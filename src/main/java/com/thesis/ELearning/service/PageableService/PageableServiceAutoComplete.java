@@ -15,6 +15,8 @@ public interface PageableServiceAutoComplete<T> {
 
     Page<T> RoomClass(String search);
 
+    Page<T> getCurriculum(String search);
+
     Page<T> SubjectsBasedOnRoomShift(int RoomShiftID);
 
     Page<T> getTeacherClass(String search, String email);
@@ -26,5 +28,6 @@ public interface PageableServiceAutoComplete<T> {
     Page<T> getTeacherQuizzes(String search, String email);
 
     Page<T> getTeacherExams(String search, String email);
+
 
 }

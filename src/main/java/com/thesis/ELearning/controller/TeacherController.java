@@ -58,15 +58,19 @@ public class TeacherController {
             @RequestParam("code") String code,
             @RequestParam("email") String email
     ) {
+        System.out.println("i am here");
         Teacher teacher = teacherRepository.getTeacherByUserEmail(email);
         TeacherResources teacherResources = new TeacherResources(code, name, "", type, description, new Date());
         teacherResources.setStatus("Not Shared");
+        System.out.println("nice");
         try {
             String location = storageService.UploadResource(file, teacherResources, teacher);
+            System.out.println(location);
             teacherResources.setLocation(location);
             teacherResources.setTeacher(teacher);
             teacherResourceService.save(teacherResources);
         } catch (IOException e) {
+            System.out.println(e);
             return new ResponseEntity<>(
                     new Response<>("Resource Already Exist", null),
                     HttpStatus.BAD_REQUEST

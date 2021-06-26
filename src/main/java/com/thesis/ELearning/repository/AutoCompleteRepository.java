@@ -22,6 +22,9 @@ public interface AutoCompleteRepository extends JpaRepository<Room, Object> {
             "where lower(concat( t.grade, t.section, t.id)) like %?1%")
     Page<Object> RoomShift_AutoComplete(String search, Pageable pageable);
 
+    @Query( value= "SELECT t.name, t.code from Curriculum t " +
+            "where lower(concat(t.name,t.code)) like %?1%")
+    Page<Object>  Curriculum_AutoComplete(String search, Pageable pageable);
 
     @Query(value = "SELECT t.roomShift.grade, t.roomShift.section, t.id from RoomShiftClass t WHERE lower(concat(t.roomShift.grade, t.roomShift.section, t.id)) like  %?1%")
     Page<Object> RoomClass(String search, Pageable pageable);

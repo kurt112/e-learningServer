@@ -35,20 +35,19 @@ public class StorageService {
     }
 
     public String UploadResource(MultipartFile file, TeacherResources teacherResources, Teacher teacher) throws IOException{
+        File TeacherPath = new File(userDirectory+"/upload/Teacher");
+        File TeacherName = new File(TeacherPath+"/"+teacher.getUser().getEmail());
+        File Resource = new File(TeacherName + "/Resource");
+        File ResourceType = new File(Resource+"/"+ teacherResources.getType());
+        File ResourceName = new File(ResourceType+ "/"+ teacherResources.getName());
 
-        File TeacherPath = new File(userDirectory+"\\Teacher");
-        File TeacherName = new File(TeacherPath+"\\"+teacher.getUser().getEmail());
-        File Resource = new File(TeacherName + "\\Resource");
-        File ResourceType = new File(Resource+"\\"+ teacherResources.getType());
-        File ResourceName = new File(ResourceType+ "\\"+ teacherResources.getName());
-
+        System.out.println(TeacherPath.exists());
         if(!TeacherName.exists()) TeacherName.mkdir();
         if(!Resource.exists()) Resource.mkdir();
         if(!ResourceType.exists()) ResourceType.mkdir();
         if(!ResourceName.exists()) ResourceName.mkdir();
 
-        file.transferTo(new File(ResourceName.getPath()+"\\"+file.getOriginalFilename()));
-        System.out.println(Resource.getPath());
-        return ResourceName.getPath()+"\\"+file.getOriginalFilename();
+        file.transferTo(new File(ResourceName.getPath()+"/"+file.getOriginalFilename()));
+        return  ResourceName.getPath()+"/"+file.getOriginalFilename();
     }
 }

@@ -52,6 +52,12 @@ public class AutoComplete {
         Page<Object> current = autoCompleteService.RoomClass(search);
         return new PagesContent<>(current.getContent(),current.getTotalElements(),current.getTotalPages(),current.getNumber());
     }
+
+    @GetMapping("/curriculum")
+    public PagesContent<?> CurriculumAutoComplete(@RequestParam("search") String search){
+        Page<Object> current = autoCompleteService.getCurriculum(search);
+        return new PagesContent<>(current.getContent(),current.getTotalElements(),current.getTotalPages(),current.getNumber());
+    }
     
     /**
      *
