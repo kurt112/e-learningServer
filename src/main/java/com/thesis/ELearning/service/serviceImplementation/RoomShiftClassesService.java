@@ -48,6 +48,7 @@ public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
         try{
             repo.save(roomShiftClasses);
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
         return roomShiftClasses;

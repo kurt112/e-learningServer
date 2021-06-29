@@ -48,9 +48,6 @@ public class StudentService implements PageableServiceStudent {
         return pages.getContent();
     }
 
-
-
-
     @Override
     @GraphQLQuery(name = "studentSave")
     public Student save(@GraphQLArgument(name = "SaveStudent") Student student) {
@@ -76,7 +73,8 @@ public class StudentService implements PageableServiceStudent {
     @Override
     @GraphQLQuery(name = "getStudentByUserEmail")
     public Student findById(@GraphQLArgument(name = "email") String email) {
-
+        System.out.println(email);
+        System.out.println(repo.getStudentByUserEmail(email));
 
         return repo.getStudentByUserEmail(email);
     }
@@ -97,6 +95,8 @@ public class StudentService implements PageableServiceStudent {
     }
 
 
-
-
+    @Override
+    public Student getStudentById(String id) {
+        return repo.getStudentById(id);
+    }
 }

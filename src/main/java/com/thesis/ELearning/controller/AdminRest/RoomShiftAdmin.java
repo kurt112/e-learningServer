@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -58,37 +59,27 @@ public class RoomShiftAdmin {
         );
     }
 
-    @PostMapping("/add-studentRoomShift")
-    public ResponseEntity<?> addStudentRoomShift(@RequestParam("student-id") String studentId){
+    @PostMapping("/room-shift/add/student")
+    public ResponseEntity<?> addStudentInRoomShift(@RequestBody HashMap<Object, Object> hashMap){
 
-        Student student = studentService.findById(studentId);
-        currentStudentList.add(student);
-        return new ResponseEntity<>(
-                new Response<>("Register Student Success", "Success"),
-                HttpStatus.OK
-        );
-    }
+        List<String> student_id = (List<String>) hashMap.get("students");
+        String roomShiftId = hashMap.get("shiftID").toString();
 
-    @PostMapping("/doneAddingStudentInRoomShift")
-    public ResponseEntity<?> doneAdd(@RequestParam("roomShiftID") String id){
-
-        RoomShift roomShift = roomShiftService.findById(id);
-        for(RoomShiftClass roomShiftClass: roomShift.getRoomShiftClasses()){
-
-            roomShiftClassesRepository.save(roomShiftClass);
+        RoomShift roomShift = roomShiftService.findById(roomShiftId);
+        List<Student> students = new ArrayList<>();
+        for(String id: student_id){
+            students.add(studentService.getStudentById(id));
         }
 
-
-        roomShift.setStudents(currentStudentList);
+        roomShift.setStudents(students);
         roomShiftService.save(roomShift);
-        currentStudentList = new ArrayList<>();
-
 
         return new ResponseEntity<>(
                 new Response<>("Register Student Success", "Success"),
                 HttpStatus.OK
         );
     }
+
 
     @DeleteMapping("/delete/roomShift")
     public ResponseEntity<Response<?>> deleteRoomShift(@RequestParam("id") String id) {

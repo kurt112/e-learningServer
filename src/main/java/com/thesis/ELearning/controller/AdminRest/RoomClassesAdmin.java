@@ -2,7 +2,6 @@ package com.thesis.ELearning.controller.AdminRest;
 
 import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
-import com.thesis.ELearning.entity.PostEntity.Post_RoomShiftClasses;
 import com.thesis.ELearning.service.serviceImplementation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ public class RoomClassesAdmin {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Response<Post_RoomShiftClasses>> classRegister(
+    public ResponseEntity<Response<?>> classRegister(
             @RequestParam("id") String id,
             @RequestParam("roomShift-id") String roomShiftId,
             @RequestParam("subject-id") String subjectId,
@@ -39,8 +38,8 @@ public class RoomClassesAdmin {
             @RequestParam("day") String day,
             @RequestParam("teacher-id") String teacherId) {
 
-        Teacher teacher = teacherService.findById(teacherId);
 
+        Teacher teacher = teacherService.findById(teacherId);
         RoomShift roomShift = roomShiftService.findById(roomShiftId);
         Subject subject = subjectService.findById(subjectId);
         RoomShiftClass roomShiftClasses = new RoomShiftClass();
@@ -57,16 +56,15 @@ public class RoomClassesAdmin {
 
         if (roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new HashSet<>());
 
-
         for (Student student : roomShift.getStudents()) {
+            System.out.println(student.getUser());
             roomShiftClasses.getStudents().add(student);
         }
 
         roomShiftClassesService.save(roomShiftClasses);
-        Post_RoomShiftClasses post_roomShiftClasses = new Post_RoomShiftClasses(roomShift.getRoom().getId(), subject.getSubjectCode(), roomShiftClasses.getId(), roomShift.getRoom().getRoomName(), roomShift.getGrade(), roomShift.getSection(), subject.getSubjectName(), teacher.getUser().getFirstName() + " " + teacher.getUser().getLastName(), day, timeStart, timeEnd);
 
         return new ResponseEntity<>(
-                new Response<>("Register Class Success", post_roomShiftClasses),
+                new Response<>("Register Class Success", "Success"),
                 HttpStatus.OK
         );
     }

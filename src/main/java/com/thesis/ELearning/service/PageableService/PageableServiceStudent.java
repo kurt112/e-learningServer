@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface PageableServiceStudent extends ServicesGraphQl<Student> {
 
+    Student getStudentById(String id);
+
 }
