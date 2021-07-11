@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashSet;
 
 
@@ -53,6 +54,9 @@ public class RoomClassesAdmin {
         roomShiftClasses.setTeacher(teacher);
         roomShiftClasses.setRoomShift(roomShift);
         roomShiftClasses.setSubject(subject);
+        roomShiftClasses.setCreatedAt(new Date());
+
+        System.out.println("saving data");
 
         if (roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new HashSet<>());
 

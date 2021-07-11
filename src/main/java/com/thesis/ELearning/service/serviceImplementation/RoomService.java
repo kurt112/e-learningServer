@@ -2,9 +2,7 @@ package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.Room;
-import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.repository.RoomRepository;
-import com.thesis.ELearning.service.PagableParentClass.ServicePageable;
 import com.thesis.ELearning.service.PageableService.PageableServiceRoom;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
@@ -15,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;

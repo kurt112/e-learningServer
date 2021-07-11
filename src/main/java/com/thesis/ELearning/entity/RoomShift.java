@@ -47,7 +47,7 @@ class RoomShift {
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", updatable = false)
     private Date updated_at;
 
 
@@ -71,7 +71,7 @@ class RoomShift {
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students;
 
-    public RoomShift(String id, String grade, String section, String timeStart, String timeEnd, String roomShiftName, Room room) {
+    public RoomShift(String id, String grade, String section, String timeStart, String timeEnd, String roomShiftName, Room room, Teacher teacher) {
         this.id = id;
         this.grade = grade;
         this.section = section;
@@ -79,5 +79,6 @@ class RoomShift {
         this.timeEnd = timeEnd;
         this.roomShiftName = roomShiftName;
         this.room = room;
+        this.teacher = teacher;
     }
 }

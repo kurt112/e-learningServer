@@ -33,7 +33,7 @@ public class TeacherAttendance {
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",updatable = false)
     private Date updated_at;
 
 }
