@@ -35,9 +35,9 @@ public class __Test {
         User kurt_T = new User("g3eDgy", "?", "?", "?", "?", "?", "?", "?", "TEACHER", false, false, false, false, new Date(), new Date());
         User kurt_S = new User("MqtP0G", "?", "?", "?", "?", "?", "?", "?", "STUDENT", false, false, false, false, new Date(), new Date());
 
-        User elly_A = new User("JhXpaH", "?", "?", "?", "?", "?", "?", "?", "ADMIN", false, false, false, false, new Date(), new Date());
-        User eve_A = new User("NngSZe", "?", "?", "?", "?", "?", "?", "?", "ADMIN", false, false, false, false, new Date(), new Date());
-        User kurt_A = new User("sW9Dtv", "?", "?", "?", "?", "?", "?", "?", "ADMIN", false, false, false, false, new Date(), new Date());
+        User elly_A = new User("elly@email.com", "?", "?", "?", "?", "?", "?", "?", "ADMIN", true, true, true, true, new Date(), new Date());
+        User eve_A = new User("kurt@email.com", "?", "?", "?", "?", "?", "?", "?", "ADMIN", true, true, true, true, new Date(), new Date());
+        User kurt_A = new User("Eve@Email.com", "?", "?", "?", "?", "?", "?", "?", "ADMIN", true, true, true, true, new Date(), new Date());
 
         userService.save(elly_A);
         userService.save(eve_A);

@@ -67,7 +67,8 @@ public class SubjectService implements PageableServiceSubject {
     }
 
     @Override
-    public Subject findById(String id) {
+    @GraphQLQuery(name="getSubject")
+    public Subject findById(@GraphQLArgument(name = "code") String id) {
         Optional<Subject> subjectID = repo.findById(id);
 
         return subjectID.orElse(null);
