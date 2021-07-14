@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 
 @RestController
@@ -78,8 +79,6 @@ public class UserAction {
 
     @PostMapping("/pre-register")
     public ResponseEntity<?> FindUserId (@RequestParam("id") String id) {
-        System.out.println(id);
-
         Student student = studentService.findById(id);
 
         Teacher teacher = teacherService.findById(id);
@@ -89,6 +88,12 @@ public class UserAction {
         if(teacher != null) return ResponseEntity.ok(teacher.getUser().getUserRole());
 
         return ResponseEntity.badRequest().body("User Not Existing");
+    }
+
+    @PostMapping("/logoutUser")
+    public ResponseEntity<?> LogoutUser(@RequestParam("token") String token){
+        jwt.removeToken(token);
+        return ResponseEntity.ok("User Logout Success");
     }
 
 

@@ -1,20 +1,16 @@
 package com.thesis.ELearning.controller.AdminRest;
 
+import com.fasterxml.uuid.Generators;
+import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
-import com.thesis.ELearning.entity.Room;
-import com.thesis.ELearning.entity.RoomShift;
-import com.thesis.ELearning.entity.Student;
-import com.thesis.ELearning.entity.Teacher;
-import com.thesis.ELearning.service.serviceImplementation.RoomService;
-import com.thesis.ELearning.service.serviceImplementation.RoomShiftService;
-import com.thesis.ELearning.service.serviceImplementation.StudentService;
-import com.thesis.ELearning.service.serviceImplementation.TeacherService;
+import com.thesis.ELearning.service.serviceImplementation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,13 +22,17 @@ public class RoomShiftAdmin {
     private final RoomShiftService roomShiftService;
     private final StudentService studentService;
     private final TeacherService teacherService;
+    private final CurriculumService curriculumService;
+    private final RoomShiftClassesService roomShiftClassesService;
 
     @Autowired
-    public RoomShiftAdmin(RoomService roomService, RoomShiftService roomShiftService, StudentService studentService, TeacherService teacherService) {
+    public RoomShiftAdmin(RoomService roomService, RoomShiftService roomShiftService, StudentService studentService, TeacherService teacherService, CurriculumService curriculumService, RoomShiftClassesService roomShiftClassesService) {
         this.roomService = roomService;
         this.roomShiftService = roomShiftService;
         this.studentService = studentService;
         this.teacherService = teacherService;
+        this.curriculumService = curriculumService;
+        this.roomShiftClassesService = roomShiftClassesService;
     }
 
     @PostMapping("/register-roomShift")
@@ -44,13 +44,19 @@ public class RoomShiftAdmin {
             @RequestParam("shiftID-section") String shiftSection,
             @RequestParam("shiftID-timeStart") String timeStart,
             @RequestParam("shiftID-timeEnd") String timeEnd,
-            @RequestParam("teacher-id") String teacherId
+            @RequestParam("teacher-id") String teacherId,
+            @RequestParam("curriculum-code") String curriculumCode
     ) {
-        System.out.println(teacherId);
+
+        Curriculum curriculum = curriculumService.findById(curriculumCode);
         Room room = roomService.findById(roomid);
         Teacher teacher = teacherService.findById(teacherId);
         RoomShift roomShift = new RoomShift(id, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room, teacher);
         roomShiftService.save(roomShift);
+        for(Subject subject: curriculum.getSubjects()){
+            String shortUUID = Generators.randomBasedGenerator().generate().toString().substring(0,7);
+            roomShiftClassesService.save(new RoomShiftClass(shortUUID,roomShift,subject,new Date(),new Date(),1));
+        }
 
         return new ResponseEntity<>(
                 new Response<>("Register RoomShift Success", "Success"),

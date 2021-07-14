@@ -45,12 +45,12 @@ public class RoomShiftClass {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private Date createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at", updatable = false)
+    @Column(name = "updated_at")
     private Date updated_at;
 
 
@@ -81,10 +81,14 @@ public class RoomShiftClass {
     @OneToMany(mappedBy = "roomShiftClass")
     private List<TeacherExams> teacherExams;
 
-
-
-
-
-
+    public RoomShiftClass(String id, RoomShift roomShift, Subject subject,
+                          Date createdAt, Date updated_at, int status) {
+        this.id = id;
+        this.roomShift = roomShift;
+        this.subject = subject;
+        this.createdAt = createdAt;
+        this.updated_at = updated_at;
+        this.status = status;
+    }
 
 }

@@ -12,7 +12,7 @@ public interface RoomShiftClassesRepository extends JpaRepository<RoomShiftClass
             "or t.roomShift.grade like %?1% " +
             "or t.roomShift.section like %?1% " +
             "or t.subject.subjectName like %?1% " +
-            "or concat(t.teacher.user.lastName, t.teacher.user.firstName) like %?1% " +
+//            "or concat(t.teacher.user.lastName, t.teacher.user.firstName) like %?1% " +
             "or t.day like %?1% " +
             "or t.startTime like %?1%" +
             "or t.endTime like %?1% " +

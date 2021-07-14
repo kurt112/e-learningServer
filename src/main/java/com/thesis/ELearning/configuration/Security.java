@@ -55,6 +55,8 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/re-login")
                 .permitAll()
+                .antMatchers("/logout")
+                .permitAll()
                  .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
