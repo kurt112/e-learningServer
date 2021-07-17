@@ -55,6 +55,7 @@ public class RoomClassesAdmin {
         roomShiftClasses.setRoomShift(roomShift);
         roomShiftClasses.setSubject(subject);
         roomShiftClasses.setCreatedAt(new Date());
+        roomShiftClasses.setStatus(1);
 
         System.out.println("saving data");
 

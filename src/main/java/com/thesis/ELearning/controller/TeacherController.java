@@ -4,7 +4,6 @@ import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.repository.TeacherRepository;
 import com.thesis.ELearning.service.serviceImplementation.*;
-import com.thesis.ELearning.utils.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,19 +27,16 @@ public class TeacherController {
 
     private final TeacherRepository teacherRepository;
     private final TeacherResourceService teacherResourceService;
-    private final StorageService storageService;
     private final TeacherAssignmentService teacherAssignmentService;
     private final RoomShiftClassesService roomShiftClassesService;
     private final TeacherLectureService lectureService;
     private final TeacherExamsService teacherExamsService;
     private final TeacherQuizzesService teacherQuizzesService;
 
-
     @Autowired
-    public TeacherController(TeacherRepository teacherRepository, TeacherResourceService teacherResourceService, StorageService storageService, TeacherAssignmentService teacherAssignmentService, RoomShiftClassesService roomShiftClassesService, TeacherLectureService lectureService, TeacherExamsService teacherExamsService, TeacherQuizzesService teacherQuizzesService) {
+    public TeacherController(TeacherRepository teacherRepository, TeacherResourceService teacherResourceService, TeacherAssignmentService teacherAssignmentService, RoomShiftClassesService roomShiftClassesService, TeacherLectureService lectureService, TeacherExamsService teacherExamsService, TeacherQuizzesService teacherQuizzesService) {
         this.teacherRepository = teacherRepository;
         this.teacherResourceService = teacherResourceService;
-        this.storageService = storageService;
         this.teacherAssignmentService = teacherAssignmentService;
         this.roomShiftClassesService = roomShiftClassesService;
         this.lectureService = lectureService;
@@ -51,31 +46,19 @@ public class TeacherController {
 
     @PostMapping("/upload/resource")
     private ResponseEntity<Response<?>> uploadResource(
-            @RequestParam("file") MultipartFile file,
+            @RequestParam("filePath") String filePath,
             @RequestParam("name") String name,
             @RequestParam("type") String type,
             @RequestParam("description") String description,
             @RequestParam("code") String code,
             @RequestParam("email") String email
     ) {
-        System.out.println("i am here");
         Teacher teacher = teacherRepository.getTeacherByUserEmail(email);
-        TeacherResources teacherResources = new TeacherResources(code, name, "", type, description, new Date());
+        TeacherResources teacherResources = new TeacherResources(code, name, filePath, type, description, new Date());
         teacherResources.setStatus("Not Shared");
-        System.out.println("nice");
-        try {
-            String location = storageService.UploadResource(file, teacherResources, teacher);
-            System.out.println(location);
-            teacherResources.setLocation(location);
-            teacherResources.setTeacher(teacher);
-            teacherResourceService.save(teacherResources);
-        } catch (IOException e) {
-            System.out.println(e);
-            return new ResponseEntity<>(
-                    new Response<>("Resource Already Exist", null),
-                    HttpStatus.BAD_REQUEST
-            );
-        }
+        teacherResources.setTeacher(teacher);
+        teacherResourceService.save(teacherResources);
+
         return new ResponseEntity<>(
                 new Response<>("Create Resource Successful", "Resource Upload Success"),
                 HttpStatus.OK
@@ -87,12 +70,14 @@ public class TeacherController {
     public ResponseEntity<Response<?>> deleteResource(@RequestParam("code") String code, @RequestParam("email") String email) {
 
         TeacherResources resource = teacherResourceService.FindResourceByTeacherEmail(code, email);
+
         if (resource == null) {
             return new ResponseEntity<>(
                     new Response<>("Resource Is Not Existing", null),
                     HttpStatus.BAD_REQUEST
             );
         }
+
         try {
             teacherResourceService.deleteById(code);
         } catch (Exception e) {
@@ -101,12 +86,10 @@ public class TeacherController {
                     HttpStatus.BAD_REQUEST
             );
         }
-        File resource_file = new File(resource.getLocation());
 
-        if(resource_file.delete()) System.out.println("Delete Resource Success");
 
         return new ResponseEntity<>(
-                new Response<>("Delete Resource Success", code),
+                new Response<>("Delete Resource Success", resource.getLocation()),
                 HttpStatus.OK
         );
     }
@@ -194,6 +177,7 @@ public class TeacherController {
         String code = hashMap.get("code").toString();
         TeacherResources resources  = teacherResourceService.findById(hashMap.get("resourceCode").toString());
         String description = hashMap.get("description").toString();
+        System.out.println("I am here");
         lectureService.save(new TeacherLectures(code,description,quarter,sem,resources,classes, new Date(), null));
         return new ResponseEntity<>(
                 new Response<>("Lecture  Create Success", "Successful"),
@@ -292,16 +276,17 @@ public class TeacherController {
         Date date = null;
         try {
             date = formatter.parse(deadLine);
+            RoomShiftClass classes = roomShiftClassesService.findById(classCode);
+            TeacherResources teacherResources = teacherResourceService.findById(resourceCode);
+            TeacherQuizzes quizzes =
+                    new TeacherQuizzes(code,highGrade,lowGrade,quarter,sem,description,
+                            new Date(),date, teacherResources,
+                            classes);
+            teacherQuizzesService.save(quizzes);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        RoomShiftClass classes = roomShiftClassesService.findById(classCode);
-        TeacherResources teacherResources = teacherResourceService.findById(resourceCode);
-        TeacherQuizzes quizzes =
-                new TeacherQuizzes(code,highGrade,lowGrade,quarter,sem,description,
-                        new Date(),date, teacherResources,
-                        classes);
-        teacherQuizzesService.save(quizzes);
+
         return new ResponseEntity<>(
                 new Response<>("Quiz Create Success", "Successful"),
                 HttpStatus.OK
