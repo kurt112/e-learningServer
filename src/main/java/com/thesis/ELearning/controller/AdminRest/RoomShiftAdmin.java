@@ -51,7 +51,7 @@ public class RoomShiftAdmin {
         Curriculum curriculum = curriculumService.findById(curriculumCode);
         Room room = roomService.findById(roomid);
         Teacher teacher = teacherService.findById(teacherId);
-        RoomShift roomShift = new RoomShift(id, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room, teacher);
+        RoomShift roomShift = new RoomShift(id, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room, teacher,curriculum);
         roomShiftService.save(roomShift);
         for(Subject subject: curriculum.getSubjects()){
             String shortUUID = Generators.randomBasedGenerator().generate().toString().substring(0,7);

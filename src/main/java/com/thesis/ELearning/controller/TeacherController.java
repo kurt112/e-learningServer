@@ -273,9 +273,8 @@ public class TeacherController {
         int sem = Integer.parseInt(hashMap.get("sem").toString());
         int quarter =  Integer.parseInt(hashMap.get("quarter").toString());
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
-        Date date = null;
         try {
-            date = formatter.parse(deadLine);
+            Date date  = formatter.parse(deadLine);
             RoomShiftClass classes = roomShiftClassesService.findById(classCode);
             TeacherResources teacherResources = teacherResourceService.findById(resourceCode);
             TeacherQuizzes quizzes =

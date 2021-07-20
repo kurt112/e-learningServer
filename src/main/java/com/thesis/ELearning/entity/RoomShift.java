@@ -42,16 +42,20 @@ class RoomShift {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private Date createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at", updatable = false)
+    @Column(name = "updated_at")
     private Date updated_at;
 
 
     // relation entity
+
+    @ManyToOne()
+    @JoinColumn(name = "curriculum")
+    private Curriculum curriculum;
 
     @OneToOne
     @JoinColumn(name = "adviser")
@@ -71,7 +75,7 @@ class RoomShift {
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students;
 
-    public RoomShift(String id, String grade, String section, String timeStart, String timeEnd, String roomShiftName, Room room, Teacher teacher) {
+    public RoomShift(String id, String grade, String section, String timeStart, String timeEnd, String roomShiftName, Room room, Teacher teacher, Curriculum curriculum) {
         this.id = id;
         this.grade = grade;
         this.section = section;
@@ -80,5 +84,6 @@ class RoomShift {
         this.roomShiftName = roomShiftName;
         this.room = room;
         this.teacher = teacher;
+        this.curriculum = curriculum;
     }
 }

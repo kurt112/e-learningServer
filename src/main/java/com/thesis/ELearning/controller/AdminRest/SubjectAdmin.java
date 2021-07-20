@@ -24,18 +24,12 @@ public class SubjectAdmin {
     @PostMapping(value = "/subjectID-register",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Response<Subject>> AddSubject(@RequestBody Subject subjectID) {
-        System.out.println(subjectID);
-        if(subjectServices.findById(subjectID.getSubjectCode()) != null){
-            return new ResponseEntity<>(
-                    new Response<>("Subject is already Exist", null),
-                    HttpStatus.BAD_REQUEST
-            );
-        }
-        subjectServices.save(subjectID);
+    public ResponseEntity<Response<Subject>> AddSubject(@RequestBody Subject subject) {
+
+        subjectServices.save(subject);
 
         return new ResponseEntity<>(
-                new Response<>("Subject Register Success", subjectID),
+                new Response<>("Subject Register Success", subject),
                 HttpStatus.OK
         );
     }

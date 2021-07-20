@@ -17,6 +17,10 @@ import java.util.List;
 @Setter
 public class Subject {
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+
     @Column(name = "subject_code")
     private String subjectCode;
 

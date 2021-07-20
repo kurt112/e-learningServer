@@ -33,7 +33,7 @@ public class RoomClassesAdmin {
     public ResponseEntity<Response<?>> classRegister(
             @RequestParam("id") String id,
             @RequestParam("roomShift-id") String roomShiftId,
-            @RequestParam("subject-id") String subjectId,
+            @RequestParam("subject-id") int subjectId,
             @RequestParam("time-start") String timeStart,
             @RequestParam("time-end") String timeEnd,
             @RequestParam("day") String day,
@@ -42,7 +42,7 @@ public class RoomClassesAdmin {
 
         Teacher teacher = teacherService.findById(teacherId);
         RoomShift roomShift = roomShiftService.findById(roomShiftId);
-        Subject subject = subjectService.findById(subjectId);
+        Subject subject = subjectService.findByIdIndex(subjectId);
         RoomShiftClass roomShiftClasses = new RoomShiftClass();
 
         roomShiftClasses.setId(id);

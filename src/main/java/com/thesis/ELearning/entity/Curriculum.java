@@ -45,4 +45,8 @@ public class Curriculum {
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
     private List<Subject> subjects;
+
+
+    @OneToMany(mappedBy = "curriculum")
+    private List<RoomShift> roomShifts;
 }

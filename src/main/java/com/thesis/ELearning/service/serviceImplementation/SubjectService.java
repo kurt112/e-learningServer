@@ -59,19 +59,26 @@ public class SubjectService implements PageableServiceSubject {
     @Override
     public boolean deleteById(String id) {
         try {
-            repo.deleteById(id);
+            repo.deleteById(Integer.parseInt(id));
         }catch (Exception e){
             return false;
         }
         return true;
     }
 
+    public Subject findByIdIndex(int id) {
+
+        Optional<Subject> subject = repo.findById(id);
+
+        return subject.orElse(null);
+    }
+
     @Override
     @GraphQLQuery(name="getSubject")
-    public Subject findById(@GraphQLArgument(name = "code") String id) {
-        Optional<Subject> subjectID = repo.findById(id);
+    public Subject findById(@GraphQLArgument(name = "code") String code) {
 
-        return subjectID.orElse(null);
+
+        return repo.findSubjectBySubjectCode(code);
     }
 
     @Override

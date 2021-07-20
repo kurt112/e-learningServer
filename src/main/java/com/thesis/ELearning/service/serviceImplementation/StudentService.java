@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -97,6 +98,7 @@ public class StudentService implements PageableServiceStudent {
 
     @Override
     public Student getStudentById(String id) {
-        return repo.getStudentById(id);
+        Optional<Student> student = repo.findById(id);
+        return student.orElse(null);
     }
 }
