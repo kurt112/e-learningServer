@@ -15,4 +15,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
 
     @Query(value = "SELECT t FROM Subject t where t.subjectCode =?1")
     Subject findSubjectBySubjectCode(String code);
+
+    @Query(value = "SELECT t from Subject t where trim(lower(concat(t.subjectName , t.subjectCode))) like %?1%")
+    Page<Subject> searchSubjectByNameAndCode(String search, Pageable pageable);
 }

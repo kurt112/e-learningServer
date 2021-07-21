@@ -34,11 +34,11 @@ public class SubjectService implements PageableServiceSubject {
 
     @Override
     @GraphQLQuery(name = "subjects")
-    public List<Subject> data(@GraphQLArgument(name = "search")String search,
+    public List<Subject> data(@GraphQLArgument(name = "search") String search,
                               @GraphQLArgument(name = "page") int page) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Subject> pages = repo.subjects(search, pageable);
-        totalElements =  pages.getTotalElements();
+        totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
 
@@ -46,11 +46,21 @@ public class SubjectService implements PageableServiceSubject {
         return pages.getContent();
     }
 
+
+    @Override
+    @GraphQLQuery(name = "searchSubject")
+    public List<Subject> searchSubjectByNameAndCode(@GraphQLArgument(name = "search") String search,
+                                                    @GraphQLArgument(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        System.out.println(search.replaceAll("\\s", ""));
+        return repo.searchSubjectByNameAndCode(search, pageable).getContent();
+    }
+
     @Override
     public Subject save(Subject subject) {
         try {
             repo.save(subject);
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
         return subject;
@@ -60,7 +70,7 @@ public class SubjectService implements PageableServiceSubject {
     public boolean deleteById(String id) {
         try {
             repo.deleteById(Integer.parseInt(id));
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -74,7 +84,7 @@ public class SubjectService implements PageableServiceSubject {
     }
 
     @Override
-    @GraphQLQuery(name="getSubject")
+    @GraphQLQuery(name = "getSubject")
     public Subject findById(@GraphQLArgument(name = "code") String code) {
 
 
@@ -84,6 +94,6 @@ public class SubjectService implements PageableServiceSubject {
     @Override
     @GraphQLQuery(name = "subjectSettings")
     public ApiSettings apiSettings() {
-        return new ApiSettings(totalElements,totalPages,currentPages);
+        return new ApiSettings(totalElements, totalPages, currentPages);
     }
 }
