@@ -37,7 +37,7 @@ public class __Test {
 
         User elly_A = new User("elly@email.com", "?", "?", "?", "?", "?", "?", "?", "ADMIN", true, true, true, true, new Date(), new Date());
         User eve_A = new User("kurt@email.com", "?", "?", "?", "?", "?", "?", "?", "ADMIN", true, true, true, true, new Date(), new Date());
-        User kurt_A = new User("Eve@Email.com", "?", "?", "?", "?", "?", "?", "?", "ADMIN", true, true, true, true, new Date(), new Date());
+        User kurt_A = new User("eve@email.com", "?", "?", "?", "?", "?", "?", "?", "ADMIN", true, true, true, true, new Date(), new Date());
 
         userService.save(elly_A);
         userService.save(eve_A);
