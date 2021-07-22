@@ -28,7 +28,8 @@ public  class User implements Comparable<User> {
     @Column(name = "user_middle_name")
     private String middleName;
 
-
+    @Column(name = "picture",columnDefinition = "TEXT")
+    private String picture;
 
     @Column(name= "user_last_name")
     @GraphQLQuery(name = "lastName", description = "User Last Name")

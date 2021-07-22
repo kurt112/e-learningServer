@@ -40,8 +40,8 @@ public class UserAction {
     }
 
     @PostMapping("/re-login")
-    public ResponseEntity<HashMap<?,?>> ReLogin(@RequestParam("token") String token){
-       HashMap<String, Object> hashMap = new HashMap<>();
+    public ResponseEntity<HashMap<?, ?>> ReLogin(@RequestParam("token") String token) {
+        HashMap<String, Object> hashMap = new HashMap<>();
 
         String email = jwt.getUsername(token);
 
@@ -49,19 +49,19 @@ public class UserAction {
 
         hashMap.put("token", token);
         hashMap.put("message", "Login Successful");
-        hashMap.put("user",user);
+        hashMap.put("user", user);
         return ResponseEntity.ok(hashMap);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<HashMap<?,?>> Login(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<HashMap<?, ?>> Login(@RequestBody AuthenticationRequest authenticationRequest) {
 
         HashMap<String, Object> hashMap = new HashMap<>();
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
                     authenticationRequest.getPassword()));
-        }catch (Exception badCredentialsException){
+        } catch (Exception badCredentialsException) {
             hashMap.put("message", "Account Not Found");
             return ResponseEntity.badRequest().body(hashMap);
         }
@@ -71,29 +71,51 @@ public class UserAction {
         final String jwt = this.jwt.generateToken(userDetails);
         hashMap.put("token", jwt);
         hashMap.put("message", "Login Successful");
-        hashMap.put("user",userDetailsService.getUser());
+        hashMap.put("user", userDetailsService.getUser());
 
 
         return ResponseEntity.ok(hashMap);
     }
 
     @PostMapping("/pre-register")
-    public ResponseEntity<?> FindUserId (@RequestParam("id") String id) {
+    public ResponseEntity<?> FindUserId(@RequestParam("id") String id) {
         Student student = studentService.findById(id);
 
         Teacher teacher = teacherService.findById(id);
 
-        if(student != null) return ResponseEntity.ok(student.getUser().getUserRole());
+        if (student != null) return ResponseEntity.ok(student.getUser().getUserRole());
 
-        if(teacher != null) return ResponseEntity.ok(teacher.getUser().getUserRole());
+        if (teacher != null) return ResponseEntity.ok(teacher.getUser().getUserRole());
 
         return ResponseEntity.badRequest().body("User Not Existing");
     }
 
     @PostMapping("/logoutUser")
-    public ResponseEntity<?> LogoutUser(@RequestParam("token") String token){
+    public ResponseEntity<?> LogoutUser(@RequestParam("token") String token) {
         jwt.removeToken(token);
         return ResponseEntity.ok("User Logout Success");
+    }
+
+    @PostMapping("/update-account")
+    public ResponseEntity<?> UpdateUser(@RequestParam("email") String email,
+                                        @RequestParam("firstName") String firstName,
+                                        @RequestParam("lastName") String lastName,
+                                        @RequestParam("picture") String picture,
+                                        @RequestParam("birthdate") String birthdate) {
+
+        User user = userService.findByEmail(email);
+
+        System.out.println(birthdate);
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPicture(picture);
+
+        System.out.println("i am called");
+
+        userService.save(user);
+
+        return ResponseEntity.ok("User Update Success");
     }
 
 

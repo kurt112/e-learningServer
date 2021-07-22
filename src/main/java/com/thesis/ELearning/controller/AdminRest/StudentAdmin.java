@@ -39,7 +39,7 @@ public class StudentAdmin {
             );
         }
 
-        User user = new User(""+id,"?","?","?","?","","","","STUDENT",false,false,false,false,new Date(), new Date());
+        User user = new User(""+id,"?","?","?","?","","","","","STUDENT",false,false,false,false,new Date(), new Date());
 
         Student student = new Student(id, user);
 
@@ -63,7 +63,7 @@ public class StudentAdmin {
                                                      @RequestParam("email") String email,
                                                      @RequestParam("password") String password){
 
-        User user = new User(email,firstName,middleName,lastName,suffix,gender,password,birthDate,"STUDENT",
+        User user = new User(email,firstName,middleName,"",lastName,suffix,gender,password,birthDate,"STUDENT",
                 true,true,true,true,new Date(), new Date());
         Student student = studentService.findById(id);
         if(student!=null){
