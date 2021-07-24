@@ -45,6 +45,20 @@ public class FormattedDate {
         return toDateTime.parse(time).toString();
     }
 
+    public static Date dateToString(String date) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date convertedDate;
+        try {
+            convertedDate = format.parse(date);
+            convertedDate.setHours(20);
+            return convertedDate;
+        }catch (ParseException ignored){
+
+        }
+
+        return null;
+    }
+
 
 
 }

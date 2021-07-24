@@ -35,7 +35,7 @@ public class TeacherAdmin {
                     .body(new Response<>("Teacher is already exist", null));
         }
 
-        User user = new User(""+id,"?","?","?", "?","?","","?","?","TEACHER",false,false,false,false,new Date(),new Date());
+        User user = new User(""+id,"?","?","?", "?","?","","?",new Date(),"TEACHER",false,false,false,false,new Date(),new Date());
         Teacher teacherID = new Teacher(id,user,"?");
         teacherID.setId(id);
         teacherID.setUser(user);
@@ -59,7 +59,7 @@ public class TeacherAdmin {
                                                         @RequestParam("email") String email,
                                                         @RequestParam("password") String password){
 
-        User user = new User(email,firstName,middleName,"",lastName,suffix,gender,password,birthDate,"TEACHER",
+        User user = new User(email,firstName,middleName,"",lastName,suffix,gender,password,new Date(),"TEACHER",
                 true,true,true,true,new Date(), new Date());
 
         Teacher teacher = teacherService.findById(id);

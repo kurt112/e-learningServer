@@ -17,6 +17,11 @@ import java.util.Date;
 public  class User implements Comparable<User> {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+
     @Column(name = "user_email")
     @GraphQLQuery(name = "email", description = "User Email")
     private String email;
@@ -49,7 +54,7 @@ public  class User implements Comparable<User> {
 
     @Column(name = "user_birthdate")
     @GraphQLQuery(name = "birthdate", description = "User BirthDate")
-    private String birthdate;
+    private Date birthdate;
 
     @Column(name = "user_role")
     @GraphQLQuery(name = "role", description = "role")
@@ -85,4 +90,22 @@ public  class User implements Comparable<User> {
         return o.getLastName().compareToIgnoreCase(lastName);
     }
 
+    public User(String email, String firstName, String middleName, String picture, String lastName, String suffix, String gender, String password, Date birthdate, String userRole, boolean isAccountNotExpired, boolean isAccountNotLocked, boolean isCredentialNotExpired, boolean isEnabled, Date createdAt, Date updated_at) {
+        this.email = email;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.picture = picture;
+        this.lastName = lastName;
+        this.suffix = suffix;
+        this.gender = gender;
+        this.password = password;
+        this.birthdate = birthdate;
+        this.userRole = userRole;
+        this.isAccountNotExpired = isAccountNotExpired;
+        this.isAccountNotLocked = isAccountNotLocked;
+        this.isCredentialNotExpired = isCredentialNotExpired;
+        this.isEnabled = isEnabled;
+        this.createdAt = createdAt;
+        this.updated_at = updated_at;
+    }
 }

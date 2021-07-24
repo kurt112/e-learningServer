@@ -4,6 +4,7 @@ import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.User;
 import com.thesis.ELearning.repository.UserRepository;
 import com.thesis.ELearning.service.PagableParentClass.ServicesGraphQl;
+import com.thesis.ELearning.service.PageableService.PageableServiceUser;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -20,7 +21,7 @@ import java.util.Optional;
 @Transactional
 @Service
 @GraphQLApi
-public class UserService implements ServicesGraphQl<User> {
+public class UserService implements PageableServiceUser {
     final private UserRepository repo;
     private int totalPages = 0;
     private long totalElements = 0;
@@ -57,7 +58,7 @@ public class UserService implements ServicesGraphQl<User> {
     @GraphQLQuery(name = "deleteUserById")
     public boolean deleteById(String id) {
         try {
-            repo.deleteById(id);
+            repo.deleteById(Integer.parseInt(id));
         }catch (Exception e){
             return false;
         }
@@ -65,14 +66,16 @@ public class UserService implements ServicesGraphQl<User> {
     }
 
     @Override
-    @GraphQLQuery(name = "user")
     public User findById(@GraphQLArgument(name = "id") String id) {
-        Optional<User> user = repo.findById(id);
+        System.out.println(id);
+        Optional<User> user = repo.findById(Integer.parseInt(id));
         return user.orElse(null);
     }
 
 
-    public User findByEmail(String email){
+    @GraphQLQuery(name = "user")
+    @Override
+    public User findByEmail(@GraphQLArgument(name = "email")String email){
         return repo.findUserEmail(email);
     }
 

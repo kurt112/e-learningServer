@@ -8,6 +8,7 @@ import com.thesis.ELearning.service.MyUserDetailsService;
 import com.thesis.ELearning.service.serviceImplementation.StudentService;
 import com.thesis.ELearning.service.serviceImplementation.TeacherService;
 import com.thesis.ELearning.service.serviceImplementation.UserService;
+import com.thesis.ELearning.utils.FormattedDate;
 import com.thesis.ELearning.utils.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -101,20 +102,22 @@ public class UserAction {
                                         @RequestParam("firstName") String firstName,
                                         @RequestParam("lastName") String lastName,
                                         @RequestParam("picture") String picture,
-                                        @RequestParam("birthdate") String birthdate) {
-
-        User user = userService.findByEmail(email);
-
-        System.out.println(birthdate);
-
+                                        @RequestParam("birthdate") String birthdate,
+                                        @RequestParam("id") String id,
+                                        @RequestParam("password") String password)
+    {
+        User user = userService.findById(id);
+        Date date = FormattedDate.dateToString(birthdate);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setPicture(picture);
+        user.setPassword(password);
 
-        System.out.println("i am called");
+        if(date != null) user.setBirthdate(date);
+        user.setEmail(email);
+
 
         userService.save(user);
-
         return ResponseEntity.ok("User Update Success");
     }
 

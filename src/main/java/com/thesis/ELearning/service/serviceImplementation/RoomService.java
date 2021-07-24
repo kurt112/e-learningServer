@@ -34,6 +34,8 @@ public class RoomService implements PageableServiceRoom {
     @Override
     @GraphQLQuery(name = "rooms")
     public List<Room> data(@GraphQLArgument(name = "search") String search,@GraphQLArgument(name = "page") int page) {
+
+
         Pageable pageable = PageRequest.of(page,10);
         Page<Room> pages = repo.Rooms(search, pageable);
         totalElements =  pages.getTotalElements();
