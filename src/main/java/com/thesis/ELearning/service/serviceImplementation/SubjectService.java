@@ -76,6 +76,17 @@ public class SubjectService implements PageableServiceSubject {
         return true;
     }
 
+    @Override
+    public boolean deleteBySubjectCode(String code) {
+
+        try {
+            repo.deleteSubjectBySubjectCode(code);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
     public Subject findByIdIndex(int id) {
 
         Optional<Subject> subject = repo.findById(id);

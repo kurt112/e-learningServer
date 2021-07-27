@@ -74,6 +74,7 @@ public class StudentService implements PageableServiceStudent {
     @Override
     @GraphQLQuery(name = "getStudentByUserEmail")
     public Student findById(@GraphQLArgument(name = "email") String email) {
+        System.out.println("i am here");
         System.out.println(email);
         System.out.println(repo.getStudentByUserEmail(email));
 

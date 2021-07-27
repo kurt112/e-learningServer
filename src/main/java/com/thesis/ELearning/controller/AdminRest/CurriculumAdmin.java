@@ -63,6 +63,7 @@ public class CurriculumAdmin {
         String curriculumCode = hashMap.get("curriculumCode").toString();
         List<Subject>  subjects = new ArrayList<>();
 
+        System.out.println(subjects);
         for(String code: subjectsCode){
             subjects.add(subjectService.findById(code));
         }

@@ -29,15 +29,15 @@ public class __Test {
     public String createDataText() {
 
        User elly_T = new User(1,"wT2c7n", "?", "?", "", "?", "?", "?", "?", new Date(), "TEACHER", false, false, false, false, new Date(), new Date());
-        User elly_S = new User(2,"C075Xn", "?", "?", "?","", "?", "?", "?", new Date(), "STUDENT", false, false, false, false, new Date(), new Date());
-        User eve_T = new User(3,"svngDF", "?","", "?", "?", "?", "?", "?", new Date(), "TEACHER", false, false, false, false, new Date(), new Date());
-        User eve_S = new User(4,"ygsSqU", "?","", "?", "?", "?", "?", "?", new Date(), "STUDENT", false, false, false, false, new Date(), new Date());
-        User kurt_T = new User(5,"g3eDgy", "?","", "?", "?", "?", "?", "?", new Date(), "TEACHER", false, false, false, false, new Date(), new Date());
-        User kurt_S = new User(6,"MqtP0G", "?", "","?", "?", "?", "?", "?", new Date(), "STUDENT", false, false, false, false, new Date(), new Date());
+        User elly_S = new User(2,"C075Xn", "?", "?", "","", "?", "?", "?", new Date(), "STUDENT", false, false, false, false, new Date(), new Date());
+        User eve_T = new User(3,"svngDF", "?","?", "", "?", "?", "?", "?", new Date(), "TEACHER", false, false, false, false, new Date(), new Date());
+        User eve_S = new User(4,"ygsSqU", "?","?", "", "?", "?", "?", "?", new Date(), "STUDENT", false, false, false, false, new Date(), new Date());
+        User kurt_T = new User(5,"g3eDgy", "?","?", "", "?", "?", "?", "?", new Date(), "TEACHER", false, false, false, false, new Date(), new Date());
+        User kurt_S = new User(6,"MqtP0G", "?", "?","", "?", "?", "?", "?", new Date(), "STUDENT", false, false, false, false, new Date(), new Date());
 
         User elly_A = new User(7,"elly@email.com", "?", "?","", "?", "?", "?", "?", new Date(), "ADMIN", true, true, true, true, new Date(), new Date());
-        User eve_A = new User(8,"kurt@email.com", "?", "?", "?", "?", "","?", "?", new Date(), "ADMIN", true, true, true, true, new Date(), new Date());
-        User kurt_A = new User(9,"eve@email.com", "?", "?", "?", "?","", "?", "?", new Date(), "ADMIN", true, true, true, true, new Date(), new Date());
+        User eve_A = new User(8,"kurt@email.com", "?", "?", "", "?", "","?", "?", new Date(), "ADMIN", true, true, true, true, new Date(), new Date());
+        User kurt_A = new User(9,"eve@email.com", "?", "?", "", "?","", "?", "?", new Date(), "ADMIN", true, true, true, true, new Date(), new Date());
 
         userService.save(elly_A);
         userService.save(eve_A);

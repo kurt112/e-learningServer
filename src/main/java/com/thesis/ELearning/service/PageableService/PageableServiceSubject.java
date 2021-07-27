@@ -11,4 +11,6 @@ public interface PageableServiceSubject extends ServicesGraphQl<Subject> {
 
     List<Subject> searchSubjectByNameAndCode(String search, int page);
 
+    boolean deleteBySubjectCode(String code);
+
 }

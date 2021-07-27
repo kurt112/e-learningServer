@@ -46,7 +46,7 @@ public class SubjectAdmin {
             );
         }
 
-        subjectServices.deleteById(id);
+        subjectServices.deleteBySubjectCode(id);
 
         return new ResponseEntity<>(
                 new Response<>("Delete Subject Success", "Subject Delete Success"),
