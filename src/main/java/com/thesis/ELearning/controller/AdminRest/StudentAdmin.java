@@ -63,22 +63,26 @@ public class StudentAdmin {
                                                      @RequestParam("email") String email,
                                                      @RequestParam("password") String password){
 
-        User user = new User(email,firstName,middleName,"",lastName,suffix,gender,password,new Date(),"STUDENT",
-                true,true,true,true,new Date(), new Date());
-        Student student = studentService.findById(id);
-        if(student!=null){
-            System.out.println("savving?");
-            String emailUser = student.getUser().getEmail();
-            user.setCreatedAt(student.getUser().getCreatedAt());
-            student.setUser(user);
-            studentService.save(student);
-            userService.deleteById(emailUser);
 
-            return new ResponseEntity<>(
-                    new Response<>("Register Student Success", student),
-                    HttpStatus.OK
-            );
-        }
+        Student student = studentService.findById(id);
+
+        User user = student.getUser();
+        user.setEmail(email);
+        user.setFirstName(firstName);
+        user.setMiddleName(middleName);
+        user.setLastName(lastName);
+        user.setSuffix(suffix);
+        user.setGender(gender);
+        user.setPassword(password);
+        user.setAccountNotExpired(true);
+        user.setAccountNotLocked(true);
+        user.setCredentialNotExpired(true);
+        user.setEnabled(true);
+
+
+        userService.save(user);
+        studentService.save(student);
+
 
         return new ResponseEntity<>(
                 new Response<>("Register Student Success", null),

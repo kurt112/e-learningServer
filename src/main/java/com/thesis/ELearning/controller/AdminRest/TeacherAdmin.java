@@ -28,16 +28,17 @@ public class TeacherAdmin {
     }
 
     @PostMapping("/teacherID-register")
-    public ResponseEntity<Response<Teacher>> addTeacher(@RequestParam("id") String id){
-        if(teacherService.findById(id) != null){
+    public ResponseEntity<Response<Teacher>> addTeacher(@RequestParam("id") String email){
+        Teacher teacher = teacherService.findById(email);
+        if(teacher != null){
             return  ResponseEntity
                     .badRequest()
                     .body(new Response<>("Teacher is already exist", null));
         }
 
-        User user = new User(""+id,"?","?","?", "?","?","","?",new Date(),"TEACHER",false,false,false,false,new Date(),new Date());
-        Teacher teacherID = new Teacher(id,user,"?");
-        teacherID.setId(id);
+        User user = new User(email,"?","?","?", "?","?","","?",new Date(),"TEACHER",false,false,false,false,new Date(),new Date());
+        Teacher teacherID = new Teacher(email,user,"?");
+        teacherID.setId(email);
         teacherID.setUser(user);
         userService.save(user);
         teacherService.save(teacherID);
@@ -59,28 +60,29 @@ public class TeacherAdmin {
                                                         @RequestParam("email") String email,
                                                         @RequestParam("password") String password){
 
-        User user = new User(email,firstName,middleName,"",lastName,suffix,gender,password,new Date(),"TEACHER",
-                true,true,true,true,new Date(), new Date());
-
         Teacher teacher = teacherService.findById(id);
 
-        if(teacher!=null){
-            String emailUser = teacher.getUser().getEmail();
-            user.setCreatedAt(teacher.getUser().getCreatedAt());
-            teacher.setUser(user);
-            teacherService.save(teacher);
-            userService.deleteById(emailUser);
+        User user = teacher.getUser();
+        user.setEmail(email);
+        user.setFirstName(firstName);
+        user.setMiddleName(middleName);
+        user.setLastName(lastName);
+        user.setSuffix(suffix);
+        user.setGender(gender);
+        user.setPassword(password);
+        user.setAccountNotExpired(true);
+        user.setAccountNotLocked(true);
+        user.setCredentialNotExpired(true);
+        user.setEnabled(true);
 
-            return new ResponseEntity<>(
-                    new Response<>("Register Teacher Success", teacher),
-                    HttpStatus.OK
-            );
-        }
+        userService.save(user);
+        teacherService.save(teacher);
 
         return new ResponseEntity<>(
-                new Response<>("Register Teacher Success", null),
+                new Response<>("Register Teacher Success", teacher),
                 HttpStatus.OK
         );
+
     }
 
     @DeleteMapping("/delete/teacher")

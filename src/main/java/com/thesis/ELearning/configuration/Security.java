@@ -43,6 +43,8 @@ public class Security extends WebSecurityConfigurerAdapter {
 //                .permitAll();
                 .antMatchers("/")
                 .permitAll()
+                .antMatchers("/user")
+                .permitAll()
                 .antMatchers("/pre-register")
                 .permitAll()
                 .antMatchers("/student-fillUp")
@@ -71,8 +73,8 @@ public class Security extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return //new BCryptPasswordEncoder();
-        NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
+//        NoOpPasswordEncoder.getInstance();
     }
 
     @Bean

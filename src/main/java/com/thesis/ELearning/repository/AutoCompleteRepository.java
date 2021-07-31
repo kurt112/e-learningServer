@@ -11,7 +11,7 @@ public interface AutoCompleteRepository extends JpaRepository<Room, Object> {
     Page<Object> Room_AutoComplete(String search, Pageable pageable);
 
     @Query(value = "SELECT t.user.lastName, t.user.firstName, t.user.email from Teacher t " +
-            "where lower(concat(t.user.lastName,t.user.firstName, t.user.email)) like %?1% order by t.user.lastName")
+            "where t.user.userRole = 'TEACHER' and (lower(concat(t.user.lastName,t.user.firstName, t.user.email)) like %?1%) order by t.user.lastName")
     Page<Object> Teacher_AutoComplete(String search, Pageable pageable);
 
     @Query(value = "SELECT t.subjectName, t.subjectCode, t.id from Subject t " +

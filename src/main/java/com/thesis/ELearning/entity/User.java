@@ -83,7 +83,6 @@ public  class User implements Comparable<User> {
     @Column(name = "updated_at")
     private Date updated_at;
 
-
     @Override
     public int compareTo(User o) {
 
@@ -108,4 +107,24 @@ public  class User implements Comparable<User> {
         this.createdAt = createdAt;
         this.updated_at = updated_at;
     }
+
+    public User(int id, String email, String firstName, String middleName, String picture, String lastName, String suffix, String gender, String password, Date birthdate, String userRole, boolean isAccountNotExpired, boolean isAccountNotLocked, boolean isCredentialNotExpired, boolean isEnabled) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.picture = picture;
+        this.lastName = lastName;
+        this.suffix = suffix;
+        this.gender = gender;
+        this.password = password;
+        this.birthdate = birthdate;
+        this.userRole = userRole;
+        this.isAccountNotExpired = isAccountNotExpired;
+        this.isAccountNotLocked = isAccountNotLocked;
+        this.isCredentialNotExpired = isCredentialNotExpired;
+        this.isEnabled = isEnabled;
+    }
+
+
 }

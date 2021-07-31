@@ -84,9 +84,19 @@ public class UserAction {
 
         Teacher teacher = teacherService.findById(id);
 
-        if (student != null) return ResponseEntity.ok(student.getUser().getUserRole());
+        if (student != null) {
 
-        if (teacher != null) return ResponseEntity.ok(teacher.getUser().getUserRole());
+            if(student.getUser().isEnabled()) return ResponseEntity.badRequest().body("Your Account Is Already Registered");
+
+            return ResponseEntity.ok(student.getUser().getUserRole());
+        }
+
+        if (teacher != null) {
+
+            if(teacher.getUser().isEnabled()) return ResponseEntity.badRequest().body("Your Account Is Already Registered");
+
+            return ResponseEntity.ok(teacher.getUser().getUserRole());
+        }
 
         return ResponseEntity.badRequest().body("User Not Existing");
     }
@@ -119,6 +129,18 @@ public class UserAction {
 
         userService.save(user);
         return ResponseEntity.ok("User Update Success");
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<?> GetUser(@RequestParam("email") String email){
+
+        User user = userService.findByEmail(email);
+
+        if(user != null){
+            return ResponseEntity.badRequest().body("User Is Not Null");
+        }
+
+        return ResponseEntity.ok("User Is Null");
     }
 
 

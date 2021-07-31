@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Integer>{
 
     @Query(value = "SELECT t from User t where t.firstName like  %?1% or t.lastName like %?1% " +
-            "or t.email like %?1% or t.birthdate like %?1% ORDER BY t.createdAt DESC")
+            "or t.email like %?1% ORDER BY t.createdAt DESC")
     Page<User> users(String search, Pageable pageable);
 
     @Query(value = "SELECT t from User  t where t.email = ?1")
