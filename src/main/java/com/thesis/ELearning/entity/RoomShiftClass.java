@@ -7,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "room_shift_classes")
@@ -64,7 +63,7 @@ public class RoomShiftClass {
     joinColumns = @JoinColumn(name = "room_class_id"),
     inverseJoinColumns = @JoinColumn(name = "student_id")
     )
-    private Set<Student> students;
+    private List<Student> students;
 
 
     // for teachers file

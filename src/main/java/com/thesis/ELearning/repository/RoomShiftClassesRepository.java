@@ -4,7 +4,11 @@ import com.thesis.ELearning.entity.RoomShiftClass;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
+import javax.transaction.Transactional;
+
 
 public interface RoomShiftClassesRepository extends JpaRepository<RoomShiftClass, String> {
 
@@ -22,6 +26,10 @@ public interface RoomShiftClassesRepository extends JpaRepository<RoomShiftClass
 
     @Query(value = "SELECT t from RoomShiftClass  t where  t.roomShift.id = ?1 and t.subject.subjectCode = ?2")
     RoomShiftClass FindRoomClassByShiftAndSubject(int ShiftId, String subjectCode);
+
+    @Modifying
+    @Query(value = "DELETE FROM RoomShiftClass t where t.id =?1")
+    void deleteRoomShiftClass(String code);
 
 
 }

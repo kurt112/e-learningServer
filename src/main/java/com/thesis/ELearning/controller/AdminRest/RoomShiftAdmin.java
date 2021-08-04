@@ -48,14 +48,67 @@ public class RoomShiftAdmin {
             @RequestParam("curriculum-code") String curriculumCode
     ) {
 
+        System.out.println("Teacher id " + teacherId);
+
         Curriculum curriculum = curriculumService.findById(curriculumCode);
         Room room = roomService.findById(roomid);
         Teacher teacher = teacherService.findById(teacherId);
-        RoomShift roomShift = new RoomShift(id, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room, teacher,curriculum);
+
+        RoomShift roomShift = roomShiftService.findById(id);
+        System.out.println("The teacher "  + teacher);
+
+        // pointer for subject in roomshift
+        HashMap<Integer,Integer> hashMap = new HashMap<>();
+
+        // when updating new RoomShift
+        if(roomShift !=null){
+
+            if(!roomShift.getCurriculum().getCode().equals(curriculum.getCode())){
+
+                for(RoomShiftClass classes: roomShift.getRoomShiftClasses()){
+                    roomShiftClassesService.deleteRoomShiftClass(classes.getId());
+                    System.out.println(roomShiftClassesService.findById(classes.getId()));
+                }
+
+                roomShift.setRoomShiftClasses(new ArrayList<>());
+                roomShift.setCurriculum(curriculum);
+            }
+
+            roomShift.setRoomShiftName(shiftName);
+            roomShift.setGrade(shiftGrade);
+            roomShift.setSection(shiftSection);
+            roomShift.setTimeStart(timeStart);
+            roomShift.setTimeEnd(timeEnd);
+            roomShift.setRoom(room);
+            roomShift.setTeacher(teacher);
+
+        }
+        else{
+            // creating new roomShift
+            roomShift = new RoomShift(id, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room, teacher,curriculum);
+            roomShift.setRoomShiftClasses(new ArrayList<>());
+        }
+
         roomShiftService.save(roomShift);
+
+        // iterating all class in roomshift
+        for(RoomShiftClass classes: roomShift.getRoomShiftClasses()){
+            int subjectId =classes.getSubject().getId();
+            hashMap.put(subjectId,subjectId);
+        }
+
+
+        // Creating A Class For every subject in roomshift
         for(Subject subject: curriculum.getSubjects()){
-            String shortUUID = Generators.randomBasedGenerator().generate().toString().substring(0,7);
-            roomShiftClassesService.save(new RoomShiftClass(shortUUID,roomShift,subject,new Date(),new Date(),1));
+
+            // if the roomshift has a already class we will skip it
+            if(hashMap.get(subject.getId()) != null) continue;
+
+            // generating for new class
+            String shortUUID = shiftGrade+Generators.randomBasedGenerator().generate().toString().substring(0,7)+shiftSection;
+            RoomShiftClass roomShiftClass = new RoomShiftClass(shortUUID,roomShift,subject,new Date(),new Date(),1);
+            roomShiftClass.setStudents(roomShift.getStudents());
+            roomShiftClassesService.save(roomShiftClass);
         }
 
         return new ResponseEntity<>(
@@ -72,11 +125,24 @@ public class RoomShiftAdmin {
 
         RoomShift roomShift = roomShiftService.findById(roomShiftId);
         List<Student> students = new ArrayList<>();
+
+        // adding student in room shift
         for(String id: student_id){
             students.add(studentService.getStudentById(id));
         }
 
         roomShift.setStudents(students);
+
+
+        // adding student for every roomShift Class
+        for(RoomShiftClass roomShiftClass: roomShift.getRoomShiftClasses()){
+            roomShiftClass.setStudents(students);
+            roomShiftClassesService.save(roomShiftClass);
+        }
+
+
+
+
         roomShiftService.save(roomShift);
 
         return new ResponseEntity<>(

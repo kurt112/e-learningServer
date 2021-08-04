@@ -59,6 +59,7 @@ public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
         try{
             repo.deleteById(id);
         }catch (Exception e){
+            System.out.println(e);
             return false;
         }
         return true;
@@ -84,4 +85,14 @@ public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
         return roomShiftClasses;
     }
 
+    @Override
+    public void deleteRoomShiftClass(String id) {
+
+        try {
+            repo.deleteRoomShiftClass(id);
+        }catch (Exception e){
+            System.out.println(e);
+            return;
+        }
+    }
 }

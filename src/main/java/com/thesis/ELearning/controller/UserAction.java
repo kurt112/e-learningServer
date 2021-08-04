@@ -114,7 +114,10 @@ public class UserAction {
                                         @RequestParam("picture") String picture,
                                         @RequestParam("birthdate") String birthdate,
                                         @RequestParam("id") String id,
-                                        @RequestParam("password") String password)
+                                        @RequestParam("password") String password,
+                                        @RequestParam("gender") String gender,
+                                        @RequestParam("middleName") String middleName
+    )
     {
         User user = userService.findById(id);
         Date date = FormattedDate.dateToString(birthdate);
@@ -122,6 +125,8 @@ public class UserAction {
         user.setLastName(lastName);
         user.setPicture(picture);
         user.setPassword(password);
+        user.setGender(gender);
+        user.setMiddleName(middleName);
 
         if(date != null) user.setBirthdate(date);
         user.setEmail(email);

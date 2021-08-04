@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface PageableServiceRoomShiftClass extends ServicesGraphQl<RoomShiftClass> {
+    void deleteRoomShiftClass(String id);
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -59,7 +60,7 @@ public class RoomClassesAdmin {
 
         System.out.println("saving data");
 
-        if (roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new HashSet<>());
+        if (roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new ArrayList<>());
 
         for (Student student : roomShift.getStudents()) {
             System.out.println(student.getUser());
