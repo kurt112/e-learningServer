@@ -83,4 +83,10 @@ public class TeacherLectureService implements PageableServiceTeacherLecture {
         return new ApiSettings(totalElements, totalPages, currentPages);
     }
 
+
+    @Override
+    public long count() {
+        // not customize
+        return repo.count();
+    }
 }

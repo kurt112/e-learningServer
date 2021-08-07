@@ -3,7 +3,6 @@ package com.thesis.ELearning.service.serviceImplementation;
 import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.User;
 import com.thesis.ELearning.repository.UserRepository;
-import com.thesis.ELearning.service.PagableParentClass.ServicesGraphQl;
 import com.thesis.ELearning.service.PageableService.PageableServiceUser;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLQuery;
@@ -72,6 +71,10 @@ public class UserService implements PageableServiceUser {
         return user.orElse(null);
     }
 
+    @Override
+    public long count() {
+        return repo.count();
+    }
 
     @GraphQLQuery(name = "user")
     @Override

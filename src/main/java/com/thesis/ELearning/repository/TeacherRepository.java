@@ -32,4 +32,5 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
             "or t.description like %?1% " +
             "or t.type like %?1% ) order by t.createdAt DESC ")
     Page<TeacherResources> getTeacherResources(String search, String email, Pageable pageable);
+
 }

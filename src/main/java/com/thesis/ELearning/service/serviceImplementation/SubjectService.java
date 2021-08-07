@@ -1,7 +1,9 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
+import com.thesis.ELearning.entity.DashBoard;
 import com.thesis.ELearning.entity.Subject;
+import com.thesis.ELearning.repository.DashboardRepository;
 import com.thesis.ELearning.repository.SubjectRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceSubject;
 import io.leangen.graphql.annotations.GraphQLArgument;
@@ -23,13 +25,18 @@ import java.util.Optional;
 public class SubjectService implements PageableServiceSubject {
 
     final private SubjectRepository repo;
+    final private DashBoard dashBoard;
+    final private DashboardRepository dashboardRepository;
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
 
     @Autowired
-    public SubjectService(SubjectRepository repo) {
+    public SubjectService(SubjectRepository repo, DashboardRepository dashboardRepository) {
         this.repo = repo;
+        this.dashboardRepository = dashboardRepository;
+
+        dashBoard = dashboardRepository.findById(1).orElse(null);
     }
 
     @Override
@@ -59,6 +66,8 @@ public class SubjectService implements PageableServiceSubject {
     @Override
     public Subject save(Subject subject) {
         try {
+            if(findByIdIndex(subject.getId()) == null)
+                dashboardRepository.save(dashBoard.IncSubjectCount());
             repo.save(subject);
         } catch (Exception e) {
             return null;
@@ -70,6 +79,7 @@ public class SubjectService implements PageableServiceSubject {
     public boolean deleteById(String id) {
         try {
             repo.deleteById(Integer.parseInt(id));
+            dashboardRepository.save(dashBoard.DecStudentCount());
         } catch (Exception e) {
             return false;
         }
@@ -106,5 +116,10 @@ public class SubjectService implements PageableServiceSubject {
     @GraphQLQuery(name = "subjectSettings")
     public ApiSettings apiSettings() {
         return new ApiSettings(totalElements, totalPages, currentPages);
+    }
+
+    @Override
+    public long count() {
+        return repo.count();
     }
 }

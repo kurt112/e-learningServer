@@ -1,8 +1,10 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
+import com.thesis.ELearning.entity.DashBoard;
 import com.thesis.ELearning.entity.RoomShift;
 import com.thesis.ELearning.entity.Student;
+import com.thesis.ELearning.repository.DashboardRepository;
 import com.thesis.ELearning.repository.RoomShiftRepository;
 import com.thesis.ELearning.repository.StudentRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceRoomShift;
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Transactional
@@ -27,14 +28,19 @@ public class RoomShiftService implements PageableServiceRoomShift {
 
     final private RoomShiftRepository repo;
     final private StudentRepository studentRepository;
+    private final DashBoard dashBoard;
+    private final DashboardRepository dashboardRepository;
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
 
     @Autowired
-    public RoomShiftService(RoomShiftRepository repo, StudentRepository studentRepository) {
+    public RoomShiftService(RoomShiftRepository repo, StudentRepository studentRepository, DashboardRepository dashboardRepository) {
         this.studentRepository = studentRepository;
         this.repo = repo;
+        this.dashboardRepository = dashboardRepository;
+
+        dashBoard = dashboardRepository.findById(1).orElse(null);
     }
 
     @Override
@@ -113,22 +119,8 @@ public class RoomShiftService implements PageableServiceRoomShift {
         return null;
     }
 
-    public class Wrapper{
-        private List<Student> students;
-
-        /**
-         * @return the students
-         */
-        public List<Student> getPersons() {
-            return students;
-        }
-
-        /**
-         * @param students the persons to set
-         */
-        public void setPersons(List<Student> students) {
-            this.students = students;
-        }
+    @Override
+    public long count() {
+        return repo.count();
     }
-
 }

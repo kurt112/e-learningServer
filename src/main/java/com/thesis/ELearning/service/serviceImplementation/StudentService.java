@@ -1,8 +1,10 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
+import com.thesis.ELearning.entity.DashBoard;
 import com.thesis.ELearning.entity.RoomShift;
 import com.thesis.ELearning.entity.Student;
+import com.thesis.ELearning.repository.DashboardRepository;
 import com.thesis.ELearning.repository.StudentRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceStudent;
 import io.leangen.graphql.annotations.GraphQLArgument;
@@ -25,13 +27,18 @@ import java.util.Optional;
 public class StudentService implements PageableServiceStudent {
 
     final private StudentRepository repo;
+    final private DashboardRepository dashboardRepository;
+    final private DashBoard dashBoard;
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
 
+
     @Autowired
-    public StudentService(StudentRepository repo) {
+    public StudentService(StudentRepository repo, DashboardRepository dashboardRepository) {
         this.repo = repo;
+        this.dashboardRepository = dashboardRepository;
+        dashBoard = dashboardRepository.findById(1).orElse(null);
     }
 
 
@@ -53,6 +60,8 @@ public class StudentService implements PageableServiceStudent {
     @GraphQLQuery(name = "studentSave")
     public Student save(@GraphQLArgument(name = "SaveStudent") Student student) {
         try {
+            if(repo.findById(student.getId()).isEmpty())
+                dashboardRepository.save(dashBoard.IncStudentCount());
             repo.save(student);
         }catch (Exception e){
             return null;
@@ -64,6 +73,7 @@ public class StudentService implements PageableServiceStudent {
     public boolean deleteById(String id) {
         try {
             repo.deleteById(id);
+            dashboardRepository.save(dashBoard.DecStudentCount());
         }catch (Exception e){
             return false;
         }
@@ -96,10 +106,16 @@ public class StudentService implements PageableServiceStudent {
         return student!=null? student.getRoomShifts(): new ArrayList<>();
     }
 
+    @Override
+    public long count() {
+        return repo.count();
+    }
 
     @Override
     public Student getStudentById(String id) {
         Optional<Student> student = repo.findById(id);
         return student.orElse(null);
     }
+
+
 }

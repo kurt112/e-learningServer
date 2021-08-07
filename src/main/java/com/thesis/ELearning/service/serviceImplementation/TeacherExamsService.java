@@ -82,4 +82,9 @@ public class TeacherExamsService implements PageableServiceTeacherExams {
         return new ApiSettings(totalElements, totalPages, currentPages);
     }
 
+    @Override
+    public long count() {
+        // not customize
+        return repo.count();
+    }
 }

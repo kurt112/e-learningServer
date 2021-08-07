@@ -17,4 +17,6 @@ public interface  ServicesGraphQl<T> {
     T findById(String id);
 
     ApiSettings apiSettings();
+
+    long count();
 }

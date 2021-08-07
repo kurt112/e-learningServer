@@ -68,4 +68,9 @@ public class CurriculumService implements PageableServiceCurriculum {
 
         return new ApiSettings(totalElements, totalPages, currentPages);
     }
+
+    @Override
+    public long count() {
+        return repo.count();
+    }
 }

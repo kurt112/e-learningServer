@@ -80,4 +80,9 @@ public class TeacherAssignmentService implements PageableServiceTeacherAssignmen
     public TeacherAssignment getRoomShiftClassAssignment(String code, String email) {
         return repo.getRoomShiftClassAssignment(code,email);
     }
+
+    @Override
+    public long count() {
+        return repo.count();
+    }
 }

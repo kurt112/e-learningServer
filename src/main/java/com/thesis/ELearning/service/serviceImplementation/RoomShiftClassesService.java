@@ -1,7 +1,9 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
+import com.thesis.ELearning.entity.DashBoard;
 import com.thesis.ELearning.entity.RoomShiftClass;
+import com.thesis.ELearning.repository.DashboardRepository;
 import com.thesis.ELearning.repository.RoomShiftClassesRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceRoomShiftClass;
 import io.leangen.graphql.annotations.GraphQLArgument;
@@ -23,12 +25,17 @@ import java.util.Optional;
 public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
 
     final private RoomShiftClassesRepository repo;
+    private final DashBoard dashBoard;
+    private final DashboardRepository dashboardRepository;
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
     @Autowired
-    public RoomShiftClassesService(RoomShiftClassesRepository repo) {
+    public RoomShiftClassesService(RoomShiftClassesRepository repo, DashboardRepository dashboardRepository) {
         this.repo = repo;
+        this.dashboardRepository = dashboardRepository;
+
+        dashBoard = dashboardRepository.findById(1).orElse(null);
     }
 
 
@@ -46,6 +53,8 @@ public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
     @Override
     public RoomShiftClass save(RoomShiftClass roomShiftClasses) {
         try{
+            if(repo.findById(roomShiftClasses.getId()).isEmpty())
+                dashboardRepository.save(dashBoard.IncClassCount());
             repo.save(roomShiftClasses);
         }catch (Exception e){
             e.printStackTrace();
@@ -58,6 +67,7 @@ public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
     public boolean deleteById(String id) {
         try{
             repo.deleteById(id);
+            dashboardRepository.save(dashBoard.DecClassCount());
         }catch (Exception e){
             System.out.println(e);
             return false;
@@ -94,5 +104,10 @@ public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
             System.out.println(e);
             return;
         }
+    }
+
+    @Override
+    public long count() {
+        return repo.count();
     }
 }

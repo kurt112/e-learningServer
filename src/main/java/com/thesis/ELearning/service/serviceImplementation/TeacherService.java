@@ -1,9 +1,11 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
 import com.thesis.ELearning.entity.API.ApiSettings;
+import com.thesis.ELearning.entity.DashBoard;
 import com.thesis.ELearning.entity.TeacherResources;
 import com.thesis.ELearning.entity.RoomShiftClass;
 import com.thesis.ELearning.entity.Teacher;
+import com.thesis.ELearning.repository.DashboardRepository;
 import com.thesis.ELearning.repository.TeacherRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceTeacher;
 import io.leangen.graphql.annotations.GraphQLArgument;
@@ -23,13 +25,17 @@ import java.util.List;
 @GraphQLApi
 public class TeacherService implements PageableServiceTeacher {
     final private TeacherRepository repo;
+    final private DashboardRepository dashboardRepository;
+    final private DashBoard dashBoard;
     private int totalPages = 0;
     private long totalElements = 0;
     private int currentPages = 0;
 
     @Autowired
-    public TeacherService(TeacherRepository repo) {
+    public TeacherService(TeacherRepository repo, DashboardRepository dashboardRepository) {
         this.repo = repo;
+        this.dashboardRepository = dashboardRepository;
+        dashBoard = dashboardRepository.findById(1).orElse(null);
     }
 
     @Override
@@ -57,19 +63,23 @@ public class TeacherService implements PageableServiceTeacher {
     }
 
     @Override
-    public Teacher save(Teacher teacherID) {
+    public Teacher save(Teacher teacher) {
         try {
-            repo.save(teacherID);
+            if(repo.findById(teacher.getId()).isEmpty()){
+                dashboardRepository.save(dashBoard.IncTeacherCount());
+            }
+            repo.save(teacher);
         } catch (Exception e) {
             return null;
         }
-        return teacherID;
+        return teacher;
     }
 
     @Override
     public boolean deleteById(String id) {
         try {
             repo.deleteById(id);
+            dashboardRepository.save(dashBoard.DecTeacherCount());
         } catch (Exception e) {
             return false;
         }
@@ -94,5 +104,10 @@ public class TeacherService implements PageableServiceTeacher {
     @GraphQLQuery(name = "teacherSettings")
     public ApiSettings apiSettings() {
         return new ApiSettings(totalElements, totalPages, currentPages);
+    }
+
+    @Override
+    public long count() {
+        return repo.count();
     }
 }
