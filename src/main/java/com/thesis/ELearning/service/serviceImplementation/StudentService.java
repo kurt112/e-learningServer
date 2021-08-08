@@ -44,11 +44,11 @@ public class StudentService implements PageableServiceStudent {
 
     @Override
     @GraphQLQuery(name = "students")
-    public List<Student> data(@GraphQLArgument(name = "search")String search,
+    public List<Student> data(@GraphQLArgument(name = "search") String search,
                               @GraphQLArgument(name = "page") int page) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Student> pages = repo.Students(search, pageable);
-        totalElements =  pages.getTotalElements();
+        totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
 
@@ -60,10 +60,12 @@ public class StudentService implements PageableServiceStudent {
     @GraphQLQuery(name = "studentSave")
     public Student save(@GraphQLArgument(name = "SaveStudent") Student student) {
         try {
-            if(repo.findById(student.getId()).isEmpty())
+            if (repo.findById(student.getId()).isEmpty()) {
                 dashboardRepository.save(dashBoard.IncStudentCount());
+            }
+
             repo.save(student);
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
         return student;
@@ -74,7 +76,7 @@ public class StudentService implements PageableServiceStudent {
         try {
             repo.deleteById(id);
             dashboardRepository.save(dashBoard.DecStudentCount());
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
 
@@ -99,11 +101,11 @@ public class StudentService implements PageableServiceStudent {
     }
 
     @GraphQLQuery(name = "getRoomShiftByStudent")
-    public List<RoomShift> StudentTransfer(@GraphQLArgument(name = "studentID")String id) {
+    public List<RoomShift> StudentTransfer(@GraphQLArgument(name = "studentID") String id) {
 
         Student student = findById(id);
 
-        return student!=null? student.getRoomShifts(): new ArrayList<>();
+        return student != null ? student.getRoomShifts() : new ArrayList<>();
     }
 
     @Override
