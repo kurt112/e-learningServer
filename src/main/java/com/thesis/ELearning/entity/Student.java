@@ -37,6 +37,9 @@ public  class Student {
     @ManyToMany(mappedBy = "students")
     private List<TeacherResources> resources;
 
+    @OneToMany(mappedBy ="student")
+    private List<StudentClassAttendance> classAttendances;
+
     public Student(String id, User user) {
         this.id = id;
         this.user = user;

@@ -35,6 +35,8 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher")
     public List<RoomShiftClass> roomShiftClasses;
 
+    @OneToMany(mappedBy = "teacher")
+    public List<TeacherClassAttendance> classAttendances;
 
     public Teacher(String id, User user, String link) {
         this.id = id;
