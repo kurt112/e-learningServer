@@ -39,6 +39,11 @@ public class TeacherService implements PageableServiceTeacher {
     }
 
     @Override
+    public Teacher getTeacherById(String id) {
+        return repo.teacher(id);
+    }
+
+    @Override
     @GraphQLQuery(name = "getTeacherResources")
     public List<TeacherResources> getTeacherResources(@GraphQLArgument(name = "search") String search,
                                                       @GraphQLArgument(name = "email") String email,

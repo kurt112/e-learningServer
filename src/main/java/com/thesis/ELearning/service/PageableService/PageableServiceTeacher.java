@@ -10,4 +10,6 @@ import java.util.List;
 @Service
 public interface PageableServiceTeacher extends ServicesGraphQl<Teacher> {
     List<TeacherResources> getTeacherResources(String search, String email, int page);
+
+    Teacher getTeacherById(String id);
 }

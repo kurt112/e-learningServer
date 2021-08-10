@@ -8,33 +8,30 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "student_attendance")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class StudentAttendance {
+@Table(name = "student_class_attendance")
+public class StudentClassAttendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student_attendance_id")
+    @Column(name = "id")
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "student_attendance_fk_student")
-    Student student;
+    @JoinColumn(name = "student")
+    private Student student;
 
-    @Column(name = "student_attendance_date")
-    private String date;
+    @ManyToOne
+    @JoinColumn(name = "classes")
+    private RoomShiftClass student_class;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at",updatable = false)
     private Date createdAt;
 
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
-    private Date updated_at;
 
 }

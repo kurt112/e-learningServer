@@ -80,6 +80,13 @@ public class RoomShiftClass {
     @OneToMany(mappedBy = "roomShiftClass")
     private List<TeacherExams> teacherExams;
 
+//    @OneToMany(mappedBy = "teacher_class")
+//    private List<TeacherClassAttendance> teacherClassAttendances;
+
+    @OneToMany(mappedBy = "student_class")
+    private List<StudentClassAttendance> studentClassAttendances;
+
+
     public RoomShiftClass(String id, RoomShift roomShift, Subject subject,
                           Date createdAt, Date updated_at, int status) {
         this.id = id;

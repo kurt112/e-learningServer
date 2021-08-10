@@ -1,39 +1,40 @@
 package com.thesis.ELearning.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@Table(name = "teacher_class_attendance")
 @Entity
-@Table(name = "teacher_attendance")
 @AllArgsConstructor
 @NoArgsConstructor
-public class TeacherAttendance {
+@Getter
+@Setter
+public class TeacherClassAttendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "teacher_attendance_id")
+    @Column(name = "id")
     private int id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "teacher_attendance_teacher_id_fk")
-//    private Teacher teacherID;
+    @ManyToOne
+    @JoinColumn(name = "teacher")
+    private Teacher teacher;
 
-    @Column(name = "teacher_date")
-    private String date;
+    @ManyToOne
+    @JoinColumn(name = "classes")
+    private RoomShiftClass teacher_class;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at")
+    @Column(name = "created_at",updatable = false)
     private Date createdAt;
 
-    @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at",updatable = false)
-    private Date updated_at;
 
 }
