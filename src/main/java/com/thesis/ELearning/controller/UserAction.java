@@ -55,7 +55,7 @@ public class UserAction {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<HashMap<?, ?>> Login(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<HashMap<?, ?>> Login(@RequestBody AuthenticationRequest authenticationRequest, @RequestHeader("remember") boolean remember) {
 
         HashMap<String, Object> hashMap = new HashMap<>();
 
@@ -69,7 +69,7 @@ public class UserAction {
 
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt = this.jwt.generateToken(userDetails);
+        final String jwt = this.jwt.generateToken(userDetails, remember);
         hashMap.put("token", jwt);
         hashMap.put("message", "Login Successful");
         hashMap.put("user", userDetailsService.getUser());

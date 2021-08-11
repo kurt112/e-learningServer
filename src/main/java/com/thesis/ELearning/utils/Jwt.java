@@ -43,9 +43,10 @@ public class Jwt implements Serializable{
         return getExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, boolean expiry) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+        if(expiry) return createToken(claims, userDetails.getUsername());
+        else return createTokenNoExpiry(claims,userDetails.getUsername());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
@@ -53,6 +54,13 @@ public class Jwt implements Serializable{
                 .setClaims(claims)
                 .setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+    }
+
+    private String createTokenNoExpiry(Map<String, Object> claims, String subject) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
