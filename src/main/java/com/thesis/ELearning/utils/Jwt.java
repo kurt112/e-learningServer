@@ -49,11 +49,26 @@ public class Jwt implements Serializable{
         else return createTokenNoExpiry(claims,userDetails.getUsername());
     }
 
+    public String generateTokenResetPassword(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+
+       return createTokenReset(claims,userDetails.getUsername());
+    }
+
+
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+    }
+
+    private String createTokenReset(Map<String, Object> claims, String subject) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
@@ -88,5 +103,13 @@ public class Jwt implements Serializable{
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, day);
         return cal.getTime();
+    }
+
+    private void removeToken( ) {
+//        OAuth2Authentication authentication = super.readAuthentication(token.getValue());
+//        String username = authentication.getUserAuthentication().getName();
+//        User user = userRepository.findByEmail(username);
+//        user.setToken(null);
+//        userRepository.save(user);
     }
 }

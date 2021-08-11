@@ -4,14 +4,16 @@ import com.thesis.ELearning.entity.DashBoard;
 import com.thesis.ELearning.entity.Teacher;
 import com.thesis.ELearning.entity.User;
 import com.thesis.ELearning.service.serviceImplementation.*;
+import com.thesis.ELearning.utils.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 
 @Controller
-public class __Test {
+public class View {
 
     private final UserService userService;
     private final StudentService studentService;
@@ -21,8 +23,9 @@ public class __Test {
     private final RoomService roomService;
     private final RoomShiftClassesService roomShiftClassesService;
 
+    private final Jwt jwt;
     @Autowired
-    public __Test(UserService userService, StudentService studentService, TeacherService teacherService, DashboardService dashboardService, SubjectService subjectService, RoomService roomService, RoomShiftClassesService roomShiftClassesService) {
+    public View(UserService userService, StudentService studentService, TeacherService teacherService, DashboardService dashboardService, SubjectService subjectService, RoomService roomService, RoomShiftClassesService roomShiftClassesService, Jwt jwt) {
         this.userService = userService;
         this.studentService = studentService;
         this.teacherService = teacherService;
@@ -30,6 +33,7 @@ public class __Test {
         this.subjectService = subjectService;
         this.roomService = roomService;
         this.roomShiftClassesService = roomShiftClassesService;
+        this.jwt = jwt;
     }
 
     @GetMapping("/setup")
@@ -68,4 +72,21 @@ public class __Test {
 
         return "welcome";
     }
+
+    @GetMapping("/reset-password")
+    public String forgotPassword(@RequestParam("access") String access) {
+
+        try {
+            System.out.println("The access");
+            System.out.println(access);
+            String email = jwt.getUsername(access);
+            User user = userService.findByEmail(email);
+        }catch (Exception e){
+            return "error";
+        }
+
+
+        return "NewPassword";
+    }
+
 }
