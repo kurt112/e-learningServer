@@ -92,14 +92,16 @@ public class UserAction {
 
         if (student != null) {
 
-            if(student.getUser().isEnabled()) return ResponseEntity.badRequest().body("Your Account Is Already Registered");
+            if (student.getUser().isEnabled())
+                return ResponseEntity.badRequest().body("Your Account Is Already Registered");
 
             return ResponseEntity.ok(student.getUser().getUserRole());
         }
 
         if (teacher != null) {
 
-            if(teacher.getUser().isEnabled()) return ResponseEntity.badRequest().body("Your Account Is Already Registered");
+            if (teacher.getUser().isEnabled())
+                return ResponseEntity.badRequest().body("Your Account Is Already Registered");
 
             return ResponseEntity.ok(teacher.getUser().getUserRole());
         }
@@ -123,8 +125,7 @@ public class UserAction {
                                         @RequestParam("password") String password,
                                         @RequestParam("gender") String gender,
                                         @RequestParam("middleName") String middleName
-    )
-    {
+    ) {
         User user = userService.findById(id);
         Date date = FormattedDate.dateToString(birthdate);
         user.setFirstName(firstName);
@@ -134,7 +135,7 @@ public class UserAction {
         user.setGender(gender);
         user.setMiddleName(middleName);
 
-        if(date != null) user.setBirthdate(date);
+        if (date != null) user.setBirthdate(date);
         user.setEmail(email);
 
 
@@ -143,11 +144,11 @@ public class UserAction {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<?> GetUser(@RequestParam("email") String email){
+    public ResponseEntity<?> GetUser(@RequestParam("email") String email) {
 
         User user = userService.findByEmail(email);
 
-        if(user != null){
+        if (user != null) {
             return ResponseEntity.badRequest().body("User Is Not Null");
         }
 
@@ -155,10 +156,10 @@ public class UserAction {
     }
 
     @PostMapping("/forgot")
-    public ResponseEntity<?> forgotPassword(@RequestParam("email") String email){
+    public ResponseEntity<?> forgotPassword(@RequestParam("email") String email) {
         User user = userService.findByEmail(email);
 
-        if(user == null){
+        if (user == null) {
             return ResponseEntity.badRequest().body("Email Is Not Existing");
         }
         final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
@@ -192,18 +193,14 @@ public class UserAction {
                 "      <table style=\"background-color: #f2f3f8; max-width:670px;  margin:0 auto;\" width=\"100%\" border=\"0\"\n" +
                 "             align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\n" +
                 "        <tr>\n" +
-                "          <td style=\"height:80px;\">&nbsp;</td>\n" +
-                "        </tr>\n" +
-                "        <tr>\n" +
-                "          <td style=\"text-align:center;\">\n" +
-                "            <a href=\"https://rakeshmandal.com\" title=\"logo\" target=\"_blank\">\n" +
-                "              <img width=\"60\" src=\"/assets/image/img.png\" title=\"logo\" alt=\"logo\">\n" +
+                "          <td style=\"text-align:center;margin: auto;display: flex;justify-content: center;\">\n" +
+                "            <a href=\"https://admiring-goldstine-7f4e6f.netlify.app\"\n" +
+                "               style=\"height: 200px; width: 340px; display: block; background-position: center;background: url('https://g-learn-files.s3.us-west-2.amazonaws.com/image_Email.png');background-repeat: no-repeat ;background-size: contain\" title=\"logo\" target=\"_blank\">\n" +
+                "\n" +
                 "            </a>\n" +
                 "          </td>\n" +
                 "        </tr>\n" +
-                "        <tr>\n" +
-                "          <td style=\"height:20px;\">&nbsp;</td>\n" +
-                "        </tr>\n" +
+                "\n" +
                 "        <tr>\n" +
                 "          <td>\n" +
                 "            <table width=\"95%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\"\n" +
@@ -224,7 +221,7 @@ public class UserAction {
                 "<!--                    password has been generated for you. To reset your password, click the-->\n" +
                 "<!--                    following link and follow the instructions.-->\n" +
                 "                  </p>\n" +
-                "                  <a href=\"http://localhost:8080/reset-password?access="+token+"\"\n" +
+                "                   <a href=\"https://eellearning.herokuapp.com/reset-password?access="+token+"\"\n" +
                 "                     style=\"background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;\">Reset\n" +
                 "                    Password</a>\n" +
                 "                </td>\n" +
@@ -253,10 +250,11 @@ public class UserAction {
                 "</body>\n" +
                 "\n" +
                 "</html>");
+
         EmailSenderService mailer = new EmailSenderService();
 
         try {
-            mailer.sendEmail("kurtorioque112@gmail.com","Reset Password",builder.toString());
+            mailer.sendEmail(email, "Reset Password", builder.toString());
             System.out.println("Email sent.");
         } catch (Exception ex) {
             System.out.println("Failed to sent email.");
@@ -268,11 +266,11 @@ public class UserAction {
 
     @PostMapping("/newPassword")
     public ResponseEntity<?> newPassword(@RequestParam("token") String token,
-                                         @RequestParam("password") String password){
+                                         @RequestParam("password") String password) {
         String email = jwt.getUsername(token);
         User user = userService.findByEmail(email);
 
-        if(email == null){
+        if (email == null) {
             return ResponseEntity.badRequest().body("User Is Not Existing");
         }
 
