@@ -48,7 +48,7 @@ public class Subject {
     private Date updated_at;
 
     @ManyToMany(mappedBy = "subjects")
-    private List<Curriculum> subjectList;
+        private List<Curriculum> curriculumList;
 
 
 }

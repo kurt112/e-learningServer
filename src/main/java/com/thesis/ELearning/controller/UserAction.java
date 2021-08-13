@@ -195,7 +195,7 @@ public class UserAction {
                 "        <tr>\n" +
                 "          <td style=\"text-align:center;margin: auto;display: flex;justify-content: center;\">\n" +
                 "            <a href=\"https://admiring-goldstine-7f4e6f.netlify.app\"\n" +
-                "               style=\"height: 200px; width: 340px; display: block; background-position: center;background: url('https://g-learn-files.s3.us-west-2.amazonaws.com/image_Email.png');background-repeat: no-repeat ;background-size: contain\" title=\"logo\" target=\"_blank\">\n" +
+                "               style=\"height: 200px; width: 340px; display: block; background-position: center center;background: url('https://g-learn-files.s3.us-west-2.amazonaws.com/image_Email.png');background-repeat: no-repeat ;background-size: contain\" title=\"logo\" target=\"_blank\">\n" +
                 "\n" +
                 "            </a>\n" +
                 "          </td>\n" +
@@ -215,11 +215,8 @@ public class UserAction {
                 "                  <span\n" +
                 "                          style=\"display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;\"></span>\n" +
                 "                  <p style=\"color:#455056; font-size:15px;line-height:24px; margin:0;\">\n" +
-                "                    Oy may bobo na naklimutan ang password nya hahahaha\n" +
-                "                    i click mo tong link na to hayop\n" +
-                "<!--                    We cannot simply send you your old password. A unique link to reset your-->\n" +
-                "<!--                    password has been generated for you. To reset your password, click the-->\n" +
-                "<!--                    following link and follow the instructions.-->\n" +
+                "                    You have requested that your password be reset. If you did not make this request, simply ignore this email. Your password must be reset within 15 minutes of receipt of this email.\n" +
+                "                    To reset your password , simply click the button below.\n" +
                 "                  </p>\n" +
                 "                   <a href=\"https://eellearning.herokuapp.com/reset-password?access="+token+"\"\n" +
                 "                     style=\"background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;\">Reset\n" +
