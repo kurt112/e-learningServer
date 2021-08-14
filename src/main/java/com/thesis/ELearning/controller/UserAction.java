@@ -195,7 +195,7 @@ public class UserAction {
                 "        <tr>\n" +
                 "          <td style=\"text-align:center;margin: auto;display: flex;justify-content: center;\">\n" +
                 "            <a href=\"https://admiring-goldstine-7f4e6f.netlify.app\"\n" +
-                "               style=\"height: 200px; width: 340px; display: block; background-position: center center;background: url('https://g-learn-files.s3.us-west-2.amazonaws.com/image_Email.png');background-repeat: no-repeat ;background-size: contain\" title=\"logo\" target=\"_blank\">\n" +
+                "               style=\"height: 200px; width: 340px; display: block; background: url('https://g-learn-files.s3.us-west-2.amazonaws.com/image_Email.png');background-repeat: no-repeat ;background-size: contain; background-position: center center;\" title=\"logo\" target=\"_blank\">\n" +
                 "\n" +
                 "            </a>\n" +
                 "          </td>\n" +
