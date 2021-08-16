@@ -63,6 +63,8 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/newPassword")
                 .permitAll()
+                .antMatchers("/verify")
+                .permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

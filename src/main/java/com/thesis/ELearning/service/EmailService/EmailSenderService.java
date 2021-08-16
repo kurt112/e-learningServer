@@ -1,4 +1,4 @@
-package com.thesis.ELearning.service;
+package com.thesis.ELearning.service.EmailService;
 
 import org.springframework.stereotype.Service;
 

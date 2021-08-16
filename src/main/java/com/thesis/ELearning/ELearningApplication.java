@@ -1,16 +1,12 @@
 package com.thesis.ELearning;
 
-import com.thesis.ELearning.service.EmailSenderService;
+import com.thesis.ELearning.service.EmailService.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.event.EventListener;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 
 @SpringBootApplication(exclude ={ErrorMvcAutoConfiguration.class} )

@@ -3,11 +3,16 @@ package com.thesis.ELearning.controller.AdminRest;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.Teacher;
 import com.thesis.ELearning.entity.User;
+import com.thesis.ELearning.service.EmailService.EmailSenderService;
+import com.thesis.ELearning.service.EmailService.EmailType;
+import com.thesis.ELearning.service.MyUserDetailsService;
 import com.thesis.ELearning.service.serviceImplementation.TeacherService;
 import com.thesis.ELearning.service.serviceImplementation.UserService;
+import com.thesis.ELearning.utils.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,12 +25,16 @@ public class TeacherAdmin {
 
      final private TeacherService teacherService;
      final private UserService userService;
+     final private Jwt jwt;
+     final private  MyUserDetailsService userDetailsService;
 
      @Autowired
-    public TeacherAdmin(TeacherService teacherService, UserService userService) {
+    public TeacherAdmin(TeacherService teacherService, UserService userService, Jwt jwt, MyUserDetailsService userDetailsService) {
         this.teacherService = teacherService;
         this.userService = userService;
-    }
+         this.jwt = jwt;
+         this.userDetailsService = userDetailsService;
+     }
 
     @PostMapping("/teacherID-register")
     public ResponseEntity<Response<Teacher>> addTeacher(@RequestParam("id") String email){
@@ -60,7 +69,8 @@ public class TeacherAdmin {
                                                         @RequestParam("email") String email,
                                                         @RequestParam("password") String password){
 
-        Teacher teacher = teacherService.findById(id);
+
+        Teacher teacher = teacherService.getTeacherById(id);
 
         User user = teacher.getUser();
         user.setEmail(email);
@@ -71,12 +81,26 @@ public class TeacherAdmin {
         user.setGender(gender);
         user.setPassword(password);
         user.setAccountNotExpired(true);
-        user.setAccountNotLocked(true);
         user.setCredentialNotExpired(true);
-        user.setEnabled(true);
+        user.setAccountNotLocked(true);
 
         userService.save(user);
         teacherService.save(teacher);
+
+        Thread thread = new Thread(() ->{
+            EmailSenderService mailer = new EmailSenderService();
+
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            final String token = this.jwt.generateToken(userDetails,false);
+
+            try {
+                mailer.sendEmail(email, "Verify Email", EmailType.userVerify(token));
+            } catch (Exception ex) {
+                System.out.println("Failed to sent email.");
+            }
+        });
+
+        thread.start();
 
         return new ResponseEntity<>(
                 new Response<>("Register Teacher Success", teacher),

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      dir="ltr"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verified</title>
+</head>
+<body>
+
+
+<script>
+    const data = new URLSearchParams(window.location.search)
+    const params = new URLSearchParams()
+    params.append('token',data.get('access'))
+    // const url = 'https://eellearning.herokuapp.com/verify?'+params
+    const url = 'http://localhost:8080/verify?'+params
+    fetch(url, {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(ignored => {
+        alert('Email Verified!')
+        window.close()
+    }).catch(error => {
+        console.log(error)
+    })
+
+
+</script>
+</body>
+</html>

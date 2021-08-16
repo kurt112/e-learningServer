@@ -77,16 +77,26 @@ public class View {
     public String forgotPassword(@RequestParam("access") String access) {
 
         try {
-            System.out.println("The access");
-            System.out.println(access);
             String email = jwt.getUsername(access);
-            User user = userService.findByEmail(email);
         }catch (Exception e){
             return "error";
         }
 
 
         return "NewPassword";
+    }
+
+    @GetMapping("/verify")
+    public String verify(@RequestParam("access") String access) {
+
+        try {
+            String email = jwt.getUsername(access);
+        }catch (Exception e){
+            return "error";
+        }
+
+
+        return "verify";
     }
 
 }

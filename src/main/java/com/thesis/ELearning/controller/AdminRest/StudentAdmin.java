@@ -3,11 +3,16 @@ package com.thesis.ELearning.controller.AdminRest;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.entity.User;
+import com.thesis.ELearning.service.EmailService.EmailSenderService;
+import com.thesis.ELearning.service.EmailService.EmailType;
+import com.thesis.ELearning.service.MyUserDetailsService;
 import com.thesis.ELearning.service.serviceImplementation.StudentService;
 import com.thesis.ELearning.service.serviceImplementation.UserService;
+import com.thesis.ELearning.utils.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -17,13 +22,18 @@ public class StudentAdmin {
 
     final private StudentService studentService;
     final private UserService userService;
+    final private Jwt jwt;
+    final private MyUserDetailsService userDetailsService;
+
 
 
     @Autowired
 
-    public StudentAdmin(StudentService studentService, UserService userService) {
+    public StudentAdmin(StudentService studentService, UserService userService, Jwt jwt, MyUserDetailsService userDetailsService) {
         this.studentService = studentService;
         this.userService = userService;
+        this.jwt = jwt;
+        this.userDetailsService = userDetailsService;
     }
 
 
@@ -64,7 +74,7 @@ public class StudentAdmin {
                                                      @RequestParam("password") String password){
 
 
-        Student student = studentService.findById(id);
+        Student student = studentService.getStudentById(id);
 
         User user = student.getUser();
         user.setEmail(email);
@@ -75,9 +85,26 @@ public class StudentAdmin {
         user.setGender(gender);
         user.setPassword(password);
         user.setAccountNotExpired(true);
-        user.setAccountNotLocked(true);
         user.setCredentialNotExpired(true);
-        user.setEnabled(true);
+        user.setAccountNotLocked(true);
+
+        Thread thread = new Thread(() -> {
+            EmailSenderService mailer = new EmailSenderService();
+
+
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            final String token = this.jwt.generateToken(userDetails,false);
+
+            try {
+                mailer.sendEmail(email, "Verify Email", EmailType.userVerify(token));
+                System.out.println("Email sent.");
+            } catch (Exception ex) {
+                System.out.println("Failed to sent email.");
+                ex.printStackTrace();
+            }
+        });
+
+        thread.start();
 
 
         userService.save(user);
