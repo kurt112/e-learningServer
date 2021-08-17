@@ -50,11 +50,28 @@ public class UserAction {
     @PostMapping("/admin")
     public ResponseEntity<Response<?>> addAdmin(@RequestParam("email") String email){
         User user = userService.findByEmail(email);
+
         if(user != null){
             return  ResponseEntity
                     .badRequest()
                     .body(new Response<>("Admin is already exist", null));
         }
+
+        Thread thread = new Thread(() ->{
+            EmailSenderService mailer = new EmailSenderService();
+
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            final String token = this.jwt.generateToken(userDetails,false);
+
+            try {
+                mailer.sendEmail(email, "Verify Email", EmailType.userVerify(token));
+            } catch (Exception ex) {
+                System.out.println("Failed to sent email.");
+            }
+        });
+
+
+        thread.start();
 
          user = new User(email,"?","?","?", "?","?","",
                 "$2a$12$9aNZQjnLmTlBtYMVY0JtF.HXt3.pN8YxwxhSCH/cxcJFm2/VlDuWC",new Date(),
