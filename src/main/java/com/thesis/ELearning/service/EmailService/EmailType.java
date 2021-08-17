@@ -53,7 +53,7 @@ public class EmailType {
                 "                                        Thanks for choosing Gardner! Before we get started, we just need to confirm that this is you.\n" +
                 "                                        <br/>Click below to verify your email address:\n" +
                 "                                    </p>\n" +
-                "                                    <a href=\"http://localhost:8080/verify?access="+token+"\"\n" +
+                "                                    <a href=\"https://eellearning.herokuapp.com/verify?access="+token+"\"\n" +
                 "                                       style=\"background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;\">Verify\n" +
                 "                                        Now</a>\n" +
                 "                                </td>\n" +

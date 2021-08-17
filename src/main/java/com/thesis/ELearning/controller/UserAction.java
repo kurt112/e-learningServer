@@ -1,6 +1,7 @@
 package com.thesis.ELearning.controller;
 
 import com.thesis.ELearning.configuration.Login.AuthenticationRequest;
+import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.entity.Teacher;
 import com.thesis.ELearning.entity.User;
@@ -13,6 +14,7 @@ import com.thesis.ELearning.service.serviceImplementation.UserService;
 import com.thesis.ELearning.utils.FormattedDate;
 import com.thesis.ELearning.utils.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -44,6 +46,49 @@ public class UserAction {
         this.studentService = studentService;
         this.teacherService = teacherService;
     }
+
+    @PostMapping("/admin")
+    public ResponseEntity<Response<?>> addAdmin(@RequestParam("email") String email){
+        User user = userService.findByEmail(email);
+        if(user != null){
+            return  ResponseEntity
+                    .badRequest()
+                    .body(new Response<>("Admin is already exist", null));
+        }
+
+         user = new User(email,"?","?","?", "?","?","",
+                "$2a$12$9aNZQjnLmTlBtYMVY0JtF.HXt3.pN8YxwxhSCH/cxcJFm2/VlDuWC",new Date(),
+                "ADMIN",true,true,true,false,new Date(),new Date());
+
+        userService.save(user);
+        return new ResponseEntity<>(
+                new Response<>("Register Admin is Success", "Success"),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/admin")
+    public ResponseEntity<Response<?>> deleteAdmin(@RequestParam("email") String email){
+        User user = userService.findByEmail(email);
+
+        System.out.println("The email " + email);
+
+        if(user == null|| !user.getUserRole().equals("ADMIN")){
+            return new ResponseEntity<>(
+                        new Response<>("Admin Is Not Existing", null),
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        userService.deleteById(""+user.getId());
+
+
+        return new ResponseEntity<>(
+                new Response<>("Delete Teacher Success", "Success"),
+                HttpStatus.OK
+        );
+    }
+
 
     @PostMapping("/re-login")
     public ResponseEntity<HashMap<?, ?>> ReLogin(@RequestParam("token") String token) {

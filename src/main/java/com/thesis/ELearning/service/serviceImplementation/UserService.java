@@ -30,17 +30,31 @@ public class UserService implements PageableServiceUser {
         this.repo = repo;
     }
 
-    @Override
-    @GraphQLQuery(name = "users")
+
+    @GraphQLQuery(name = "getUsersWithRole")
     public List<User> data(@GraphQLArgument(name = "search")String search,
-                            @GraphQLArgument(name = "page") int page) {
+                            @GraphQLArgument(name = "page") int page,
+                           @GraphQLArgument(name = "role") String role ) {
         Pageable pageable = PageRequest.of(page,10);
-        Page<User> pages =  repo.users(search, pageable);
+        Page<User> pages =  repo.usersWitRole(search,role, pageable);
         totalElements =  pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
         return pages.getContent();
     }
+
+    @Override
+    public List<User> data(@GraphQLArgument(name = "search")String search,
+                           @GraphQLArgument(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page,10);
+        Page<User> pages =  repo.findAll(pageable);
+        totalElements =  pages.getTotalElements();
+        totalPages = pages.getTotalPages();
+        currentPages = page;
+        return pages.getContent();
+    }
+
+
 
     @Override
     @GraphQLQuery(name = "saveUser")
@@ -82,6 +96,7 @@ public class UserService implements PageableServiceUser {
         return repo.findUserEmail(email);
     }
 
+    @GraphQLQuery(name = "userSettings")
     @Override
     public ApiSettings apiSettings() {
          return new ApiSettings(totalElements, totalPages, currentPages);
