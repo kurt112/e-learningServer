@@ -57,6 +57,13 @@ public class UserAction {
                     .body(new Response<>("Admin is already exist", null));
         }
 
+
+        user = new User(email,"?","?","?", "?","?","",
+                "$2a$12$9aNZQjnLmTlBtYMVY0JtF.HXt3.pN8YxwxhSCH/cxcJFm2/VlDuWC",new Date(),
+                "ADMIN",true,true,true,false,new Date(),new Date());
+
+        userService.save(user);
+
         Thread thread = new Thread(() ->{
             EmailSenderService mailer = new EmailSenderService();
 
@@ -73,11 +80,6 @@ public class UserAction {
 
         thread.start();
 
-         user = new User(email,"?","?","?", "?","?","",
-                "$2a$12$9aNZQjnLmTlBtYMVY0JtF.HXt3.pN8YxwxhSCH/cxcJFm2/VlDuWC",new Date(),
-                "ADMIN",true,true,true,false,new Date(),new Date());
-
-        userService.save(user);
         return new ResponseEntity<>(
                 new Response<>("Register Admin is Success", "Success"),
                 HttpStatus.OK
