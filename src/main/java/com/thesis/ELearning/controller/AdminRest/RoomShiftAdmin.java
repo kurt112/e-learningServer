@@ -136,6 +136,7 @@ public class RoomShiftAdmin {
 
         // adding student for every roomShift Class
         for(RoomShiftClass roomShiftClass: roomShift.getRoomShiftClasses()){
+            students.addAll(roomShiftClass.getStudents());
             roomShiftClass.setStudents(students);
             roomShiftClassesService.save(roomShiftClass);
         }
