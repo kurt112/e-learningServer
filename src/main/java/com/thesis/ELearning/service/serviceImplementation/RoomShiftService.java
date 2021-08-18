@@ -51,9 +51,6 @@ public class RoomShiftService implements PageableServiceRoomShift {
         totalElements =  pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
-        System.out.println(totalElements);
-        System.out.println(totalPages);
-        System.out.println(currentPages);
         return pages.getContent();
     }
 

@@ -5,15 +5,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "student")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public  class Student {
+public @Data class Student {
     @Id
     @Column(name = "student_id")
     @GraphQLQuery(name = "student_id", description = "student id")
@@ -40,30 +35,16 @@ public  class Student {
     @OneToMany(mappedBy ="student")
     private List<StudentClassAttendance> classAttendances;
 
+    @OneToMany(mappedBy = "student")
+    private List<StudentAssignment> assignments;
+
     public Student(String id, User user) {
         this.id = id;
         this.user = user;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        System.out.println("The o");
-        if (this == o) return true;
-        if (!(o instanceof Student)) return false;
-        Student student = (Student) o;
-        return getId().equals(student.getId());
-    }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id='" + id + '\'' +
-                ", user=" + user +
-                '}';
-    }
+    public Student() {
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
     }
 }

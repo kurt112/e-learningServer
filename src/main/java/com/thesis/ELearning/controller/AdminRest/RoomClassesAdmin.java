@@ -38,13 +38,15 @@ public class RoomClassesAdmin {
             @RequestParam("time-start") String timeStart,
             @RequestParam("time-end") String timeEnd,
             @RequestParam("day") String day,
-            @RequestParam("teacher-id") String teacherId) {
+            @RequestParam("teacher-id") String teacherId
 
+    ) {
 
         Teacher teacher = teacherService.findById(teacherId);
         RoomShift roomShift = roomShiftService.findById(roomShiftId);
         Subject subject = subjectService.findByIdIndex(subjectId);
-        RoomShiftClass roomShiftClasses = new RoomShiftClass();
+        RoomShiftClass existing = roomShiftClassesService.findById(id);
+        RoomShiftClass roomShiftClasses = existing == null ? new RoomShiftClass():existing;
 
         roomShiftClasses.setId(id);
 
@@ -58,12 +60,9 @@ public class RoomClassesAdmin {
         roomShiftClasses.setCreatedAt(new Date());
         roomShiftClasses.setStatus(1);
 
-        System.out.println("saving data");
-
         if (roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new ArrayList<>());
 
         for (Student student : roomShift.getStudents()) {
-            System.out.println(student.getUser());
             roomShiftClasses.getStudents().add(student);
         }
 

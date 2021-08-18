@@ -32,9 +32,12 @@ public class TeacherController {
     private final TeacherLectureService lectureService;
     private final TeacherExamsService teacherExamsService;
     private final TeacherQuizzesService teacherQuizzesService;
+    private final StudentAssignmentService studentAssignmentService;
+
+
 
     @Autowired
-    public TeacherController(TeacherRepository teacherRepository, TeacherResourceService teacherResourceService, TeacherAssignmentService teacherAssignmentService, RoomShiftClassesService roomShiftClassesService, TeacherLectureService lectureService, TeacherExamsService teacherExamsService, TeacherQuizzesService teacherQuizzesService) {
+    public TeacherController(TeacherRepository teacherRepository, TeacherResourceService teacherResourceService, TeacherAssignmentService teacherAssignmentService, RoomShiftClassesService roomShiftClassesService, TeacherLectureService lectureService, TeacherExamsService teacherExamsService, TeacherQuizzesService teacherQuizzesService, StudentAssignmentService studentAssignmentService) {
         this.teacherRepository = teacherRepository;
         this.teacherResourceService = teacherResourceService;
         this.teacherAssignmentService = teacherAssignmentService;
@@ -42,6 +45,7 @@ public class TeacherController {
         this.lectureService = lectureService;
         this.teacherExamsService = teacherExamsService;
         this.teacherQuizzesService = teacherQuizzesService;
+        this.studentAssignmentService = studentAssignmentService;
     }
 
     @PostMapping("/upload/resource")
@@ -146,6 +150,7 @@ public class TeacherController {
         int quarter =  Integer.parseInt(hashMap.get("quarter").toString());
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
         Date date = null;
+
         try {
             date = formatter.parse(deadLine);
         } catch (ParseException e) {
@@ -160,6 +165,13 @@ public class TeacherController {
                         classes);
 
         teacherAssignmentService.save(assignment);
+
+
+        for(Student student: classes.getStudents()){
+            studentAssignmentService.save(
+                    new StudentAssignment(0,1,student,assignment,new Date())
+            );
+        }
 
 
 

@@ -14,8 +14,7 @@
     const data = new URLSearchParams(window.location.search)
     const params = new URLSearchParams()
     params.append('token',data.get('access'))
-    // const url = 'https://eellearning.herokuapp.com/verify?'+params
-    const url = 'http://localhost:8080/verify?'+params
+    const url = 'https://eellearning.herokuapp.com/verify?'+params
     fetch(url, {
         method: 'POST', // or 'PUT'
         headers: {
