@@ -12,5 +12,4 @@ public interface RoomShiftRepository extends JpaRepository<RoomShift, String> {
     @Query(value = "SELECT t from RoomShift t where t.timeEnd like  %?1% or t.roomShiftName like %?1% or " +
             "t.timeStart like %?1% or t.grade like %?1% or t.section like %?1% or t.room.roomName like %?1% ORDER BY t.createdAt DESC")
     Page<RoomShift> RoomShift(String search, Pageable pageable);
-
 }

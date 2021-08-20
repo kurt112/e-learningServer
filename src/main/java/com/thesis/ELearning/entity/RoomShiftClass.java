@@ -1,12 +1,18 @@
 package com.thesis.ELearning.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.Persistent;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "room_shift_classes")
@@ -58,7 +64,7 @@ public class RoomShiftClass {
 
     // Activities
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "room_shift_classes_students",
     joinColumns = @JoinColumn(name = "room_class_id"),
     inverseJoinColumns = @JoinColumn(name = "student_id")
@@ -97,4 +103,12 @@ public class RoomShiftClass {
         this.status = status;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        RoomShiftClass that = (RoomShiftClass) o;
+
+        return Objects.equals(id, that.id);
+    }
 }

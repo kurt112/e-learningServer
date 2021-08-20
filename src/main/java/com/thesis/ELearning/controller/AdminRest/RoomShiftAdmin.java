@@ -87,6 +87,7 @@ public class RoomShiftAdmin {
             // creating new roomShift
             roomShift = new RoomShift(id, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room, teacher,curriculum);
             roomShift.setRoomShiftClasses(new ArrayList<>());
+            roomShift.setStatus(1);
         }
 
         roomShiftService.save(roomShift);

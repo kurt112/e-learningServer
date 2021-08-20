@@ -80,6 +80,9 @@ public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
     public RoomShiftClass findById(@GraphQLArgument(name = "id") String id) {
         Optional<RoomShiftClass> roomClasses = repo.findById(id);
 
+        System.out.println("asdasd");
+        System.out.println(roomClasses);
+
         return roomClasses.orElse(null);
     }
 

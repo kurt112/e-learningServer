@@ -45,10 +45,15 @@ public class RoomClassesAdmin {
         Teacher teacher = teacherService.findById(teacherId);
         RoomShift roomShift = roomShiftService.findById(roomShiftId);
         Subject subject = subjectService.findByIdIndex(subjectId);
-        RoomShiftClass existing = roomShiftClassesService.findById(id);
-        RoomShiftClass roomShiftClasses = existing == null ? new RoomShiftClass():existing;
 
-        roomShiftClasses.setId(id);
+        RoomShiftClass roomShiftClasses = roomShiftClassesService.findById(id);
+
+        if(roomShiftClasses == null){
+            roomShiftClasses = new RoomShiftClass();
+            roomShiftClasses.setId(id);
+            roomShiftClasses.setStatus(1);
+            roomShiftClasses.setCreatedAt(new Date());
+        }
 
         // setter
         roomShiftClasses.setDay(day);
@@ -57,8 +62,6 @@ public class RoomClassesAdmin {
         roomShiftClasses.setTeacher(teacher);
         roomShiftClasses.setRoomShift(roomShift);
         roomShiftClasses.setSubject(subject);
-        roomShiftClasses.setCreatedAt(new Date());
-        roomShiftClasses.setStatus(1);
 
         if (roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new ArrayList<>());
 

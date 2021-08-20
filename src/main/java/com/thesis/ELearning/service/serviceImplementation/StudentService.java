@@ -1,9 +1,7 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
+import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.ApiSettings;
-import com.thesis.ELearning.entity.DashBoard;
-import com.thesis.ELearning.entity.RoomShift;
-import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.repository.DashboardRepository;
 import com.thesis.ELearning.repository.StudentRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceStudent;
@@ -115,6 +113,31 @@ public class StudentService implements PageableServiceStudent {
     public Student getStudentById(String id) {
         Optional<Student> student = repo.findById(id);
         return student.orElse(null);
+    }
+
+    @Override
+    @GraphQLQuery(name = "getStudentClass")
+    public List<RoomShiftClass> getStudentClass(@GraphQLArgument(name = "email") String email,
+                                                @GraphQLArgument(name = "status") int status) {
+
+        System.out.println(email);
+        System.out.println(status);
+        return repo.roomShiftClass(email,status);
+    }
+
+    @Override
+    @GraphQLQuery(name = "getStudentAssignment")
+    public List<StudentAssignment> getStudentAssignment(@GraphQLArgument(name = "email") String email) {
+        return repo.getStudentAssignment(email);
+    }
+
+    @Override
+    @GraphQLQuery(name = "getStudentAssignmentArchive")
+    public List<StudentAssignment> getStudentArchiveAssignment(@GraphQLArgument(name = "email") String email,
+                                                               @GraphQLArgument(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page, 15);
+
+        return repo.getStudentAssignmentArchive(email, pageable).getContent();
     }
 
 

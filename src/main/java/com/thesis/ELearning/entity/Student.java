@@ -1,14 +1,23 @@
 package com.thesis.ELearning.entity;
 
 import io.leangen.graphql.annotations.GraphQLQuery;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "student")
-public @Data class Student {
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class Student {
     @Id
     @Column(name = "student_id")
     @GraphQLQuery(name = "student_id", description = "student id")
@@ -18,7 +27,6 @@ public @Data class Student {
     @JoinColumn(name = "student_user")
     @GraphQLQuery(name = "user", description = "Student User")
     private User user;
-
 
     @ManyToMany(mappedBy = "students")
     @GraphQLQuery(name = "roomShifts")
@@ -43,8 +51,17 @@ public @Data class Student {
         this.user = user;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Student student = (Student) o;
 
-    public Student() {
+        return Objects.equals(id, student.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return 1128121276;
     }
 }

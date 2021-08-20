@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author Kurt Orioque
@@ -56,7 +57,10 @@ public class StudentAssignmentService implements PageableServiceStudentAssignmen
 
     @Override
     public StudentAssignment findById(String id) {
-        return null;
+
+        Optional<StudentAssignment> studentAssignment =repo.findById(Integer.parseInt(id));
+
+        return studentAssignment.orElse(null);
     }
 
     @Override

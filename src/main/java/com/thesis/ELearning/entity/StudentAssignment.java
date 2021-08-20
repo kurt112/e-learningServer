@@ -32,6 +32,12 @@ class StudentAssignment {
     @Column(name = "status")
     private int status;
 
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "response")
+    private String response;
+
     @ManyToOne()
     @JoinColumn(name = "student")
     private Student student;
@@ -39,6 +45,7 @@ class StudentAssignment {
     @ManyToOne()
     @JoinColumn(name = "assignment")
     private TeacherAssignment teacherAssignment;
+
 
 
     @CreationTimestamp
