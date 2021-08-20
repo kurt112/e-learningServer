@@ -46,6 +46,12 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private List<StudentAssignment> assignments;
 
+    @OneToMany(mappedBy = "student")
+    private List<StudentExam> exams;
+
+    @OneToMany(mappedBy = "student")
+    private List<StudentQuiz> quizzes;
+
     public Student(String id, User user) {
         this.id = id;
         this.user = user;

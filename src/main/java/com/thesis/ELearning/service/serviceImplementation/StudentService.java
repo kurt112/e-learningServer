@@ -91,25 +91,6 @@ public class StudentService implements PageableServiceStudent {
 
 
     @Override
-    @GraphQLQuery(name = "studentSettings")
-    public ApiSettings apiSettings() {
-        return new ApiSettings(totalElements, totalPages, currentPages);
-    }
-
-    @GraphQLQuery(name = "getRoomShiftByStudent")
-    public List<RoomShift> StudentTransfer(@GraphQLArgument(name = "studentID") String id) {
-
-        Student student = findById(id);
-
-        return student != null ? student.getRoomShifts() : new ArrayList<>();
-    }
-
-    @Override
-    public long count() {
-        return repo.count();
-    }
-
-    @Override
     public Student getStudentById(String id) {
         Optional<Student> student = repo.findById(id);
         return student.orElse(null);
@@ -140,5 +121,53 @@ public class StudentService implements PageableServiceStudent {
         return repo.getStudentAssignmentArchive(email, pageable).getContent();
     }
 
+    @Override
+    @GraphQLQuery(name = "getStudentExam")
+    public List<StudentExam> getStudentExam(@GraphQLArgument(name = "email") String email) {
+        return repo.getStudentExam(email);
+    }
+
+    @Override
+    @GraphQLQuery(name = "getStudentExamArchive")
+    public List<StudentExam> getStudentExamArchive(@GraphQLArgument(name = "email") String email,
+                                                   @GraphQLArgument(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page, 15);
+
+        return repo.getStudentExamArchive(email,pageable).getContent();
+    }
+
+    @Override
+    @GraphQLQuery(name = "getStudentQuiz")
+    public List<StudentQuiz> getStudentQuiz(@GraphQLArgument(name = "email") String email) {
+        return repo.getStudentQuiz(email);
+    }
+
+    @Override
+    @GraphQLQuery(name = "getStudentQuizArchive")
+    public List<StudentQuiz> getStudentQuizArchive(@GraphQLArgument(name = "email") String email,
+                                                   @GraphQLArgument(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page, 15);
+        return repo.getStudentQuiztArchive(email,pageable).getContent();
+    }
+
+
+    @Override
+    public long count() {
+        return repo.count();
+    }
+
+    @Override
+    @GraphQLQuery(name = "studentSettings")
+    public ApiSettings apiSettings() {
+        return new ApiSettings(totalElements, totalPages, currentPages);
+    }
+
+    @GraphQLQuery(name = "getRoomShiftByStudent")
+    public List<RoomShift> StudentTransfer(@GraphQLArgument(name = "studentID") String id) {
+
+        Student student = findById(id);
+
+        return student != null ? student.getRoomShifts() : new ArrayList<>();
+    }
 
 }

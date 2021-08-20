@@ -1,9 +1,6 @@
 package com.thesis.ELearning.repository;
 
-import com.thesis.ELearning.entity.RoomShift;
-import com.thesis.ELearning.entity.RoomShiftClass;
-import com.thesis.ELearning.entity.Student;
-import com.thesis.ELearning.entity.StudentAssignment;
+import com.thesis.ELearning.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,12 +32,30 @@ public interface StudentRepository extends JpaRepository<Student, String> {
 
     // student to do list
 
-
     // page -1 di na need
+
+    // assignemnt
     @Query(value = "SELECT t from StudentAssignment t where t.student.user.email =?1 and t.status > -1")
     List<StudentAssignment> getStudentAssignment(String email);
 
     @Query(value = "SELECT t from StudentAssignment t where t.student.user.email =?1 and t.status =-1")
     Page<StudentAssignment> getStudentAssignmentArchive(String email, Pageable pageable);
+
+    // Quiz
+    @Query(value = "SELECT t from StudentQuiz t where t.student.user.email =?1 and t.status > -1")
+    List<StudentQuiz> getStudentQuiz(String email);
+
+    @Query(value = "SELECT t from StudentQuiz t where t.student.user.email =?1 and t.status =-1")
+    Page<StudentQuiz> getStudentQuiztArchive(String email, Pageable pageable);
+
+    // exam
+    @Query(value = "SELECT t from StudentExam t where t.student.user.email =?1 and t.status > -1")
+    List<StudentExam> getStudentExam(String email);
+
+    @Query(value = "SELECT t from StudentExam t where t.student.user.email =?1 and t.status =-1")
+    Page<StudentExam> getStudentExamArchive(String email, Pageable pageable);
+
+
+
 
 }

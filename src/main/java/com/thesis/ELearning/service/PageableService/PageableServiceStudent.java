@@ -1,11 +1,7 @@
 package com.thesis.ELearning.service.PageableService;
 
-import com.thesis.ELearning.entity.RoomShiftClass;
-import com.thesis.ELearning.entity.Student;
-import com.thesis.ELearning.entity.StudentAssignment;
+import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.service.PagableParentClass.ServicesGraphQl;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,5 +16,14 @@ public interface PageableServiceStudent extends ServicesGraphQl<Student> {
     List<StudentAssignment> getStudentAssignment(String email);
 
     List<StudentAssignment> getStudentArchiveAssignment(String email,int page);
+
+    List<StudentExam> getStudentExam(String email);
+
+    List<StudentExam> getStudentExamArchive(String email, int page);
+
+    List<StudentQuiz> getStudentQuiz(String email);
+
+    List<StudentQuiz> getStudentQuizArchive(String email, int page);
+
 
 }

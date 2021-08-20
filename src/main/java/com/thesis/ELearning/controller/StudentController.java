@@ -2,7 +2,11 @@ package com.thesis.ELearning.controller;
 
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.StudentAssignment;
+import com.thesis.ELearning.entity.StudentExam;
+import com.thesis.ELearning.entity.StudentQuiz;
 import com.thesis.ELearning.service.serviceImplementation.StudentAssignmentService;
+import com.thesis.ELearning.service.serviceImplementation.StudentExamService;
+import com.thesis.ELearning.service.serviceImplementation.StudentQuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +22,15 @@ import java.util.Date;
 public class StudentController {
 
     private final StudentAssignmentService assignmentService;
+    private final StudentQuizService quizService;
+    private final StudentExamService examService;
 
 
     @Autowired
-    public StudentController(StudentAssignmentService assignmentService) {
+    public StudentController(StudentAssignmentService assignmentService, StudentQuizService quizService, StudentExamService examService) {
         this.assignmentService = assignmentService;
+        this.quizService = quizService;
+        this.examService = examService;
     }
 
     @PostMapping("/upload/assignment")
@@ -63,6 +71,92 @@ public class StudentController {
 
         return new ResponseEntity<>(
                 new Response<>("UnSubmit Assignment Successful", "Assignment UnSubmit Succesful"),
+                HttpStatus.OK
+        );
+
+    }
+
+    // for quiz
+    @PostMapping("/upload/quiz")
+    private ResponseEntity<Response<?>> uploadQuiz(
+            @RequestParam("fileName") String fileName,
+            @RequestParam("id") int id
+    ) {
+
+        StudentQuiz studentQuiz =quizService.findById(""+id);
+        Date datePass = new Date();
+        if(datePass.before(studentQuiz.getQuiz().getDeadLine()))studentQuiz.setResponse("On Time");
+        else studentQuiz.setResponse("Late");
+        studentQuiz.setSubmittedAt(new Date());
+        studentQuiz.setLocation(fileName);
+        studentQuiz.setStatus(1);
+        quizService.save(studentQuiz);
+
+        return new ResponseEntity<>(
+                new Response<>("Pass Quiz Successful", "Quiz Pass Succesful"),
+                HttpStatus.OK
+        );
+
+    }
+
+    @PostMapping("/unsubmit/quiz")
+    private ResponseEntity<Response<?>> unSubmitQuiz(
+            @RequestParam("id") int id
+    ) {
+
+        StudentQuiz studentQuiz =quizService.findById(""+id);
+
+        studentQuiz.setSubmittedAt(null);
+        studentQuiz.setResponse("");
+        studentQuiz.setLocation("");
+        studentQuiz.setStatus(0);
+        quizService.save(studentQuiz);
+
+        return new ResponseEntity<>(
+                new Response<>("UnSubmit Quiz Successful", "Quiz UnSubmit Succesful"),
+                HttpStatus.OK
+        );
+
+    }
+
+    //for exam
+    @PostMapping("/upload/exam")
+    private ResponseEntity<Response<?>> uploadExam(
+            @RequestParam("fileName") String fileName,
+            @RequestParam("id") int id
+    ) {
+
+        StudentExam studentExam = examService.findById(""+id);
+        Date datePass = new Date();
+        if(datePass.before(studentExam.getExam().getDeadLine()))studentExam.setResponse("On Time");
+        else studentExam.setResponse("Late");
+        studentExam.setSubmittedAt(new Date());
+        studentExam.setLocation(fileName);
+        studentExam.setStatus(1);
+        examService.save(studentExam);
+
+        return new ResponseEntity<>(
+                new Response<>("Pass Exam Successful", "Exam Pass Succesful"),
+                HttpStatus.OK
+        );
+
+    }
+
+    @PostMapping("/unsubmit/exam")
+    private ResponseEntity<Response<?>> unSubmitExam(
+            @RequestParam("id") int id
+    ) {
+
+        StudentExam studentExam = examService.findById(""+id);
+
+        studentExam.setSubmittedAt(null);
+        studentExam.setResponse("");
+        studentExam.setLocation("");
+        studentExam.setStatus(0);
+        examService.save(studentExam);
+
+        return new ResponseEntity<>(
+                new Response<>("UnSubmit Exam Successful", "Exam UnSubmit Succesful"),
                 HttpStatus.OK
         );
 
