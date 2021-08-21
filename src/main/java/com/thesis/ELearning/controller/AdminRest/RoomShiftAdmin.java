@@ -48,14 +48,12 @@ public class RoomShiftAdmin {
             @RequestParam("curriculum-code") String curriculumCode
     ) {
 
-        System.out.println("Teacher id " + teacherId);
 
         Curriculum curriculum = curriculumService.findById(curriculumCode);
         Room room = roomService.findById(roomid);
         Teacher teacher = teacherService.findById(teacherId);
 
         RoomShift roomShift = roomShiftService.findById(id);
-        System.out.println("The teacher "  + teacher);
 
         // pointer for subject in roomshift
         HashMap<Integer,Integer> hashMap = new HashMap<>();
@@ -132,20 +130,19 @@ public class RoomShiftAdmin {
             students.add(studentService.getStudentById(id));
         }
 
+        System.out.println(students.size());
+
         roomShift.setStudents(students);
 
+        roomShiftService.save(roomShift);
 
-        // adding student for every roomShift Class
         for(RoomShiftClass roomShiftClass: roomShift.getRoomShiftClasses()){
-            students.addAll(roomShiftClass.getStudents());
             roomShiftClass.setStudents(students);
             roomShiftClassesService.save(roomShiftClass);
         }
 
 
 
-
-        roomShiftService.save(roomShift);
 
         return new ResponseEntity<>(
                 new Response<>("Register Student Success", "Success"),

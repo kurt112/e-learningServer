@@ -28,11 +28,11 @@ public class Student {
     @GraphQLQuery(name = "user", description = "Student User")
     private User user;
 
-    @ManyToMany(mappedBy = "students")
+    @ManyToMany(mappedBy = "students",cascade = {CascadeType.PERSIST})
     @GraphQLQuery(name = "roomShifts")
     private List<RoomShift> roomShifts;
 
-    @ManyToMany(mappedBy = "students")
+    @ManyToMany(mappedBy = "students", cascade = {CascadeType.PERSIST})
     @GraphQLQuery(name = "roomShiftClasses")
     private List<RoomShiftClass> roomShiftClasses;
 

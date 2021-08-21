@@ -69,7 +69,7 @@ class RoomShift {
     @OneToMany(mappedBy ="roomShift", cascade = CascadeType.ALL)
     private List<RoomShiftClass> roomShiftClasses;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(name = "room_shift_students",
             joinColumns = @JoinColumn(name = "room_shift_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
