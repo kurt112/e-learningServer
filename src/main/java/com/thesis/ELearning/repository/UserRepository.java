@@ -14,6 +14,11 @@ public interface UserRepository extends JpaRepository<User, Integer>{
             "or t.email like %?1%) ORDER BY t.createdAt DESC")
     Page<User> usersWitRole(String search,String role, Pageable pageable);
 
+    @Query(value = "SELECT t from User t where t.isAccountNotLocked = ?3 and t.userRole = ?2 and (t.firstName like  %?1% or t.lastName like %?1% " +
+            "or t.email like %?1%) ORDER BY t.createdAt DESC")
+    Page<User> usersWitRole(String search,String role, boolean status, Pageable pageable);
+
+
     @Query(value = "SELECT t from User  t where t.email = ?1")
     User findUserEmail (String username);
 }

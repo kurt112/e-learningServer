@@ -29,6 +29,9 @@ public class Curriculum {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "status")
+    private int status;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", updatable = false)

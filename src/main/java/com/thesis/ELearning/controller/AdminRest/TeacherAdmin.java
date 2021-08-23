@@ -130,5 +130,31 @@ public class TeacherAdmin {
         );
     }
 
+    @PostMapping("/off/teacher")
+    public ResponseEntity<Response<?>> setTeacherOff(@RequestParam("id") String id) {
+
+        Teacher teacher = teacherService.findById(id);
+        teacher.setStatus(0);
+        teacherService.save(teacher);
+
+        return new ResponseEntity<>(
+                new Response<>("Teacher On", "Teacher On"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/on/teacher")
+    public ResponseEntity<Response<?>> setTeacherOn(@RequestParam("id") String id) {
+
+        Teacher teacher  = teacherService.findById(id);
+        teacher.setStatus(1);
+        teacherService.save(teacher);
+
+        return new ResponseEntity<>(
+                new Response<>("Teacher Off", "Teacher Off"),
+                HttpStatus.OK
+        );
+    }
+
 
 }

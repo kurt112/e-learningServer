@@ -39,10 +39,12 @@ public class DashboardService implements PageableServiceDashBoard {
 
     @Override
     @GraphQLQuery(name = "getDashboard")
-    public List<DashBoard> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page) {
-        Pageable pageable = PageRequest.of(page,10);
+    public List<DashBoard> data(@GraphQLArgument(name = "search") String search,
+                                @GraphQLArgument(name = "page") int page,
+                                @GraphQLArgument(name = "status") int status) {
+        Pageable pageable = PageRequest.of(page, 10);
         Page<DashBoard> pages = repo.findAll(pageable);
-        totalElements =  pages.getTotalElements();
+        totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
         return repo.findAll();
@@ -58,7 +60,7 @@ public class DashboardService implements PageableServiceDashBoard {
     public boolean deleteById(String id) {
         try {
             repo.deleteById(Integer.parseInt(id));
-        }catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
         return true;

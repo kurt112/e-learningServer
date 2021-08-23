@@ -64,6 +64,14 @@ public class UserAction {
 
         userService.save(user);
 
+        Teacher teacher = new Teacher();
+
+        teacher.setId(email);
+        teacher.setUser(user);
+
+
+        teacherService.save(teacher);
+
         Thread thread = new Thread(() ->{
             EmailSenderService mailer = new EmailSenderService();
 
@@ -88,9 +96,9 @@ public class UserAction {
 
     @DeleteMapping("/admin")
     public ResponseEntity<Response<?>> deleteAdmin(@RequestParam("email") String email){
+
         User user = userService.findByEmail(email);
 
-        System.out.println("The email " + email);
 
         if(user == null|| !user.getUserRole().equals("ADMIN")){
             return new ResponseEntity<>(
@@ -99,8 +107,8 @@ public class UserAction {
             );
         }
 
-        userService.deleteById(""+user.getId());
 
+        teacherService.deleteById(user.getEmail());
 
         return new ResponseEntity<>(
                 new Response<>("Delete Teacher Success", "Success"),
@@ -279,6 +287,32 @@ public class UserAction {
         userService.save(user);
 
         return ResponseEntity.ok("User Verified Successful");
+    }
+
+    @PostMapping("/off/user")
+    public ResponseEntity<Response<?>> setUserOff(@RequestParam("id") String id) {
+
+        User user = userService.findById(id);
+        user.setAccountNotLocked(false);
+        userService.save(user);
+
+        return new ResponseEntity<>(
+                new Response<>("User On", "User On"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/on/user")
+    public ResponseEntity<Response<?>> setUserOn(@RequestParam("id") String id) {
+
+        User user  = userService.findById(id);
+        user.setAccountNotLocked(false);
+        userService.save(user);
+
+        return new ResponseEntity<>(
+                new Response<>("User Off", "User Off"),
+                HttpStatus.OK
+        );
     }
 
 }

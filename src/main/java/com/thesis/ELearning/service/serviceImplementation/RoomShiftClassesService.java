@@ -41,9 +41,17 @@ public class RoomShiftClassesService implements PageableServiceRoomShiftClass {
 
     @Override
     @GraphQLQuery(name = "roomShiftClasses")
-    public List<RoomShiftClass> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page) {
+    public List<RoomShiftClass> data(@GraphQLArgument(name = "search") String search,
+                                     @GraphQLArgument(name = "page") int page,
+                                     @GraphQLArgument(name= "status") int status) {
         Pageable pageable = PageRequest.of(page,10);
-        Page<RoomShiftClass> pages = repo.RoomClasses(search, pageable);
+        Page<RoomShiftClass> pages;
+
+        System.out.println("The status " + status);
+
+        if(status ==2){
+           pages = repo.RoomClasses(search, pageable);
+        } else pages = repo.RoomClasses(search,status, pageable);
         totalElements =  pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;

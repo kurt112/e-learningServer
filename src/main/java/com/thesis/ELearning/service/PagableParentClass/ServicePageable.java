@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ServicePageable<T>{
 
-    Page<T> data(String search, int page);
+    Page<T> data(String search, int page, int status);
 
     boolean save(T t);
 

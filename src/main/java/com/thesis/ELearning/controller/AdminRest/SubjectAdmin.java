@@ -1,6 +1,7 @@
 package com.thesis.ELearning.controller.AdminRest;
 
 import com.thesis.ELearning.entity.API.Response;
+import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.entity.Subject;
 import com.thesis.ELearning.service.serviceImplementation.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,32 @@ public class SubjectAdmin {
 
         return new ResponseEntity<>(
                 new Response<>("Delete Subject Success", "Subject Delete Success"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/off/subject")
+    public ResponseEntity<Response<?>> setSubjectOff(@RequestParam("id") String id) {
+
+        Subject subject = subjectServices.findById(id);
+        subject.setStatus(0);
+        subjectServices.save(subject);
+
+        return new ResponseEntity<>(
+                new Response<>("Subject On", "Subject On"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/on/subject")
+    public ResponseEntity<Response<?>> setRoomSubjectShiftOn(@RequestParam("id") String id) {
+
+        Subject subject  = subjectServices.findById(id);
+        subject.setStatus(1);
+        subjectServices.save(subject);
+
+        return new ResponseEntity<>(
+                new Response<>("Subject Off", "Subject Off"),
                 HttpStatus.OK
         );
     }

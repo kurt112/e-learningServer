@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public interface  ServicesGraphQl<T> {
-    List<T> data(String search, int page);
+    List<T> data(String search, int page, int status);
 
     T save(T t);
 

@@ -34,9 +34,20 @@ public class CurriculumService implements PageableServiceCurriculum {
 
     @Override
     @GraphQLQuery(name = "curriculums")
-    public List<Curriculum> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page) {
+    public List<Curriculum> data(@GraphQLArgument(name = "search") String search,
+                                 @GraphQLArgument(name = "page") int page,
+                                 @GraphQLArgument(name = "status") int status) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Curriculum> pages = repo.curriculums(search, pageable);
+        Page<Curriculum> pages;
+
+        if(status == 2){
+            pages =  repo.curriculums(search, pageable);
+        }else {
+            pages = repo.curriculums(search,status, pageable);
+        }
+
+
+
         totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;

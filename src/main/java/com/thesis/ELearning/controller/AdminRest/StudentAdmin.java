@@ -1,6 +1,7 @@
 package com.thesis.ELearning.controller.AdminRest;
 
 import com.thesis.ELearning.entity.API.Response;
+import com.thesis.ELearning.entity.RoomShift;
 import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.entity.User;
 import com.thesis.ELearning.service.EmailService.EmailSenderService;
@@ -132,6 +133,32 @@ public class StudentAdmin {
 //        userService.deleteById(email);
         return new ResponseEntity<>(
                 new Response<>("Delete Student Success", "Student Delete Success"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/off/student")
+    public ResponseEntity<Response<?>> setStudentOff(@RequestParam("id") String id) {
+
+        Student student = studentService.findById(id);
+        student.setStatus(0);
+        studentService.save(student);
+
+        return new ResponseEntity<>(
+                new Response<>("Student On", "Student On"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/on/student")
+    public ResponseEntity<Response<?>> setStudentOn(@RequestParam("id") String id) {
+
+        Student student  = studentService.findById(id);
+        student.setStatus(1);
+        studentService.save(student);
+
+        return new ResponseEntity<>(
+                new Response<>("Student Off", "Student Off"),
                 HttpStatus.OK
         );
     }

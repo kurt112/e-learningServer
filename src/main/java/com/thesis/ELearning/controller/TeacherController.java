@@ -64,7 +64,7 @@ public class TeacherController {
     ) {
         Teacher teacher = teacherRepository.getTeacherByUserEmail(email);
         TeacherResources teacherResources = new TeacherResources(code, name, filePath, type, description, new Date());
-        teacherResources.setStatus("Not Shared");
+        teacherResources.setStatus(0);
         teacherResources.setTeacher(teacher);
         teacherResourceService.save(teacherResources);
 

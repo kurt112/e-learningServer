@@ -31,7 +31,7 @@ public class Subject {
     private String subjectMajor;
 
     @Column(name = "subject_status")
-    private String status;
+    private int status;
 
     @OneToMany(mappedBy = "subject")
     @JsonIgnore

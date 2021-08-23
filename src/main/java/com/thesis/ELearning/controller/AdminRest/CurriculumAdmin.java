@@ -2,6 +2,7 @@ package com.thesis.ELearning.controller.AdminRest;
 
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.Curriculum;
+import com.thesis.ELearning.entity.Room;
 import com.thesis.ELearning.entity.Subject;
 import com.thesis.ELearning.service.serviceImplementation.CurriculumService;
 import com.thesis.ELearning.service.serviceImplementation.SubjectService;
@@ -76,6 +77,36 @@ public class CurriculumAdmin {
 
         return new ResponseEntity<>(
                 new Response<>("Success Add Subject", "Curriculum Subject Added"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/off/curriculum")
+    public ResponseEntity<Response<?>> setRoomOff(@RequestParam("id") String id) {
+
+        Curriculum curriculum = curriculumService.findById(id);
+
+        curriculum.setStatus(0);
+
+        curriculumService.save(curriculum);
+
+        return new ResponseEntity<>(
+                new Response<>("Room On", "Room On"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/on/curriculum")
+    public ResponseEntity<Response<?>> setRoomOn(@RequestParam("id") String id) {
+
+        Curriculum curriculum  = curriculumService.findById(id);
+
+
+        curriculum.setStatus(1);
+        curriculumService.save(curriculum);
+
+        return new ResponseEntity<>(
+                new Response<>("Curriculum Off", "Room Off"),
                 HttpStatus.OK
         );
     }

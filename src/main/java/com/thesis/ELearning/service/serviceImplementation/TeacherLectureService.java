@@ -51,7 +51,7 @@ public class TeacherLectureService implements PageableServiceTeacherLecture {
     }
 
     @Override
-    public List<TeacherLectures> data(String search, int page) {
+    public List<TeacherLectures> data(String search, int page,@GraphQLArgument(name= "status") int status) {
         Pageable pageable = PageRequest.of(page,10);
         return repo.findAll(pageable).getContent();
     }

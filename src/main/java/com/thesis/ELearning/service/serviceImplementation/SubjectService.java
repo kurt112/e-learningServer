@@ -42,9 +42,14 @@ public class SubjectService implements PageableServiceSubject {
     @Override
     @GraphQLQuery(name = "subjects")
     public List<Subject> data(@GraphQLArgument(name = "search") String search,
-                              @GraphQLArgument(name = "page") int page) {
+                              @GraphQLArgument(name = "page") int page,
+                              @GraphQLArgument(name= "status") int status) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Subject> pages = repo.subjects(search, pageable);
+        Page<Subject> pages;
+
+        if(status == 2) pages  = repo.subjects(search, pageable);
+        else pages = repo.subjects(search,status,pageable);
+
         totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;

@@ -124,5 +124,35 @@ public class RoomClassesAdmin {
         );
     }
 
+    @PostMapping("/off")
+    public ResponseEntity<Response<?>> setRoomClassOff(@RequestParam("id") String id) {
+
+        RoomShiftClass RoomClass = roomShiftClassesService.findById(id);
+
+        RoomClass.setStatus(0);
+
+        roomShiftClassesService.save(RoomClass);
+
+        return new ResponseEntity<>(
+                new Response<>("RoomShiftClass On", "RoomShiftClass On"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/on")
+    public ResponseEntity<Response<?>> setRoomClassOn(@RequestParam("id") String id) {
+
+        RoomShiftClass RoomClass  = roomShiftClassesService.findById(id);
+
+
+        RoomClass.setStatus(1);
+        roomShiftClassesService.save(RoomClass);
+
+        return new ResponseEntity<>(
+                new Response<>("RoomShiftClass Off", "RoomShiftClass Off"),
+                HttpStatus.OK
+        );
+    }
+
 
 }

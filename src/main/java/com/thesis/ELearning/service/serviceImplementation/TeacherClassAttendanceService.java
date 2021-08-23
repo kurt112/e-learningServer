@@ -4,6 +4,7 @@ import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.TeacherClassAttendance;
 import com.thesis.ELearning.repository.TeacherClassAttendanceRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceTeacherClassAttendance;
+import io.leangen.graphql.annotations.GraphQLArgument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class TeacherClassAttendanceService implements PageableServiceTeacherClas
     }
 
     @Override
-    public List<TeacherClassAttendance> data(String search, int page) {
+    public List<TeacherClassAttendance> data(String search, int page,@GraphQLArgument(name= "status") int status) {
         return repo.findAll();
     }
 

@@ -34,9 +34,17 @@ public class UserService implements PageableServiceUser {
     @GraphQLQuery(name = "getUsersWithRole")
     public List<User> data(@GraphQLArgument(name = "search")String search,
                             @GraphQLArgument(name = "page") int page,
-                           @GraphQLArgument(name = "role") String role ) {
+                           @GraphQLArgument(name = "role") String role,
+                           @GraphQLArgument(name = "status") int status) {
         Pageable pageable = PageRequest.of(page,10);
-        Page<User> pages =  repo.usersWitRole(search,role, pageable);
+        System.out.println("The status  " + status);
+        Page<User> pages;
+
+        if(status == 2) pages = repo.usersWitRole(search,role, pageable);
+        else {
+            pages = repo.usersWitRole(search,role,status ==1, pageable);
+        }
+
         totalElements =  pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
@@ -45,9 +53,12 @@ public class UserService implements PageableServiceUser {
 
     @Override
     public List<User> data(@GraphQLArgument(name = "search")String search,
-                           @GraphQLArgument(name = "page") int page) {
+                           @GraphQLArgument(name = "page") int page,
+                           @GraphQLArgument(name= "status") int status) {
         Pageable pageable = PageRequest.of(page,10);
         Page<User> pages =  repo.findAll(pageable);
+
+
         totalElements =  pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
@@ -69,10 +80,12 @@ public class UserService implements PageableServiceUser {
 
     @Override
     @GraphQLQuery(name = "deleteUserById")
+    @Transactional
     public boolean deleteById(String id) {
         try {
             repo.deleteById(Integer.parseInt(id));
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
         return true;

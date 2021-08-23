@@ -22,6 +22,7 @@ public class RoomAdmin {
 
     @PostMapping("/room-register")
     public ResponseEntity<Response<Room>> AddRoom(@RequestBody Room room){
+        room.setStatus(1);
         roomService.save(room);
         return new ResponseEntity<>(
                 new Response<>("Register Room Success", room),
@@ -45,6 +46,36 @@ public class RoomAdmin {
 
         return new ResponseEntity<>(
                 new Response<>("Delete Room Success", "Room Delete Success"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/off/room")
+    public ResponseEntity<Response<?>> setRoomOff(@RequestParam("id") String id) {
+
+        Room room = roomService.findById(id);
+
+        room.setStatus(0);
+
+        roomService.save(room);
+
+        return new ResponseEntity<>(
+                new Response<>("Room On", "Room On"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/on/room")
+    public ResponseEntity<Response<?>> setRoomOn(@RequestParam("id") String id) {
+
+        Room room = roomService.findById(id);
+
+
+        room.setStatus(1);
+        roomService.save(room);
+
+        return new ResponseEntity<>(
+                new Response<>("Room Off", "Room Off"),
                 HttpStatus.OK
         );
     }

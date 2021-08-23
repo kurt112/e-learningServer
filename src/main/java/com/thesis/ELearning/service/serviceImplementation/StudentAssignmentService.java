@@ -4,6 +4,7 @@ import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.StudentAssignment;
 import com.thesis.ELearning.repository.StudentAssignmentRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceStudentAssignment;
+import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +36,7 @@ public class StudentAssignmentService implements PageableServiceStudentAssignmen
     }
 
     @Override
-    public List<StudentAssignment> data(String search, int page) {
+    public List<StudentAssignment> data(String search, int page,@GraphQLArgument(name= "status") int status) {
         Pageable pageable = PageRequest.of(page,10);
         Page<StudentAssignment> pages = repo.findAll(pageable);
         totalElements =  pages.getTotalElements();

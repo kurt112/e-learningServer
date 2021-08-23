@@ -45,7 +45,7 @@ public class TeacherResources {
     private Date updated_at;
 
     @Column(name = "status")
-    private String status;
+    private int status;
 
 
     @ManyToOne()

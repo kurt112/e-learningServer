@@ -44,7 +44,9 @@ public class TeacherAssignmentService implements PageableServiceTeacherAssignmen
 
 
     @Override
-    public List<TeacherAssignment> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page){
+    public List<TeacherAssignment> data(@GraphQLArgument(name = "search") String search,
+                                        @GraphQLArgument(name = "page") int page,
+                                        @GraphQLArgument(name= "status") int status){
         Pageable pageable = PageRequest.of(page, 10);
         Page<TeacherAssignment> pages = repo.data(search, pageable);
         totalElements = pages.getTotalElements();

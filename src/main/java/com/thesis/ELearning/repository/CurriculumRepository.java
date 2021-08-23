@@ -13,4 +13,9 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, String> 
             "t.name like %?1% or " +
             "t.description like %?1% order by t.createdAt desc ")
     Page<Curriculum> curriculums(String search, Pageable pageable);
+
+    @Query(value = "SELECT t from Curriculum t where t.status = ?2 and (t.code like %?1% or " +
+            "t.name like %?1% or " +
+            "t.description like %?1%) order by t.createdAt desc ")
+    Page<Curriculum> curriculums(String search, int status, Pageable pageable);
 }

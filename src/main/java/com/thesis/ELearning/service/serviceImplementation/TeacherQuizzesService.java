@@ -48,7 +48,7 @@ public class TeacherQuizzesService implements PageableServiceTeacherQuizzes {
     }
 
     @Override
-    public List<TeacherQuizzes> data(String search, int page) {
+    public List<TeacherQuizzes> data(String search, int page,@GraphQLArgument(name= "status") int status) {
         return null;
     }
 

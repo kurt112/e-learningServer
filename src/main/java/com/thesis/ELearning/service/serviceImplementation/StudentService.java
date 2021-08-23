@@ -43,9 +43,14 @@ public class StudentService implements PageableServiceStudent {
     @Override
     @GraphQLQuery(name = "students")
     public List<Student> data(@GraphQLArgument(name = "search") String search,
-                              @GraphQLArgument(name = "page") int page) {
+                              @GraphQLArgument(name = "page") int page,
+                              @GraphQLArgument(name= "status") int status) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Student> pages = repo.Students(search, pageable);
+        Page<Student> pages;
+
+        if(status ==2) pages =repo.Students(search, pageable);
+        else pages = repo.Students(search,status,pageable);
+
         totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;

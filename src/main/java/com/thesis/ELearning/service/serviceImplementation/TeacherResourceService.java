@@ -33,16 +33,17 @@ public class TeacherResourceService implements PageableServiceResources {
 
     @Override
     public TeacherResources FindResourceByTeacherEmail(String code, String email) {
-        return  repo.FindResourcesByTeacherEmail(code,email);
+        return repo.FindResourcesByTeacherEmail(code, email);
     }
 
     @Override
 //    @GraphQLQuery(name = "getTeacherResources")
     public List<TeacherResources> data(@GraphQLArgument(name = "search") String search,
-                                       @GraphQLArgument(name = "page") int page) {
-        Pageable pageable = PageRequest.of(page,10);
+                                       @GraphQLArgument(name = "page") int page,
+                                       @GraphQLArgument(name = "status") int status) {
+        Pageable pageable = PageRequest.of(page, 10);
         Page<TeacherResources> pages = repo.Resources(search, 2, pageable);
-        totalElements =  pages.getTotalElements();
+        totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
         return repo.findAll();
@@ -52,7 +53,7 @@ public class TeacherResourceService implements PageableServiceResources {
     public TeacherResources save(TeacherResources teacherResources) {
         try {
             repo.save(teacherResources);
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
         return teacherResources;

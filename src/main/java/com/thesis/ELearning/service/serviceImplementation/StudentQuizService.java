@@ -4,6 +4,7 @@ import com.thesis.ELearning.entity.API.ApiSettings;
 import com.thesis.ELearning.entity.StudentQuiz;
 import com.thesis.ELearning.repository.StudentQuizRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceStudentQuiz;
+import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class StudentQuizService implements PageableServiceStudentQuiz {
     }
 
     @Override
-    public List<StudentQuiz> data(String search, int page) {
+    public List<StudentQuiz> data(String search, int page,@GraphQLArgument(name= "status") int status) {
         return null;
     }
 

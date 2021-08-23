@@ -49,7 +49,7 @@ public class TeacherExamsService implements PageableServiceTeacherExams {
     }
 
     @Override
-    public List<TeacherExams> data(String search, int page) {
+    public List<TeacherExams> data(String search, int page,@GraphQLArgument(name= "status") int status) {
         return null;
     }
 

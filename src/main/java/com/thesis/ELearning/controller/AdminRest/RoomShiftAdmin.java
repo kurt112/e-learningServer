@@ -172,4 +172,30 @@ public class RoomShiftAdmin {
                 HttpStatus.OK
         );
     }
+
+    @PostMapping("/off/roomShift")
+    public ResponseEntity<Response<?>> setRoomShiftOff(@RequestParam("id") String id) {
+
+        RoomShift roomShift = roomShiftService.findById(id);
+        roomShift.setStatus(0);
+        roomShiftService.save(roomShift);
+
+        return new ResponseEntity<>(
+                new Response<>("RoomShift On", "RoomShift On"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/on/roomShift")
+    public ResponseEntity<Response<?>> setRoomShiftOn(@RequestParam("id") String id) {
+
+        RoomShift roomShift  = roomShiftService.findById(id);
+        roomShift.setStatus(1);
+        roomShiftService.save(roomShift);
+
+        return new ResponseEntity<>(
+                new Response<>("RoomShift Off", "RoomShift Off"),
+                HttpStatus.OK
+        );
+    }
 }

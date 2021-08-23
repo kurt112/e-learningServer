@@ -58,9 +58,14 @@ public class TeacherService implements PageableServiceTeacher {
 
     @Override
     @GraphQLQuery(name = "teachers")
-    public List<Teacher> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page) {
+    public List<Teacher> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page,
+                              @GraphQLArgument(name= "status") int status) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Teacher> pages = repo.Teachers(search, pageable);
+        Page<Teacher> pages;
+
+        if(status == 2) pages = repo.Teachers(search,pageable);
+        else pages = repo.Teachers(search,status,pageable);
+
         totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
@@ -81,6 +86,7 @@ public class TeacherService implements PageableServiceTeacher {
     }
 
     @Override
+    @Transactional
     public boolean deleteById(String id) {
         try {
             repo.deleteById(id);

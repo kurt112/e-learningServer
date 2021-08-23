@@ -16,6 +16,10 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
             "or t.user.email like %?1% or t.id like %?1%) ORDER BY t.user.createdAt DESC ")
     Page<Teacher> Teachers(String search, Pageable pageable);
 
+    @Query(value = "SELECT t from Teacher t where t.user.userRole = 'TEACHER' and t.status =?2 and ( t.user.firstName like  %?1% or t.user.lastName like %?1% "+
+            "or t.user.email like %?1% or t.id like %?1%) ORDER BY t.user.createdAt DESC ")
+    Page<Teacher> Teachers(String search, int status ,Pageable pageable);
+
     @Query(value = "SELECT t from Teacher t where t.id =?1")
     Teacher teacher(String id);
 
