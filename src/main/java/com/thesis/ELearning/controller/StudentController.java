@@ -66,7 +66,7 @@ public class StudentController {
         studentAssignment.setSubmittedAt(null);
         studentAssignment.setResponse("");
         studentAssignment.setLocation("");
-        studentAssignment.setStatus(0);
+        studentAssignment.setStatus(-1);
         studentAssignment.setGrade(0);
         assignmentService.save(studentAssignment);
 
@@ -110,7 +110,8 @@ public class StudentController {
         studentQuiz.setSubmittedAt(null);
         studentQuiz.setResponse("");
         studentQuiz.setLocation("");
-        studentQuiz.setStatus(0);
+        studentQuiz.setStatus(-1);
+        studentQuiz.setGrade(0);
         quizService.save(studentQuiz);
 
         return new ResponseEntity<>(
@@ -153,7 +154,8 @@ public class StudentController {
         studentExam.setSubmittedAt(null);
         studentExam.setResponse("");
         studentExam.setLocation("");
-        studentExam.setStatus(0);
+        studentExam.setStatus(-1);
+        studentExam.setGrade(0);
         examService.save(studentExam);
 
         return new ResponseEntity<>(

@@ -12,8 +12,8 @@ import java.util.Properties;
 public class EmailSenderService {
 
 
-    private final String userName = "kurt@pearlpay.io";
-    private final String password = "hactgjyjuzykdfth";
+    private final String userName = "gardnercaintacollege@gmail.com";
+    private final String password = "wixlplhigbpzrann";
 
     public void sendEmail(String toEmail,String subject, String body) throws MessagingException {
 
