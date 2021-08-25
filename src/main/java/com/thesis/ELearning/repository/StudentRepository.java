@@ -41,21 +41,21 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     // 1 submitted
 
     // assignemnt
-    @Query(value = "SELECT t from StudentAssignment t where t.student.user.email =?1 and t.status =-1")
+    @Query(value = "SELECT t from StudentAssignment t where t.student.user.email =?1 and (t.status =-1 or t.status =1)")
     List<StudentAssignment> getStudentAssignment(String email);
 
     @Query(value = "SELECT t from StudentAssignment t where t.student.user.email =?1 and t.status =0")
     Page<StudentAssignment> getStudentAssignmentArchive(String email, Pageable pageable);
 
     // Quiz
-    @Query(value = "SELECT t from StudentQuiz t where t.student.user.email =?1 and t.status =-1")
+    @Query(value = "SELECT t from StudentQuiz t where t.student.user.email =?1 and (t.status =-1 or t.status =1)")
     List<StudentQuiz> getStudentQuiz(String email);
 
     @Query(value = "SELECT t from StudentQuiz t where t.student.user.email =?1 and t.status =0")
     Page<StudentQuiz> getStudentQuiztArchive(String email, Pageable pageable);
 
     // exam
-    @Query(value = "SELECT t from StudentExam t where t.student.user.email =?1 and t.status =-1")
+    @Query(value = "SELECT t from StudentExam t where t.student.user.email =?1 and (t.status =-1 or t.status =1)")
     List<StudentExam> getStudentExam(String email);
 
     @Query(value = "SELECT t from StudentExam t where t.student.user.email =?1 and t.status =0")
