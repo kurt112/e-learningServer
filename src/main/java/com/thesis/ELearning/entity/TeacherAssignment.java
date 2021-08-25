@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "teacher_assignment")
@@ -55,5 +56,19 @@ public class TeacherAssignment {
     @JoinColumn(name = "room_shift_class")
     private RoomShiftClass roomShiftClass;
 
+    @OneToMany(mappedBy = "teacherAssignment")
+    private List<StudentAssignment> studentAssignments;
 
+    public TeacherAssignment(String code, double highGrade, double lowGrade, int quarter, int sem, String description, Date createdAt, Date deadLine, TeacherResources resource, RoomShiftClass roomShiftClass) {
+        this.code = code;
+        this.highGrade = highGrade;
+        this.lowGrade = lowGrade;
+        this.quarter = quarter;
+        this.sem = sem;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.deadLine = deadLine;
+        this.resource = resource;
+        this.roomShiftClass = roomShiftClass;
+    }
 }

@@ -177,6 +177,12 @@ public class RoomShiftAdmin {
     public ResponseEntity<Response<?>> setRoomShiftOff(@RequestParam("id") String id) {
 
         RoomShift roomShift = roomShiftService.findById(id);
+
+        for(RoomShiftClass classes: roomShift.getRoomShiftClasses()){
+            classes.setStatus(0);
+            roomShiftClassesService.save(classes);
+        }
+
         roomShift.setStatus(0);
         roomShiftService.save(roomShift);
 

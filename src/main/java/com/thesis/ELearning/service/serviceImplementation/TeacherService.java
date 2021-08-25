@@ -1,10 +1,7 @@
 package com.thesis.ELearning.service.serviceImplementation;
 
+import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.ApiSettings;
-import com.thesis.ELearning.entity.DashBoard;
-import com.thesis.ELearning.entity.TeacherResources;
-import com.thesis.ELearning.entity.RoomShiftClass;
-import com.thesis.ELearning.entity.Teacher;
 import com.thesis.ELearning.repository.DashboardRepository;
 import com.thesis.ELearning.repository.TeacherRepository;
 import com.thesis.ELearning.service.PageableService.PageableServiceTeacher;
@@ -44,12 +41,24 @@ public class TeacherService implements PageableServiceTeacher {
     }
 
     @Override
+    @GraphQLQuery(name = "getTeacherAssignmentToGrade")
+    public List<StudentAssignment> getTeacherAssignmentToGrade(@GraphQLArgument(name = "email") String email) {
+        Teacher teacher = findById(email);
+        System.out.println(teacher);
+        System.out.println(email);
+        return repo.getTeacherAssignmentToGrade(email);
+    }
+
+    @Override
     @GraphQLQuery(name = "getTeacherResources")
     public List<TeacherResources> getTeacherResources(@GraphQLArgument(name = "search") String search,
                                                       @GraphQLArgument(name = "email") String email,
-                                                      @GraphQLArgument(name = "page") int page) {
+                                                      @GraphQLArgument(name = "page") int page,
+                                                      @GraphQLArgument(name = "status") int status) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<TeacherResources> pages = repo.getTeacherResources(search, email, pageable);
+        Page<TeacherResources> pages;
+        if (status == 2) pages = repo.getTeacherResources(search, email, pageable);
+        else pages = repo.getTeacherResources(search, email, status, pageable);
         totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
@@ -58,13 +67,14 @@ public class TeacherService implements PageableServiceTeacher {
 
     @Override
     @GraphQLQuery(name = "teachers")
-    public List<Teacher> data(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "page") int page,
-                              @GraphQLArgument(name= "status") int status) {
+    public List<Teacher> data(@GraphQLArgument(name = "search") String search,
+                              @GraphQLArgument(name = "page") int page,
+                              @GraphQLArgument(name = "status") int status) {
         Pageable pageable = PageRequest.of(page, 10);
         Page<Teacher> pages;
 
-        if(status == 2) pages = repo.Teachers(search,pageable);
-        else pages = repo.Teachers(search,status,pageable);
+        if (status == 2) pages = repo.Teachers(search, pageable);
+        else pages = repo.Teachers(search, status, pageable);
 
         totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
@@ -75,7 +85,7 @@ public class TeacherService implements PageableServiceTeacher {
     @Override
     public Teacher save(Teacher teacher) {
         try {
-            if(repo.findById(teacher.getId()).isEmpty()){
+            if (repo.findById(teacher.getId()).isEmpty()) {
                 dashboardRepository.save(dashBoard.IncTeacherCount());
             }
             repo.save(teacher);
@@ -105,7 +115,8 @@ public class TeacherService implements PageableServiceTeacher {
     }
 
     @GraphQLQuery(name = "getTeacherClasses")
-    public List<RoomShiftClass> getTeacherRoomClass(@GraphQLArgument(name = "teacherId") String teacherId, @GraphQLArgument(name = "status") int status) {
+    public List<RoomShiftClass> getTeacherRoomClass(@GraphQLArgument(name = "teacherId") String teacherId,
+                                                    @GraphQLArgument(name = "status") int status) {
 
         return repo.getTeacherClass(teacherId, status);
     }

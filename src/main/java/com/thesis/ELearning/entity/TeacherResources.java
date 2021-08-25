@@ -5,7 +5,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class TeacherResources {
 
     @Id
@@ -59,6 +57,18 @@ public class TeacherResources {
             inverseJoinColumns = @JoinColumn(name = "student"))
     private List<Student> students;
 
+    @OneToMany(mappedBy = "resource")
+    private List<TeacherAssignment> teacherAssignments;
+
+    @OneToMany(mappedBy = "resource")
+    private List<TeacherExams> teacherExams;
+
+    @OneToMany(mappedBy = "resource")
+    private List<TeacherLectures> teacherLectures;
+
+    @OneToMany(mappedBy = "resource")
+    private List<TeacherQuizzes>teacherQuizzes;
+
 
     public TeacherResources(String code, String name, String location, String type, String description, Date createdAt) {
         this.code = code;
@@ -69,12 +79,7 @@ public class TeacherResources {
         this.createdAt = createdAt;
     }
 
-//    public void addTeacher(Teacher teacher) {
-//        if(teachers == null) teachers = new ArrayList<>();
-//
-//        teachers.add(teacher);
-//
-//    }
+
 
     public String getCreatedAt() {
         return createdAt.toString();

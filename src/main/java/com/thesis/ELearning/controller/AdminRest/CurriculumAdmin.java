@@ -30,6 +30,7 @@ public class CurriculumAdmin {
 
     @PostMapping("/curriculum-register")
     public ResponseEntity<Response<?>> AddRoom(@RequestBody Curriculum curriculum){
+        curriculum.setStatus(1);
         curriculumService.save(curriculum);
         return new ResponseEntity<>(
                 new Response<>("Register Room Success", "Success"),

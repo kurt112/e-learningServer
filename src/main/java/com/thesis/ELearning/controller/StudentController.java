@@ -67,6 +67,7 @@ public class StudentController {
         studentAssignment.setResponse("");
         studentAssignment.setLocation("");
         studentAssignment.setStatus(0);
+        studentAssignment.setGrade(0);
         assignmentService.save(studentAssignment);
 
         return new ResponseEntity<>(
@@ -161,4 +162,40 @@ public class StudentController {
         );
 
     }
+
+    @PostMapping("/grade/exam")
+    private ResponseEntity<Response<?>> gradeExam(
+            @RequestParam("id") int id,
+            @RequestParam("grade") double grade
+    ) {
+
+        StudentExam studentExam = examService.findById(""+id);
+        studentExam.setGrade(grade);
+
+        examService.save(studentExam);
+
+        return new ResponseEntity<>(
+                new Response<>("Grade Successful", "Grade3 Succesful"),
+                HttpStatus.OK
+        );
+
+    }
+
+    @PostMapping("/grade/assignment")
+    private ResponseEntity<Response<?>> unSubmitAssigment(
+            @RequestParam("id") int id,
+            @RequestParam("grade") double grade
+    ) {
+        StudentAssignment studentAssignment = assignmentService.findById(""+id);
+        studentAssignment.setGrade(grade);
+        assignmentService.save(studentAssignment);
+
+        return new ResponseEntity<>(
+                new Response<>("Assignment Graded Success", "Assignment Graded Success"),
+                HttpStatus.OK
+        );
+
+    }
+
+
 }

@@ -33,10 +33,14 @@ public class TeacherQuizzesService implements PageableServiceTeacherQuizzes {
 
     @GraphQLQuery(name = "getTeacherQuizzes")
     @Override
-    public List<TeacherQuizzes> getTeacherQuizzes(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "email") String email, @GraphQLArgument(name = "page") int page){
-        Pageable pageable = PageRequest.of(page,10);
-        Page<TeacherQuizzes> pages = repo.getTeacherQuizzes(search,email,pageable);
-        totalElements =  pages.getTotalElements();
+    public List<TeacherQuizzes> getTeacherQuizzes(
+            @GraphQLArgument(name = "search") String search,
+            @GraphQLArgument(name = "email") String email,
+            @GraphQLArgument(name = "page") int page
+    ) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<TeacherQuizzes> pages = repo.getTeacherQuizzes(search, email, pageable);
+        totalElements = pages.getTotalElements();
         totalPages = pages.getTotalPages();
         currentPages = page;
         return pages.getContent();
@@ -44,11 +48,11 @@ public class TeacherQuizzesService implements PageableServiceTeacherQuizzes {
 
     @Override
     public TeacherQuizzes findTeacherQuizzesByCode(String code, String email) {
-        return repo.getTeacherQuizzesByCodeAndEmail(code,email);
+        return repo.getTeacherQuizzesByCodeAndEmail(code, email);
     }
 
     @Override
-    public List<TeacherQuizzes> data(String search, int page,@GraphQLArgument(name= "status") int status) {
+    public List<TeacherQuizzes> data(String search, int page, @GraphQLArgument(name = "status") int status) {
         return null;
     }
 
@@ -56,8 +60,8 @@ public class TeacherQuizzesService implements PageableServiceTeacherQuizzes {
     public TeacherQuizzes save(TeacherQuizzes teacherQuizzes) {
         try {
             repo.save(teacherQuizzes);
-        }catch (Exception e){
-            return  null;
+        } catch (Exception e) {
+            return null;
         }
         return teacherQuizzes;
     }

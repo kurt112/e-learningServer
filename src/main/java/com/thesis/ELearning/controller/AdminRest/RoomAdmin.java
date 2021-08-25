@@ -2,7 +2,11 @@ package com.thesis.ELearning.controller.AdminRest;
 
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.entity.Room;
+import com.thesis.ELearning.entity.RoomShift;
+import com.thesis.ELearning.entity.RoomShiftClass;
 import com.thesis.ELearning.service.serviceImplementation.RoomService;
+import com.thesis.ELearning.service.serviceImplementation.RoomShiftClassesService;
+import com.thesis.ELearning.service.serviceImplementation.RoomShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +17,19 @@ import org.springframework.web.bind.annotation.*;
 public class RoomAdmin {
 
     private final RoomService roomService;
+    private final RoomShiftService roomShiftService;
+    private final RoomShiftClassesService roomShiftClassesService;
 
     @Autowired
-    public RoomAdmin(RoomService roomService) {
+    public RoomAdmin(RoomService roomService, RoomShiftService roomShiftService, RoomShiftClassesService roomShiftClassesService) {
         this.roomService = roomService;
+        this.roomShiftService = roomShiftService;
+        this.roomShiftClassesService = roomShiftClassesService;
     }
 
 
     @PostMapping("/room-register")
-    public ResponseEntity<Response<Room>> AddRoom(@RequestBody Room room){
+    public ResponseEntity<Response<Room>> AddRoom(@RequestBody Room room) {
         room.setStatus(1);
         roomService.save(room);
         return new ResponseEntity<>(
@@ -35,7 +43,7 @@ public class RoomAdmin {
 
         Room room = roomService.findById(id);
 
-        if(room == null){
+        if (room == null) {
             return new ResponseEntity<>(
                     new Response<>("Room Id Is Not Existing", "Room Delete Not Success"),
                     HttpStatus.BAD_REQUEST
@@ -55,7 +63,19 @@ public class RoomAdmin {
 
         Room room = roomService.findById(id);
 
+        for (RoomShift roomShift : room.getRoomShifts()) {
+            roomShift.setStatus(0);
+            roomShiftService.save(roomShift);
+
+            for (RoomShiftClass classes : roomShift.getRoomShiftClasses()) {
+                classes.setStatus(0);
+                roomShiftClassesService.save(classes);
+            }
+
+        }
+
         room.setStatus(0);
+
 
         roomService.save(room);
 
@@ -70,6 +90,16 @@ public class RoomAdmin {
 
         Room room = roomService.findById(id);
 
+        for (RoomShift roomShift : room.getRoomShifts()) {
+            roomShift.setStatus(1);
+            roomShiftService.save(roomShift);
+
+            for (RoomShiftClass classes : roomShift.getRoomShiftClasses()) {
+                classes.setStatus(1);
+                roomShiftClassesService.save(classes);
+            }
+
+        }
 
         room.setStatus(1);
         roomService.save(room);

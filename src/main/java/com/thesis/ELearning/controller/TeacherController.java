@@ -164,6 +164,7 @@ public class TeacherController {
 
         RoomShiftClass classes = roomShiftClassesService.findById(classCode);
         TeacherResources teacherResources = teacherResourceService.findById(resourceCode);
+        teacherResources.setStatus(1);
 
         TeacherAssignment assignment =
                 new TeacherAssignment(code, highGrade, lowGrade, quarter, sem, description,
@@ -179,7 +180,7 @@ public class TeacherController {
             );
         }
 
-
+        teacherResourceService.save(teacherResources);
         return new ResponseEntity<>(
                 new Response<>("Assignment Create Success", "Successful"),
                 HttpStatus.OK
@@ -194,8 +195,9 @@ public class TeacherController {
         String code = hashMap.get("code").toString();
         TeacherResources resources = teacherResourceService.findById(hashMap.get("resourceCode").toString());
         String description = hashMap.get("description").toString();
-        System.out.println("I am here");
+        resources.setStatus(1);
         lectureService.save(new TeacherLectures(code, description, quarter, sem, resources, classes, new Date(), null));
+        teacherResourceService.save(resources);
         return new ResponseEntity<>(
                 new Response<>("Lecture  Create Success", "Successful"),
                 HttpStatus.OK
@@ -215,6 +217,11 @@ public class TeacherController {
         }
 
         lectureService.deleteById(code);
+
+        if(lectures.getResource().getTeacherLectures().size() ==0){
+            lectures.getResource().setStatus(0);
+            teacherResourceService.save(lectures.getResource());
+        }
 
         return new ResponseEntity<>(
                 new Response<>("Delete Assignment Success", code),
@@ -257,6 +264,9 @@ public class TeacherController {
             );
         }
 
+        teacherResources.setStatus(1);
+        teacherResourceService.save(teacherResources);
+
 
         return new ResponseEntity<>(
                 new Response<>("Exam Create Success", "Successful"),
@@ -277,6 +287,11 @@ public class TeacherController {
         }
 
         teacherExamsService.deleteById(code);
+
+        if(exams.getResource().getTeacherExams().size() ==0){
+            exams.getResource().setStatus(0);
+            teacherResourceService.save(exams.getResource());
+        }
 
         return new ResponseEntity<>(
                 new Response<>("Delete Exam Success", "Success"),
@@ -317,6 +332,9 @@ public class TeacherController {
             );
         }
 
+        teacherResources.setStatus(1);
+        teacherResourceService.save(teacherResources);
+
         return new ResponseEntity<>(
                 new Response<>("Quiz Create Success", "Successful"),
                 HttpStatus.OK
@@ -333,6 +351,10 @@ public class TeacherController {
             );
         }
         teacherQuizzesService.deleteById(code);
+        if(quizzes.getResource().getTeacherQuizzes().size() ==0){
+            quizzes.getResource().setStatus(0);
+            teacherResourceService.save(quizzes.getResource());
+        }
         return new ResponseEntity<>(
                 new Response<>("Delete Quiz Success", "Success"),
                 HttpStatus.OK

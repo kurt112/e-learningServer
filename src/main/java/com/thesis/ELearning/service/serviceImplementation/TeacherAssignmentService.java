@@ -32,7 +32,10 @@ public class TeacherAssignmentService implements PageableServiceTeacherAssignmen
     }
 
     @GraphQLQuery(name = "getTeacherAssignment")
-    public List<TeacherAssignment> getRoomShiftClassAssignmentByTeacher(@GraphQLArgument(name = "search") String search, @GraphQLArgument(name = "email") String email, @GraphQLArgument(name = "page") int page){
+    public List<TeacherAssignment>
+    getRoomShiftClassAssignmentByTeacher(@GraphQLArgument(name = "search") String search,
+                                                                        @GraphQLArgument(name = "email") String email,
+                                                                        @GraphQLArgument(name = "page") int page){
         System.out.println(email);
         Pageable pageable = PageRequest.of(page, 10);
         Page<TeacherAssignment> pages = repo.getRoomShiftClassAssignmentByTeacher(search,email, pageable);
