@@ -13,7 +13,7 @@ public class EmailSenderService {
 
 
     private final String userName = "gardnercaintacollege@gmail.com";
-    private final String password = "wixlplhigbpzrann";
+    private final String password = "ourwukiukoavybkk";
 
     public void sendEmail(String toEmail,String subject, String body) throws MessagingException {
 
