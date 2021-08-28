@@ -176,7 +176,7 @@ public class TeacherController {
 
         for (Student student : classes.getStudents()) {
             studentAssignmentService.save(
-                    new StudentAssignment(0, 1, student, assignment, new Date())
+                    new StudentAssignment(0, -1, student, assignment, new Date())
             );
         }
 
@@ -260,7 +260,7 @@ public class TeacherController {
 
         for (Student student : classes.getStudents()) {
             studentExamService.save(
-                    new StudentExam(0, 0, student, exams, new Date())
+                    new StudentExam(0, -1, student, exams, new Date())
             );
         }
 
@@ -328,7 +328,7 @@ public class TeacherController {
 
         for (Student student : classes.getStudents()) {
             studentQuizService.save(
-                    new StudentQuiz(0, 0, student, quizzes, new Date())
+                    new StudentQuiz(0, -1, student, quizzes, new Date())
             );
         }
 

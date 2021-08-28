@@ -43,10 +43,22 @@ public class TeacherService implements PageableServiceTeacher {
     @Override
     @GraphQLQuery(name = "getTeacherAssignmentToGrade")
     public List<StudentAssignment> getTeacherAssignmentToGrade(@GraphQLArgument(name = "email") String email) {
-        Teacher teacher = findById(email);
-        System.out.println(teacher);
-        System.out.println(email);
+
         return repo.getTeacherAssignmentToGrade(email);
+    }
+
+    @Override
+    @GraphQLQuery(name = "getTeacherExamToGrade")
+    public List<StudentExam> getTeacherExamToGrade(@GraphQLArgument(name = "email") String email) {
+        System.out.println("The email " + email
+        );
+        return repo.getTeacherExamToGrade(email);
+    }
+
+    @Override
+    @GraphQLQuery(name = "getTeacherQuizToGrade")
+    public List<StudentQuiz> getTeacherQuizToGrade(@GraphQLArgument(name = "email") String email) {
+        return repo.getTeacherQuizToGrade(email);
     }
 
     @Override

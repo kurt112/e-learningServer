@@ -46,8 +46,6 @@ class StudentAssignment {
     @JoinColumn(name = "assignment")
     private TeacherAssignment teacherAssignment;
 
-
-
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at",updatable = false)

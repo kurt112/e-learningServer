@@ -152,7 +152,7 @@ public class StudentService implements PageableServiceStudent {
     public List<StudentQuiz> getStudentQuizArchive(@GraphQLArgument(name = "email") String email,
                                                    @GraphQLArgument(name = "page") int page) {
         Pageable pageable = PageRequest.of(page, 15);
-        return repo.getStudentQuiztArchive(email,pageable).getContent();
+        return repo.getStudentQuizArchive(email,pageable).getContent();
     }
 
 

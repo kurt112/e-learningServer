@@ -50,6 +50,21 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
     @Query(value = "SELECT t from StudentAssignment t where " +
             "t.teacherAssignment.roomShiftClass.teacher.user.email = ?1 and " +
-            "t.status = 1")
+            "t.status = 1 " +
+            "order by t.submittedAt DESC")
     List<StudentAssignment> getTeacherAssignmentToGrade(String email);
+
+    @Query(value = "SELECT t from StudentExam t where " +
+            "t.exam.roomShiftClass.teacher.user.email = ?1 and " +
+            "t.status = 1 " +
+            "order by t.submittedAt DESC")
+    List<StudentExam> getTeacherExamToGrade(String email);
+
+
+    @Query(value = "SELECT t from StudentQuiz t where " +
+            "t.quiz.roomShiftClass.teacher.user.email = ?1 and " +
+            "t.status = 1 " +
+            "order by t.submittedAt DESC")
+    List<StudentQuiz> getTeacherQuizToGrade(String email);
+
 }

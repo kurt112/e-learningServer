@@ -44,7 +44,7 @@ public class StudentController {
         Date datePass = new Date();
         if(datePass.before(studentAssignment.getTeacherAssignment().getDeadLine()))studentAssignment.setResponse("On Time");
         else studentAssignment.setResponse("Late");
-        studentAssignment.setSubmittedAt(new Date());
+        studentAssignment.setSubmittedAt(datePass);
         studentAssignment.setLocation(fileName);
         studentAssignment.setStatus(1);
         assignmentService.save(studentAssignment);
@@ -62,7 +62,7 @@ public class StudentController {
     ) {
 
         StudentAssignment studentAssignment = assignmentService.findById(""+id);
-
+        String location = studentAssignment.getLocation();
         studentAssignment.setSubmittedAt(null);
         studentAssignment.setResponse("");
         studentAssignment.setLocation("");
@@ -71,7 +71,7 @@ public class StudentController {
         assignmentService.save(studentAssignment);
 
         return new ResponseEntity<>(
-                new Response<>("UnSubmit Assignment Successful", "Assignment UnSubmit Succesful"),
+                new Response<>("UnSubmit Assignment Successful", location),
                 HttpStatus.OK
         );
 
@@ -85,13 +85,16 @@ public class StudentController {
     ) {
 
         StudentQuiz studentQuiz =quizService.findById(""+id);
+        System.out.println("i am at quiz");
         Date datePass = new Date();
+            System.out.println(studentQuiz);
         if(datePass.before(studentQuiz.getQuiz().getDeadLine()))studentQuiz.setResponse("On Time");
         else studentQuiz.setResponse("Late");
-        studentQuiz.setSubmittedAt(new Date());
+        studentQuiz.setSubmittedAt(datePass);
         studentQuiz.setLocation(fileName);
         studentQuiz.setStatus(1);
         quizService.save(studentQuiz);
+
 
         return new ResponseEntity<>(
                 new Response<>("Pass Quiz Successful", "Quiz Pass Succesful"),
@@ -106,7 +109,7 @@ public class StudentController {
     ) {
 
         StudentQuiz studentQuiz =quizService.findById(""+id);
-
+        String location = studentQuiz.getLocation();
         studentQuiz.setSubmittedAt(null);
         studentQuiz.setResponse("");
         studentQuiz.setLocation("");
@@ -115,7 +118,7 @@ public class StudentController {
         quizService.save(studentQuiz);
 
         return new ResponseEntity<>(
-                new Response<>("UnSubmit Quiz Successful", "Quiz UnSubmit Succesful"),
+                new Response<>("UnSubmit Quiz Successful", location),
                 HttpStatus.OK
         );
 
@@ -128,11 +131,14 @@ public class StudentController {
             @RequestParam("id") int id
     ) {
 
+        System.out.println("I am in upload exam " + fileName);
+
         StudentExam studentExam = examService.findById(""+id);
         Date datePass = new Date();
+        System.out.println(studentExam);
         if(datePass.before(studentExam.getExam().getDeadLine()))studentExam.setResponse("On Time");
         else studentExam.setResponse("Late");
-        studentExam.setSubmittedAt(new Date());
+        studentExam.setSubmittedAt(datePass);
         studentExam.setLocation(fileName);
         studentExam.setStatus(1);
         examService.save(studentExam);
@@ -150,7 +156,7 @@ public class StudentController {
     ) {
 
         StudentExam studentExam = examService.findById(""+id);
-
+        String location = studentExam.getLocation();
         studentExam.setSubmittedAt(null);
         studentExam.setResponse("");
         studentExam.setLocation("");
@@ -159,7 +165,7 @@ public class StudentController {
         examService.save(studentExam);
 
         return new ResponseEntity<>(
-                new Response<>("UnSubmit Exam Successful", "Exam UnSubmit Succesful"),
+                new Response<>("UnSubmit Exam Successful", location),
                 HttpStatus.OK
         );
 
@@ -177,7 +183,7 @@ public class StudentController {
         examService.save(studentExam);
 
         return new ResponseEntity<>(
-                new Response<>("Grade Successful", "Grade3 Succesful"),
+                new Response<>("Grade Successful", "Grade Succesful"),
                 HttpStatus.OK
         );
 

@@ -1,9 +1,6 @@
 package com.thesis.ELearning.service.PageableService;
 
-import com.thesis.ELearning.entity.StudentAssignment;
-import com.thesis.ELearning.entity.TeacherAssignment;
-import com.thesis.ELearning.entity.TeacherResources;
-import com.thesis.ELearning.entity.Teacher;
+import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.service.PagableParentClass.ServicesGraphQl;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +13,9 @@ public interface PageableServiceTeacher extends ServicesGraphQl<Teacher> {
     Teacher getTeacherById(String id);
 
     List<StudentAssignment> getTeacherAssignmentToGrade(String email);
+
+    List<StudentExam> getTeacherExamToGrade(String email);
+
+    List<StudentQuiz> getTeacherQuizToGrade(String email);
+
 }

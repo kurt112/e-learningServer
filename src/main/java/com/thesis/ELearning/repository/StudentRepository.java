@@ -52,7 +52,7 @@ public interface StudentRepository extends JpaRepository<Student, String> {
     List<StudentQuiz> getStudentQuiz(String email);
 
     @Query(value = "SELECT t from StudentQuiz t where t.student.user.email =?1 and t.status =0")
-    Page<StudentQuiz> getStudentQuiztArchive(String email, Pageable pageable);
+    Page<StudentQuiz> getStudentQuizArchive(String email, Pageable pageable);
 
     // exam
     @Query(value = "SELECT t from StudentExam t where t.student.user.email =?1 and (t.status =-1 or t.status =1)")
