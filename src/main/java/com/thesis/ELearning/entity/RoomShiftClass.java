@@ -13,6 +13,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "room_shift_classes")
@@ -69,28 +70,28 @@ public class RoomShiftClass {
     joinColumns = @JoinColumn(name = "room_class_id"),
     inverseJoinColumns = @JoinColumn(name = "student_id")
     )
-    private List<Student> students;
+    private Set<Student> students;
 
 
     // for teachers file
 
     @OneToMany(mappedBy = "roomShiftClass")
-    private List<TeacherQuizzes> teacherQuizzes;
+    private Set<TeacherQuizzes> teacherQuizzes;
 
     @OneToMany(mappedBy = "class_")
-    private List<TeacherLectures> teacherLectures;
+    private Set<TeacherLectures> teacherLectures;
 
     @OneToMany(mappedBy = "roomShiftClass")
-    private List<TeacherAssignment> teacherAssignments;
+    private Set<TeacherAssignment> teacherAssignments;
 
     @OneToMany(mappedBy = "roomShiftClass")
-    private List<TeacherExams> teacherExams;
+    private Set<TeacherExams> teacherExams;
 
 //    @OneToMany(mappedBy = "teacher_class")
 //    private List<TeacherClassAttendance> teacherClassAttendances;
 
     @OneToMany(mappedBy = "student_class")
-    private List<StudentClassAttendance> studentClassAttendances;
+    private Set<StudentClassAttendance> studentClassAttendances;
 
 
     public RoomShiftClass(String id, RoomShift roomShift, Subject subject,

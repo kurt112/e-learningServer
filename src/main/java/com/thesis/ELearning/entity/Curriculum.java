@@ -6,11 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
+import java.util.Set;
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
-
 @Entity
 @Table(name = "curriculum")
 @AllArgsConstructor
@@ -47,9 +45,9 @@ public class Curriculum {
             joinColumns = @JoinColumn(name = "curriculum_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
-    private List<Subject> subjects;
+    private Set<Subject> subjects;
 
 
     @OneToMany(mappedBy = "curriculum")
-    private List<RoomShift> roomShifts;
+    private Set<RoomShift> roomShifts;
 }

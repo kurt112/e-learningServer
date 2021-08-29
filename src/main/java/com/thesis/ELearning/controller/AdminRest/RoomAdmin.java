@@ -1,15 +1,13 @@
 package com.thesis.ELearning.controller.AdminRest;
 
+import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
-import com.thesis.ELearning.entity.Room;
-import com.thesis.ELearning.entity.RoomShift;
-import com.thesis.ELearning.entity.RoomShiftClass;
-import com.thesis.ELearning.service.serviceImplementation.RoomService;
-import com.thesis.ELearning.service.serviceImplementation.RoomShiftClassesService;
-import com.thesis.ELearning.service.serviceImplementation.RoomShiftService;
+import com.thesis.ELearning.service.serviceImplementation.*;
+import com.thesis.ELearning.utils.disable.StudentTeacherActivity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,12 +17,14 @@ public class RoomAdmin {
     private final RoomService roomService;
     private final RoomShiftService roomShiftService;
     private final RoomShiftClassesService roomShiftClassesService;
+    private final StudentTeacherActivity studentTeacherActivity;
 
     @Autowired
-    public RoomAdmin(RoomService roomService, RoomShiftService roomShiftService, RoomShiftClassesService roomShiftClassesService) {
+    public RoomAdmin(RoomService roomService, RoomShiftService roomShiftService, RoomShiftClassesService roomShiftClassesService, StudentTeacherActivity studentTeacherActivity) {
         this.roomService = roomService;
         this.roomShiftService = roomShiftService;
         this.roomShiftClassesService = roomShiftClassesService;
+        this.studentTeacherActivity = studentTeacherActivity;
     }
 
 
@@ -59,25 +59,34 @@ public class RoomAdmin {
     }
 
     @PostMapping("/off/room")
+    @Async
     public ResponseEntity<Response<?>> setRoomOff(@RequestParam("id") String id) {
 
         Room room = roomService.findById(id);
+        room.setStatus(0);
+        roomService.save(room);
 
         for (RoomShift roomShift : room.getRoomShifts()) {
             roomShift.setStatus(0);
             roomShiftService.save(roomShift);
 
+
             for (RoomShiftClass classes : roomShift.getRoomShiftClasses()) {
+
                 classes.setStatus(0);
                 roomShiftClassesService.save(classes);
+
+                for(Student student: classes.getStudents()){
+                    studentTeacherActivity.DisableStudentAssignment(student.getAssignments());
+                    studentTeacherActivity.DisableStudentExam(student.getExams());
+                    studentTeacherActivity.DisableStudentQuiz(student.getQuizzes());
+                }
+
+
             }
 
         }
 
-        room.setStatus(0);
-
-
-        roomService.save(room);
 
         return new ResponseEntity<>(
                 new Response<>("Room On", "Room On"),
@@ -97,6 +106,12 @@ public class RoomAdmin {
             for (RoomShiftClass classes : roomShift.getRoomShiftClasses()) {
                 classes.setStatus(1);
                 roomShiftClassesService.save(classes);
+
+                for(Student student: classes.getStudents()){
+                    studentTeacherActivity.EnableStudentAssignment(student.getAssignments());
+                    studentTeacherActivity.EnableStudentExam(student.getExams());
+                    studentTeacherActivity.EnableStudentQuiz(student.getQuizzes());
+                }
             }
 
         }

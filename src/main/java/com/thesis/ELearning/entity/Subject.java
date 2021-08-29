@@ -7,7 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "subject")
@@ -35,7 +35,7 @@ public class Subject {
 
     @OneToMany(mappedBy = "subject")
     @JsonIgnore
-    private List<RoomShiftClass> roomShiftClasses;
+    private Set<RoomShiftClass> roomShiftClasses;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -48,7 +48,7 @@ public class Subject {
     private Date updated_at;
 
     @ManyToMany(mappedBy = "subjects")
-        private List<Curriculum> curriculumList;
+        private Set<Curriculum> curriculumList;
 
 
 }

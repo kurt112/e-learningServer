@@ -15,9 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Transactional
 @Service
@@ -168,11 +166,11 @@ public class StudentService implements PageableServiceStudent {
     }
 
     @GraphQLQuery(name = "getRoomShiftByStudent")
-    public List<RoomShift> StudentTransfer(@GraphQLArgument(name = "studentID") String id) {
+    public Set<RoomShift> StudentTransfer(@GraphQLArgument(name = "studentID") String id) {
 
         Student student = findById(id);
 
-        return student != null ? student.getRoomShifts() : new ArrayList<>();
+        return student != null ? student.getRoomShifts() : new HashSet<>();
     }
 
 }

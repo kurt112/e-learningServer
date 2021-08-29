@@ -7,7 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "room_shift")
@@ -67,13 +67,13 @@ class RoomShift {
     private Room room;
 
     @OneToMany(mappedBy ="roomShift", cascade = CascadeType.ALL)
-    private List<RoomShiftClass> roomShiftClasses;
+    private Set<RoomShiftClass> roomShiftClasses;
 
     @ManyToMany
     @JoinTable(name = "room_shift_students",
             joinColumns = @JoinColumn(name = "room_shift_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
-    private List<Student> students;
+    private Set<Student> students;
 
     public RoomShift(String id, String grade, String section, String timeStart, String timeEnd, String roomShiftName, Room room, Teacher teacher, Curriculum curriculum) {
         this.id = id;

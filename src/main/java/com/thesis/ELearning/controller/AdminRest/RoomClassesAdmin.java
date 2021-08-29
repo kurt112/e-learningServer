@@ -3,6 +3,7 @@ package com.thesis.ELearning.controller.AdminRest;
 import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.service.serviceImplementation.*;
+import com.thesis.ELearning.utils.disable.StudentTeacherActivity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,17 @@ public class RoomClassesAdmin {
     private final SubjectService subjectService;
     private final TeacherService teacherService;
     private final StudentService studentService;
+    private final StudentTeacherActivity studentTeacherActivity;
+
 
     @Autowired
-    public RoomClassesAdmin(RoomShiftClassesService roomShiftClassesService, RoomShiftService roomShiftService, SubjectService subjectService, TeacherService teacherService, StudentService studentService) {
+    public RoomClassesAdmin(RoomShiftClassesService roomShiftClassesService, RoomShiftService roomShiftService, SubjectService subjectService, TeacherService teacherService, StudentService studentService, StudentTeacherActivity studentTeacherActivity) {
         this.roomShiftClassesService = roomShiftClassesService;
         this.roomShiftService = roomShiftService;
         this.subjectService = subjectService;
         this.teacherService = teacherService;
         this.studentService = studentService;
+        this.studentTeacherActivity = studentTeacherActivity;
     }
 
     @PostMapping("/register")
@@ -63,7 +67,7 @@ public class RoomClassesAdmin {
         roomShiftClasses.setRoomShift(roomShift);
         roomShiftClasses.setSubject(subject);
 
-        if (roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new ArrayList<>());
+        if (roomShiftClasses.getStudents() == null) roomShiftClasses.setStudents(new HashSet<>());
 
         for (Student student : roomShift.getStudents()) {
             roomShiftClasses.getStudents().add(student);
@@ -105,7 +109,7 @@ public class RoomClassesAdmin {
         String classID = hashMap.get("classID").toString();
 
         RoomShiftClass RoomClass = roomShiftClassesService.findById(classID);
-        List<Student> students = new ArrayList<>();
+        Set<Student> students = new HashSet<>();
 
         // adding student in room shift
         for(String id: student_id){
@@ -133,6 +137,12 @@ public class RoomClassesAdmin {
 
         roomShiftClassesService.save(RoomClass);
 
+        for(Student student: RoomClass.getStudents()){
+            studentTeacherActivity.DisableStudentAssignment(student.getAssignments());
+            studentTeacherActivity.DisableStudentExam(student.getExams());
+            studentTeacherActivity.DisableStudentQuiz(student.getQuizzes());
+        }
+
         return new ResponseEntity<>(
                 new Response<>("RoomShiftClass On", "RoomShiftClass On"),
                 HttpStatus.OK
@@ -144,9 +154,14 @@ public class RoomClassesAdmin {
 
         RoomShiftClass RoomClass  = roomShiftClassesService.findById(id);
 
-
         RoomClass.setStatus(1);
         roomShiftClassesService.save(RoomClass);
+
+        for(Student student: RoomClass.getStudents()){
+            studentTeacherActivity.EnableStudentAssignment(student.getAssignments());
+            studentTeacherActivity.EnableStudentExam(student.getExams());
+            studentTeacherActivity.EnableStudentQuiz(student.getQuizzes());
+        }
 
         return new ResponseEntity<>(
                 new Response<>("RoomShiftClass Off", "RoomShiftClass Off"),

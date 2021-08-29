@@ -4,15 +4,13 @@ import com.fasterxml.uuid.Generators;
 import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
 import com.thesis.ELearning.service.serviceImplementation.*;
+import com.thesis.ELearning.utils.disable.StudentTeacherActivity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -24,15 +22,18 @@ public class RoomShiftAdmin {
     private final TeacherService teacherService;
     private final CurriculumService curriculumService;
     private final RoomShiftClassesService roomShiftClassesService;
+    private final StudentTeacherActivity studentTeacherActivity;
+
 
     @Autowired
-    public RoomShiftAdmin(RoomService roomService, RoomShiftService roomShiftService, StudentService studentService, TeacherService teacherService, CurriculumService curriculumService, RoomShiftClassesService roomShiftClassesService) {
+    public RoomShiftAdmin(RoomService roomService, RoomShiftService roomShiftService, StudentService studentService, TeacherService teacherService, CurriculumService curriculumService, RoomShiftClassesService roomShiftClassesService, StudentTeacherActivity studentTeacherActivity) {
         this.roomService = roomService;
         this.roomShiftService = roomShiftService;
         this.studentService = studentService;
         this.teacherService = teacherService;
         this.curriculumService = curriculumService;
         this.roomShiftClassesService = roomShiftClassesService;
+        this.studentTeacherActivity = studentTeacherActivity;
     }
 
     @PostMapping("/register-roomShift")
@@ -68,7 +69,7 @@ public class RoomShiftAdmin {
                     System.out.println(roomShiftClassesService.findById(classes.getId()));
                 }
 
-                roomShift.setRoomShiftClasses(new ArrayList<>());
+                roomShift.setRoomShiftClasses(new HashSet<>());
                 roomShift.setCurriculum(curriculum);
             }
 
@@ -84,7 +85,7 @@ public class RoomShiftAdmin {
         else{
             // creating new roomShift
             roomShift = new RoomShift(id, shiftGrade, shiftSection, timeStart, timeEnd, shiftName, room, teacher,curriculum);
-            roomShift.setRoomShiftClasses(new ArrayList<>());
+            roomShift.setRoomShiftClasses(new HashSet<>());
             roomShift.setStatus(1);
         }
 
@@ -123,7 +124,7 @@ public class RoomShiftAdmin {
         String roomShiftId = hashMap.get("shiftID").toString();
 
         RoomShift roomShift = roomShiftService.findById(roomShiftId);
-        List<Student> students = new ArrayList<>();
+        Set<Student> students = new HashSet<>();
 
         // adding student in room shift
         for(String id: student_id){
@@ -181,6 +182,12 @@ public class RoomShiftAdmin {
         for(RoomShiftClass classes: roomShift.getRoomShiftClasses()){
             classes.setStatus(0);
             roomShiftClassesService.save(classes);
+
+            for(Student student: classes.getStudents()){
+                studentTeacherActivity.DisableStudentAssignment(student.getAssignments());
+                studentTeacherActivity.DisableStudentExam(student.getExams());
+                studentTeacherActivity.DisableStudentQuiz(student.getQuizzes());
+            }
         }
 
         roomShift.setStatus(0);
@@ -198,6 +205,18 @@ public class RoomShiftAdmin {
         RoomShift roomShift  = roomShiftService.findById(id);
         roomShift.setStatus(1);
         roomShiftService.save(roomShift);
+
+        for(RoomShiftClass classes: roomShift.getRoomShiftClasses()){
+            classes.setStatus(1);
+            roomShiftClassesService.save(classes);
+
+            for(Student student: classes.getStudents()){
+                studentTeacherActivity.EnableStudentAssignment(student.getAssignments());
+                studentTeacherActivity.EnableStudentExam(student.getExams());
+                studentTeacherActivity.EnableStudentQuiz(student.getQuizzes());
+            }
+        }
+
 
         return new ResponseEntity<>(
                 new Response<>("RoomShift Off", "RoomShift Off"),

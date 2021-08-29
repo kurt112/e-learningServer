@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "teacher_resources")
@@ -55,19 +56,19 @@ public class TeacherResources {
             name = "student_resources",
             joinColumns = @JoinColumn(name = "resources"),
             inverseJoinColumns = @JoinColumn(name = "student"))
-    private List<Student> students;
+    private Set<Student> students;
 
     @OneToMany(mappedBy = "resource")
-    private List<TeacherAssignment> teacherAssignments;
+    private Set<TeacherAssignment> teacherAssignments;
 
     @OneToMany(mappedBy = "resource")
-    private List<TeacherExams> teacherExams;
+    private Set<TeacherExams> teacherExams;
 
     @OneToMany(mappedBy = "resource")
-    private List<TeacherLectures> teacherLectures;
+    private Set<TeacherLectures> teacherLectures;
 
     @OneToMany(mappedBy = "resource")
-    private List<TeacherQuizzes>teacherQuizzes;
+    private Set<TeacherQuizzes>teacherQuizzes;
 
 
     public TeacherResources(String code, String name, String location, String type, String description, Date createdAt) {

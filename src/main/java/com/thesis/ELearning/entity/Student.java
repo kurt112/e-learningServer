@@ -8,8 +8,8 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -33,27 +33,26 @@ public class Student {
 
     @ManyToMany(mappedBy = "students",cascade = {CascadeType.PERSIST})
     @GraphQLQuery(name = "roomShifts")
-    private List<RoomShift> roomShifts;
+    private Set<RoomShift> roomShifts;
 
     @ManyToMany(mappedBy = "students", cascade = {CascadeType.PERSIST})
     @GraphQLQuery(name = "roomShiftClasses")
-    private List<RoomShiftClass> roomShiftClasses;
-
+    private Set<RoomShiftClass> roomShiftClasses;
 
     @ManyToMany(mappedBy = "students")
-    private List<TeacherResources> resources;
+    private Set<TeacherResources> resources;
 
     @OneToMany(mappedBy ="student")
-    private List<StudentClassAttendance> classAttendances;
+    private Set<StudentClassAttendance> classAttendances;
 
     @OneToMany(mappedBy = "student")
-    private List<StudentAssignment> assignments;
+    private Set<StudentAssignment> assignments;
 
     @OneToMany(mappedBy = "student")
-    private List<StudentExam> exams;
+    private Set<StudentExam> exams;
 
     @OneToMany(mappedBy = "student")
-    private List<StudentQuiz> quizzes;
+    private Set<StudentQuiz> quizzes;
 
     public Student(String id, User user) {
         this.id = id;

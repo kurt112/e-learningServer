@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -63,7 +61,7 @@ public class CurriculumAdmin {
 
         List <String> subjectsCode = (List<String>) hashMap.get("subjects");
         String curriculumCode = hashMap.get("curriculumCode").toString();
-        List<Subject>  subjects = new ArrayList<>();
+        Set<Subject> subjects = new HashSet<>();
 
         System.out.println(subjects);
         for(String code: subjectsCode){

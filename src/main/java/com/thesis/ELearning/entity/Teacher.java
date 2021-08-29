@@ -3,7 +3,7 @@ package com.thesis.ELearning.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "teacher")
@@ -33,13 +33,13 @@ public class Teacher {
     // Relation Ship Mapping
 
     @OneToMany(mappedBy = "teacher")
-    private List<TeacherResources> resources;
+    private Set<TeacherResources> resources;
 
     @OneToMany(mappedBy = "teacher")
-    public List<RoomShiftClass> roomShiftClasses;
+    public Set<RoomShiftClass> roomShiftClasses;
 
     @OneToMany(mappedBy = "teacher")
-    public List<TeacherClassAttendance> classAttendances;
+    public Set<TeacherClassAttendance> classAttendances;
 
     public Teacher(String id, User user, String link) {
         this.id = id;
