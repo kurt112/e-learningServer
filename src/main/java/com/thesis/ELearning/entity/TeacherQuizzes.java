@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "teacher_quizzes")
@@ -52,4 +53,20 @@ public class TeacherQuizzes {
     @ManyToOne()
     @JoinColumn(name = "room_shift_class")
     private RoomShiftClass roomShiftClass;
+
+    @OneToMany(mappedBy = "quiz")
+    private Set<StudentQuiz> studentQuizs;
+
+    public TeacherQuizzes(String code, double highGrade, double lowGrade, int quarter, int sem, String description, Date createdAt, Date deadLine, TeacherResources resource, RoomShiftClass roomShiftClass) {
+        this.code = code;
+        this.highGrade = highGrade;
+        this.lowGrade = lowGrade;
+        this.quarter = quarter;
+        this.sem = sem;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.deadLine = deadLine;
+        this.resource = resource;
+        this.roomShiftClass = roomShiftClass;
+    }
 }

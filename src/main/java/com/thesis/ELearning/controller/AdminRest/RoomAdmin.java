@@ -108,9 +108,14 @@ public class RoomAdmin {
                 roomShiftClassesService.save(classes);
 
                 for(Student student: classes.getStudents()){
-                    studentTeacherActivity.EnableStudentAssignment(student.getAssignments());
-                    studentTeacherActivity.EnableStudentExam(student.getExams());
-                    studentTeacherActivity.EnableStudentQuiz(student.getQuizzes());
+
+                    if(student.getAssignments() != null || student.getAssignments().size()!=0)
+                        studentTeacherActivity.EnableStudentAssignment(student.getAssignments());
+                    if(student.getExams() != null || student.getExams().size()!=0)
+                        studentTeacherActivity.EnableStudentExam(student.getExams());
+                    if(student.getQuizzes() != null || student.getQuizzes().size()!=0)
+                        System.out.println("The quizes " + student.getQuizzes());
+                        studentTeacherActivity.EnableStudentQuiz(student.getQuizzes());
                 }
             }
 

@@ -190,10 +190,11 @@ public class StudentController {
     }
 
     @PostMapping("/grade/assignment")
-    private ResponseEntity<Response<?>> unSubmitAssigment(
+    private ResponseEntity<Response<?>> gradeAssignment(
             @RequestParam("id") int id,
             @RequestParam("grade") double grade
     ) {
+        System.out.println("The grade "+grade);
         StudentAssignment studentAssignment = assignmentService.findById(""+id);
         studentAssignment.setGrade(grade);
         assignmentService.save(studentAssignment);
@@ -204,6 +205,23 @@ public class StudentController {
         );
 
     }
+
+    @PostMapping("/grade/quiz")
+    private ResponseEntity<Response<?>> gradeQuiz(
+            @RequestParam("id") int id,
+            @RequestParam("grade") double grade
+    ) {
+        StudentQuiz studentQuiz = quizService.findById(""+id);
+        studentQuiz.setGrade(grade);
+        quizService.save(studentQuiz);
+
+        return new ResponseEntity<>(
+                new Response<>("Assignment Graded Success", "Assignment Graded Success"),
+                HttpStatus.OK
+        );
+
+    }
+
 
 
 }

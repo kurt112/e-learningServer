@@ -54,6 +54,9 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private Set<StudentQuiz> quizzes;
 
+    @OneToMany(mappedBy = "student")
+    private Set<StudentGrade> studentGrades;
+
     public Student(String id, User user) {
         this.id = id;
         this.user = user;

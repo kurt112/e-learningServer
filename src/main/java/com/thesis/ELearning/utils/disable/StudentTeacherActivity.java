@@ -73,6 +73,7 @@ public class StudentTeacherActivity {
 
     public void EnableStudentQuiz(Set<StudentQuiz> quizs){
         for(StudentQuiz studentQuiz: quizs){
+            System.out.println(studentQuiz);
             if(studentQuiz.getLocation() == null ||
                     studentQuiz.getLocation().trim().isEmpty()) studentQuiz.setStatus(-1);
             else studentQuiz.setStatus(1);

@@ -2,7 +2,6 @@ package com.thesis.ELearning.controller;
 
 import com.thesis.ELearning.entity.*;
 import com.thesis.ELearning.entity.API.Response;
-import com.thesis.ELearning.repository.TeacherRepository;
 import com.thesis.ELearning.service.serviceImplementation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -18,14 +17,13 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 @RestController
 @RequestMapping("/teacher")
 public class TeacherController {
 
-    private final TeacherRepository teacherRepository;
+    private final TeacherService teacherService;
     private final TeacherResourceService teacherResourceService;
     private final TeacherAssignmentService teacherAssignmentService;
     private final RoomShiftClassesService roomShiftClassesService;
@@ -38,10 +36,13 @@ public class TeacherController {
     private final StudentExamService studentExamService;
     private final StudentQuizService studentQuizService;
 
+    // for adding grade
+    private final StudentGradeService studentGradeService;
+
 
     @Autowired
-    public TeacherController(TeacherRepository teacherRepository, TeacherResourceService teacherResourceService, TeacherAssignmentService teacherAssignmentService, RoomShiftClassesService roomShiftClassesService, TeacherLectureService lectureService, TeacherExamsService teacherExamsService, TeacherQuizzesService teacherQuizzesService, StudentAssignmentService studentAssignmentService, StudentExamService studentExamService, StudentQuizService studentQuizService) {
-        this.teacherRepository = teacherRepository;
+    public TeacherController(TeacherService teacherService, TeacherResourceService teacherResourceService, TeacherAssignmentService teacherAssignmentService, RoomShiftClassesService roomShiftClassesService, TeacherLectureService lectureService, TeacherExamsService teacherExamsService, TeacherQuizzesService teacherQuizzesService, StudentAssignmentService studentAssignmentService, StudentExamService studentExamService, StudentQuizService studentQuizService, StudentGradeService studentGradeService) {
+        this.teacherService = teacherService;
         this.teacherResourceService = teacherResourceService;
         this.teacherAssignmentService = teacherAssignmentService;
         this.roomShiftClassesService = roomShiftClassesService;
@@ -51,6 +52,7 @@ public class TeacherController {
         this.studentAssignmentService = studentAssignmentService;
         this.studentExamService = studentExamService;
         this.studentQuizService = studentQuizService;
+        this.studentGradeService = studentGradeService;
     }
 
     @PostMapping("/upload/resource")
@@ -62,7 +64,7 @@ public class TeacherController {
             @RequestParam("code") String code,
             @RequestParam("email") String email
     ) {
-        Teacher teacher = teacherRepository.getTeacherByUserEmail(email);
+        Teacher teacher = teacherService.findById(email);
         TeacherResources teacherResources = new TeacherResources(code, name, filePath, type, description, new Date());
         teacherResources.setStatus(0);
         teacherResources.setTeacher(teacher);
@@ -218,7 +220,7 @@ public class TeacherController {
 
         lectureService.deleteById(code);
 
-        if(lectures.getResource().getTeacherLectures().size() ==0){
+        if (lectures.getResource().getTeacherLectures().size() == 0) {
             lectures.getResource().setStatus(0);
             teacherResourceService.save(lectures.getResource());
         }
@@ -288,7 +290,7 @@ public class TeacherController {
 
         teacherExamsService.deleteById(code);
 
-        if(exams.getResource().getTeacherExams().size() ==0){
+        if (exams.getResource().getTeacherExams().size() == 0) {
             exams.getResource().setStatus(0);
             teacherResourceService.save(exams.getResource());
         }
@@ -351,12 +353,225 @@ public class TeacherController {
             );
         }
         teacherQuizzesService.deleteById(code);
-        if(quizzes.getResource().getTeacherQuizzes().size() ==0){
+        if (quizzes.getResource().getTeacherQuizzes().size() == 0) {
             quizzes.getResource().setStatus(0);
             teacherResourceService.save(quizzes.getResource());
         }
         return new ResponseEntity<>(
                 new Response<>("Delete Quiz Success", "Success"),
+                HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/grade/student")
+    public ResponseEntity<Response<?>> createGrade(@RequestParam("email") String email) {
+
+
+        List<TeacherAssignment> getTeacherAssignment = teacherService.getTeacherAssignment(email);
+        List<TeacherExams> getTeacherExams = teacherService.getTeacherExam(email);
+        List<TeacherQuizzes> getTeacherQuizzes = teacherService.getTeacherQuizzes(email);
+
+
+        // teacher activity per classes points
+
+        // String -> class id
+        // Double -> Total Score for that acitivty
+
+        HashMap<RoomShiftClass, Double> teacherAssignmentScore = new HashMap<>();
+        HashMap<RoomShiftClass, Double> teacherQuizscore = new HashMap<>();
+        HashMap<RoomShiftClass, Double> teacherExamScore = new HashMap<>();
+
+
+        // First String -> class id
+        // Second String -> student id
+        // Double Student Score -> Student Score
+
+        HashMap<RoomShiftClass, HashMap<Student, Double>> studentAssignmentScore = new HashMap<>();
+        HashMap<RoomShiftClass, HashMap<Student, Double>> studentExamScore = new HashMap<>();
+        HashMap<RoomShiftClass, HashMap<Student, Double>> studentQuizScore = new HashMap<>();
+
+
+        for (TeacherAssignment teacherAssignment : getTeacherAssignment) {
+
+            RoomShiftClass classId = teacherAssignment.getRoomShiftClass();
+
+            // storing highGrade then adding it
+            teacherAssignmentScore.putIfAbsent(classId, 0.0);
+            teacherAssignmentScore.put(classId, teacherAssignmentScore.get(classId) + teacherAssignment.getHighGrade());
+            System.out.println(teacherAssignmentScore);
+            for (StudentAssignment studentAssignment : teacherAssignment.getStudentAssignments()) {
+
+                Student id = studentAssignment.getStudent();
+
+                studentAssignmentScore.putIfAbsent(classId, new HashMap<>());
+                studentAssignmentScore.get(classId).putIfAbsent(id, 0.0);
+
+                // get student and then add the pass score to new score
+                studentAssignmentScore.get(classId).put(
+                        id, studentAssignmentScore.get(classId).get(id) + studentAssignment.getGrade()
+                );
+
+            }
+
+        }
+
+        for (TeacherQuizzes quizzes : getTeacherQuizzes) {
+
+            RoomShiftClass classId = quizzes.getRoomShiftClass();
+
+            teacherQuizscore.putIfAbsent(classId, 0.0);
+            teacherQuizscore.put(classId, teacherQuizscore.get(classId) + quizzes.getHighGrade());
+
+
+            for (StudentQuiz studentQuiz : quizzes.getStudentQuizs()) {
+
+                Student id = studentQuiz.getStudent();
+
+                studentQuizScore.putIfAbsent(classId, new HashMap<>());
+                studentQuizScore.get(classId).putIfAbsent(id, 0.0);
+
+                // get student and then add the pass score to new score
+                studentQuizScore.get(classId).put(
+                        id, studentQuizScore.get(classId).get(id) + studentQuiz.getGrade()
+                );
+            }
+
+        }
+
+        for (TeacherExams teacherExams : getTeacherExams) {
+
+            RoomShiftClass classId = teacherExams.getRoomShiftClass();
+
+            teacherExamScore.putIfAbsent(classId, 0.0);
+            teacherExamScore.put(classId, teacherExamScore.get(classId) + teacherExams.getHighGrade());
+
+            System.out.println(teacherExamScore);
+            for (StudentExam studentExam : teacherExams.getStudentExams()) {
+
+                Student id = studentExam.getStudent();
+
+                studentExamScore.putIfAbsent(classId, new HashMap<>());
+                studentExamScore.get(classId).putIfAbsent(id, 0.0);
+
+                // get student and then add the pass score to new score
+                studentExamScore.get(classId).put(
+                        id, studentExamScore.get(classId).get(id) + studentExam.getGrade()
+                );
+            }
+
+        }
+
+
+        System.out.println("===================================");
+
+        // double -> grade in class student
+
+        HashMap<RoomShiftClass, HashMap<Student, Double>> finalClassGradeInStudent = new HashMap<>();
+
+        for (RoomShiftClass classId : teacherAssignmentScore.keySet()) {
+
+            finalClassGradeInStudent.putIfAbsent(classId, new HashMap<>());
+
+            if(studentAssignmentScore.get(classId) ==null)continue;
+
+            for (Student studentId : studentAssignmentScore.get(classId).keySet()) {
+
+                finalClassGradeInStudent.get(classId).putIfAbsent(studentId, 0.0);
+                double finalGradeAssignment = ((studentAssignmentScore.get(classId).get(studentId) / teacherAssignmentScore.get(classId)) * 100) * .20;
+                System.out.println("The final assignment " + finalGradeAssignment);
+                finalClassGradeInStudent
+                        .get(classId)
+                        .put(studentId,
+                                finalClassGradeInStudent
+                                        .get(classId).get(studentId) + finalGradeAssignment);
+
+
+            }
+
+
+        }
+
+        for (RoomShiftClass classId : teacherExamScore.keySet()) {
+
+            finalClassGradeInStudent.putIfAbsent(classId, new HashMap<>());
+
+            if(studentExamScore.get(classId) ==null)continue;
+
+            for (Student studentId : studentExamScore.get(classId).keySet()) {
+
+                finalClassGradeInStudent.get(classId).putIfAbsent(studentId, 0.0);
+                double finalGradeExam = ((studentExamScore.get(classId).get(studentId) / teacherExamScore.get(classId)) * 100) * .50;
+
+                System.out.println("The final grade " + finalGradeExam);
+                finalClassGradeInStudent
+                        .get(classId)
+                        .put(studentId,
+                                finalClassGradeInStudent
+                                        .get(classId).get(studentId) + finalGradeExam);
+
+
+            }
+        }
+
+        for (RoomShiftClass classId : teacherQuizscore.keySet()) {
+
+            finalClassGradeInStudent.putIfAbsent(classId, new HashMap<>());
+
+            System.out.println(studentQuizScore.get(classId));
+
+            if(studentQuizScore.get(classId) == null) continue;
+
+            for (Student studentId : studentQuizScore.get(classId).keySet()) {
+
+                finalClassGradeInStudent.get(classId).putIfAbsent(studentId, 0.0);
+                double finalGradeQuiz = ((studentQuizScore.get(classId).get(studentId) / teacherQuizscore.get(classId)) * 100) * .30;
+
+                System.out.println("The final quiz " + finalGradeQuiz);
+
+                finalClassGradeInStudent
+                        .get(classId)
+                        .put(studentId,
+                                finalClassGradeInStudent
+                                        .get(classId).get(studentId) + finalGradeQuiz);
+
+            }
+        }
+
+        System.out.println(teacherAssignmentScore);
+        System.out.println(teacherExamScore);
+        System.out.println(teacherQuizscore);
+        System.out.println("===================================");
+        System.out.println(finalClassGradeInStudent);
+
+        for(RoomShiftClass classId: finalClassGradeInStudent.keySet()){
+
+            Map<Student,Double> map = finalClassGradeInStudent.get(classId);
+
+            for(Student studentId: map.keySet()){
+
+                StudentGrade studentGrade = studentGradeService.studentGrade(classId.getId(), studentId.getId());
+
+                double finalGrade = map.get(studentId);
+
+                if(studentGrade == null){
+                    studentGradeService.save(new StudentGrade(classId, finalGrade, studentId));
+                    continue;
+                }
+
+                System.out.println("the final grade " + finalGrade);
+
+                studentGrade.setGrade(finalGrade);
+                studentGradeService.save(studentGrade);
+
+
+            }
+
+
+         }
+
+
+        return new ResponseEntity<>(
+                new Response<>("Student Grde Success", "Success"),
                 HttpStatus.OK
         );
     }

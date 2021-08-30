@@ -184,9 +184,12 @@ public class RoomShiftAdmin {
             roomShiftClassesService.save(classes);
 
             for(Student student: classes.getStudents()){
-                studentTeacherActivity.DisableStudentAssignment(student.getAssignments());
-                studentTeacherActivity.DisableStudentExam(student.getExams());
-                studentTeacherActivity.DisableStudentQuiz(student.getQuizzes());
+                if(student.getAssignments() != null || student.getAssignments().size()!=0)
+                    studentTeacherActivity.EnableStudentAssignment(student.getAssignments());
+                if(student.getExams() != null || student.getExams().size()!=0)
+                    studentTeacherActivity.EnableStudentExam(student.getExams());
+                if(student.getQuizzes() != null || student.getQuizzes().size()!=0)
+                    studentTeacherActivity.EnableStudentQuiz(student.getQuizzes());
             }
         }
 

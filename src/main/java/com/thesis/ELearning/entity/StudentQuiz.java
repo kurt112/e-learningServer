@@ -40,7 +40,7 @@ class StudentQuiz {
     private Student student;
 
     @ManyToOne()
-    @JoinColumn(name = "exam")
+    @JoinColumn(name = "quiz")
     private TeacherQuizzes quiz;
 
     @CreationTimestamp

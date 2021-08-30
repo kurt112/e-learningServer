@@ -18,4 +18,12 @@ public interface PageableServiceTeacher extends ServicesGraphQl<Teacher> {
 
     List<StudentQuiz> getTeacherQuizToGrade(String email);
 
+
+    List<TeacherExams> getTeacherExam(String email);
+
+    List<TeacherAssignment> getTeacherAssignment(String email);
+
+    List<TeacherQuizzes> getTeacherQuizzes(String email);
+
+
 }

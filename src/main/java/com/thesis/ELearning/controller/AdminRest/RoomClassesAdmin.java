@@ -158,9 +158,12 @@ public class RoomClassesAdmin {
         roomShiftClassesService.save(RoomClass);
 
         for(Student student: RoomClass.getStudents()){
-            studentTeacherActivity.EnableStudentAssignment(student.getAssignments());
-            studentTeacherActivity.EnableStudentExam(student.getExams());
-            studentTeacherActivity.EnableStudentQuiz(student.getQuizzes());
+            if(student.getAssignments() != null || student.getAssignments().size()!=0)
+                studentTeacherActivity.EnableStudentAssignment(student.getAssignments());
+            if(student.getExams() != null || student.getExams().size()!=0)
+                studentTeacherActivity.EnableStudentExam(student.getExams());
+            if(student.getQuizzes() != null || student.getQuizzes().size()!=0)
+                studentTeacherActivity.EnableStudentQuiz(student.getQuizzes());
         }
 
         return new ResponseEntity<>(
