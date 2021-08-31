@@ -191,15 +191,22 @@ public class TeacherController {
 
     @PostMapping("/lecture/create")
     public ResponseEntity<Response<?>> createLecture(@RequestBody HashMap<Object, Object> hashMap) {
-        int quarter = Integer.parseInt(hashMap.get("quarter").toString());
-        int sem = Integer.parseInt(hashMap.get("sem").toString());
-        RoomShiftClass classes = roomShiftClassesService.findById(hashMap.get("classCode").toString());
-        String code = hashMap.get("code").toString();
-        TeacherResources resources = teacherResourceService.findById(hashMap.get("resourceCode").toString());
-        String description = hashMap.get("description").toString();
-        resources.setStatus(1);
-        lectureService.save(new TeacherLectures(code, description, quarter, sem, resources, classes, new Date(), null));
-        teacherResourceService.save(resources);
+        try {
+            int quarter = Integer.parseInt(hashMap.get("quarter").toString());
+            int sem = Integer.parseInt(hashMap.get("sem").toString());
+            RoomShiftClass classes = roomShiftClassesService.findById(hashMap.get("classCode").toString());
+            String code = hashMap.get("code").toString();
+            TeacherResources resources = teacherResourceService.findById(hashMap.get("resourceCode").toString());
+            String description = hashMap.get("description").toString();
+            resources.setStatus(1);
+            lectureService.save(new TeacherLectures(code, description, quarter, sem, resources, classes, new Date(), null));
+            teacherResourceService.save(resources);
+        }catch (Exception e){
+            return new ResponseEntity<>(
+                    new Response<>("Lecture  Create Success", e),
+                    HttpStatus.OK
+            );
+        }
         return new ResponseEntity<>(
                 new Response<>("Lecture  Create Success", "Successful"),
                 HttpStatus.OK
