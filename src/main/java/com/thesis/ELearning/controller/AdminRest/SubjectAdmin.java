@@ -1,7 +1,6 @@
 package com.thesis.ELearning.controller.AdminRest;
 
 import com.thesis.ELearning.entity.API.Response;
-import com.thesis.ELearning.entity.Student;
 import com.thesis.ELearning.entity.Subject;
 import com.thesis.ELearning.service.serviceImplementation.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;

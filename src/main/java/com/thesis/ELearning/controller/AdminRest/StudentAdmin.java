@@ -16,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
@@ -65,19 +68,24 @@ public class StudentAdmin {
 
     @PostMapping("/student-fillUp")
     public ResponseEntity<Response<Student>> updateUser(@RequestParam("id") String id,
-                                                     @RequestParam("first-name") String firstName,
-                                                     @RequestParam("middle-name") String middleName,
-                                                     @RequestParam("last-name") String lastName,
-                                                     @RequestParam("suffix") String suffix,
-                                                     @RequestParam("birth-date") String birthDate,
-                                                     @RequestParam("gender") String gender,
-                                                     @RequestParam("email") String email,
-                                                     @RequestParam("password") String password){
+                                                        @RequestParam("first-name") String firstName,
+                                                        @RequestParam("middle-name") String middleName,
+                                                        @RequestParam("last-name") String lastName,
+                                                        @RequestParam("suffix") String suffix,
+                                                        @RequestParam("birth-date") String birthDate,
+                                                        @RequestParam("gender") String gender,
+                                                        @RequestParam("email") String email,
+                                                        @RequestParam("password") String password){
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
 
+        try {
+            date = formatter.parse(birthDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        Student student = studentService.getStudentById(id);
-
-        User user = student.getUser();
+        User user = new User();
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setMiddleName(middleName);
@@ -88,6 +96,12 @@ public class StudentAdmin {
         user.setAccountNotExpired(true);
         user.setCredentialNotExpired(true);
         user.setAccountNotLocked(true);
+        user.setUserRole("STUDENT");
+
+        user.setBirthdate(date);
+        Student student = new Student(id,user);
+
+
 
         Thread thread = new Thread(() -> {
             EmailSenderService mailer = new EmailSenderService();

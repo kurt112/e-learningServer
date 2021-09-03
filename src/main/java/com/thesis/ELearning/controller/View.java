@@ -45,9 +45,9 @@ public class View {
             User eve_A = new User(8, "kurt@email.com", "?", "?", "", "?", "", "?", "?", new Date(), "ADMIN", true, true, true, true, new Date(), new Date());
             User kurt_A = new User(9, "eve@email.com", "?", "?", "", "?", "", "?", "?", new Date(), "ADMIN", true, true, true, true, new Date(), new Date());
 
-            Teacher ellyTeacherAdmin = new Teacher("JhXpaH", null, "?");
-            Teacher eveTeacherAdmin = new Teacher("NngSZe", null, "?");
-            Teacher kurtTeacherAdmin = new Teacher("sW9Dtv", null, "?");
+            Teacher ellyTeacherAdmin = new Teacher("JhXpaH", null);
+            Teacher eveTeacherAdmin = new Teacher("NngSZe", null);
+            Teacher kurtTeacherAdmin = new Teacher("sW9Dtv", null);
 
             ellyTeacherAdmin.setUser(elly_A);
             eveTeacherAdmin.setUser(eve_A);

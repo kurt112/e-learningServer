@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
@@ -46,7 +49,7 @@ public class TeacherAdmin {
         }
 
         User user = new User(email,"?","?","?", "?","?","","?",new Date(),"TEACHER",false,false,false,false,new Date(),new Date());
-        Teacher teacherID = new Teacher(email,user,"?");
+        Teacher teacherID = new Teacher(email,user);
         teacherID.setId(email);
         teacherID.setUser(user);
         userService.save(user);
@@ -69,10 +72,16 @@ public class TeacherAdmin {
                                                         @RequestParam("email") String email,
                                                         @RequestParam("password") String password){
 
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
 
-        Teacher teacher = teacherService.getTeacherById(id);
+        try {
+            date = formatter.parse(birthDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        User user = teacher.getUser();
+        User user = new User();
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setMiddleName(middleName);
@@ -83,6 +92,10 @@ public class TeacherAdmin {
         user.setAccountNotExpired(true);
         user.setCredentialNotExpired(true);
         user.setAccountNotLocked(true);
+        user.setUserRole("TEACHER");
+        user.setBirthdate(date);
+
+        Teacher teacher = new Teacher(id, user);
 
         userService.save(user);
         teacherService.save(teacher);

@@ -21,7 +21,7 @@ public class Curriculum {
     @Column(name = "code")
     private String code;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "description")

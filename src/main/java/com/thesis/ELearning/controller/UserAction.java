@@ -59,7 +59,7 @@ public class UserAction {
 
 
         user = new User(email,"?","?","?", "?","?","",
-                "$2a$12$9aNZQjnLmTlBtYMVY0JtF.HXt3.pN8YxwxhSCH/cxcJFm2/VlDuWC",new Date(),
+                "$2a$12$r84OHrZpme2ZeP/2UHmcluhqNsL0HA7d9ytrxLD3puxlicVXgCtla",new Date(),
                 "ADMIN",true,true,true,false,new Date(),new Date());
 
         userService.save(user);

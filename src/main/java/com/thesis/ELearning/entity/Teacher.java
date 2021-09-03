@@ -25,11 +25,6 @@ public class Teacher {
     @JoinColumn(name = "teacher_user")
     private User user;
 
-
-    @Column(name = "teacher_link")
-    private String link;
-
-
     // Relation Ship Mapping
 
     @OneToMany(mappedBy = "teacher")
@@ -41,9 +36,8 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher")
     public Set<TeacherClassAttendance> classAttendances;
 
-    public Teacher(String id, User user, String link) {
+    public Teacher(String id, User user) {
         this.id = id;
         this.user = user;
-        this.link = link;
     }
 }
