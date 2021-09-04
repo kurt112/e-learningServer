@@ -10,16 +10,26 @@ import com.thesis.ELearning.service.MyUserDetailsService;
 import com.thesis.ELearning.service.serviceImplementation.StudentService;
 import com.thesis.ELearning.service.serviceImplementation.UserService;
 import com.thesis.ELearning.utils.Jwt;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 
 @RestController
 public class StudentAdmin {
@@ -28,7 +38,6 @@ public class StudentAdmin {
     final private UserService userService;
     final private Jwt jwt;
     final private MyUserDetailsService userDetailsService;
-
 
 
     @Autowired
@@ -41,19 +50,17 @@ public class StudentAdmin {
     }
 
 
-
-
     @PostMapping("/student-register")
-    public ResponseEntity<Response<Student>> student(@RequestParam("id") String id){
+    public ResponseEntity<Response<Student>> student(@RequestParam("id") String id) {
 
-        if(studentService.findById(id) !=null){
+        if (studentService.findById(id) != null) {
             return new ResponseEntity<>(
                     new Response<>("Student is already exist", null),
                     HttpStatus.BAD_REQUEST
             );
         }
 
-        User user = new User(""+id,"?","?","?","?","","","",new Date(),"STUDENT",false,false,false,false,new Date(), new Date());
+        User user = new User("" + id, "?", "?", "?", "?", "", "", "", new Date(), "STUDENT", false, false, false, false, new Date(), new Date());
 
         Student student = new Student(id, user);
 
@@ -75,7 +82,7 @@ public class StudentAdmin {
                                                         @RequestParam("birth-date") String birthDate,
                                                         @RequestParam("gender") String gender,
                                                         @RequestParam("email") String email,
-                                                        @RequestParam("password") String password){
+                                                        @RequestParam("password") String password) {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
 
@@ -99,8 +106,7 @@ public class StudentAdmin {
         user.setUserRole("STUDENT");
 
         user.setBirthdate(date);
-        Student student = new Student(id,user);
-
+        Student student = new Student(id, user);
 
 
         Thread thread = new Thread(() -> {
@@ -108,7 +114,7 @@ public class StudentAdmin {
 
 
             final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-            final String token = this.jwt.generateToken(userDetails,false);
+            final String token = this.jwt.generateToken(userDetails, false);
 
             try {
                 mailer.sendEmail(email, "Verify Email", EmailType.userVerify(token));
@@ -136,7 +142,7 @@ public class StudentAdmin {
     public ResponseEntity<Response<?>> deleteStudent(@RequestParam("id") String id) {
 
         Student student = studentService.findById(id);
-        if(student == null){
+        if (student == null) {
             return new ResponseEntity<>(
                     new Response<>("Student Id Is Not Existing", null),
                     HttpStatus.BAD_REQUEST
@@ -167,7 +173,7 @@ public class StudentAdmin {
     @PostMapping("/on/student")
     public ResponseEntity<Response<?>> setStudentOn(@RequestParam("id") String id) {
 
-        Student student  = studentService.findById(id);
+        Student student = studentService.findById(id);
         student.setStatus(1);
         studentService.save(student);
 
@@ -177,6 +183,73 @@ public class StudentAdmin {
         );
     }
 
+    @PostMapping("/upload/csv")
+    public ResponseEntity<Response<?>> uploadCSCV(@RequestParam("file") MultipartFile file) throws IOException {
+
+//        Student student  = studentService.findById(id);
+//        student.setStatus(1);
+//        studentService.save(student);
+
+        System.out.println(file.getResource());
+        System.out.println(file.getName());
+        System.out.println(file.getOriginalFilename());
+        System.out.println(file.getContentType());
+        XSSFWorkbook wb = new XSSFWorkbook(file.getInputStream());
+
+        XSSFSheet sheet = wb.getSheetAt(0);
+        Iterator<Row> itr = sheet.iterator();    //iterating over excel file
+        itr.next();
+        while (itr.hasNext()) {
+            Row row = itr.next();
+
+            int lrn = (int) row.getCell(0).getNumericCellValue();
+            String firstName = row.getCell(1).getStringCellValue();
+            String lastName = row.getCell(2).getStringCellValue();
+            String email = row.getCell(3).getStringCellValue();
+            String password = row.getCell(4).getStringCellValue();
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            password = bCryptPasswordEncoder.encode(password);
+
+            User user = new User();
+            user.setEmail(email);
+            user.setFirstName(firstName);
+            user.setMiddleName("");
+            user.setLastName(lastName);
+            user.setSuffix("");
+            user.setGender("?");
+            user.setPassword(password);
+            user.setAccountNotExpired(true);
+            user.setCredentialNotExpired(true);
+            user.setAccountNotLocked(true);
+            user.setUserRole("STUDENT");
+
+            user.setBirthdate(new Date());
+            Student student = new Student("" + lrn, user);
+
+            userService.save(user);
+            studentService.save(student);
+
+            EmailSenderService mailer = new EmailSenderService();
+
+
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            final String token = this.jwt.generateToken(userDetails, false);
+
+            try {
+                mailer.sendEmail(email, "Verify Email", EmailType.userVerify(token));
+                System.out.println("Email sent.");
+            } catch (Exception ex) {
+                System.out.println("Failed to sent email.");
+                ex.printStackTrace();
+            }
+
+        }
+
+        return new ResponseEntity<>(
+                new Response<>("Student Off", "Student Off"),
+                HttpStatus.OK
+        );
+    }
 
 
 }
